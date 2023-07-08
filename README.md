@@ -22,13 +22,13 @@ note that to use this site properly, some knowledge of Stata files is useful. We
 
 first session deals with a general overview of what Stata is and can do. We'll look at **two data sets**:
 
--auto.dta - this is a preloaded teaching data set that comes installed with Stata.
--SarahsSTATAtest.dta - this is a Stata file that has been created by [Sarah Worley](https://www.linkedin.com/in/sarah-worley-bba82816/) and [Wei Liu](https://www.linkedin.com/in/wei-liu-2ab97b156/) for purposes of this course. This file contains completely made up data - there are no patient privacy concerns. 
+- auto.dta - this is a preloaded teaching data set that comes installed with Stata.
+- SarahsSTATAtest.dta - this is a Stata file that has been created by [Sarah Worley](https://www.linkedin.com/in/sarah-worley-bba82816/) and [Wei Liu](https://www.linkedin.com/in/wei-liu-2ab97b156/) for purposes of this course. This file contains completely made up data - there are no patient privacy concerns. 
 
-we'll look at one **do file**, "introduction and basics.do"
+we'll look at one do file, "introduction and basics.do"
 
-there is one **log file**, "introduction and basics.log"
+there is one log file, "introduction and basics.log"
 
-additionally, Stata has some nice materials taking the user through the **auto.dta** data set that I shamelessly reused for purposes of our first session. For more on this, pull the file. It explains each line of code and provides visual examples of how to access relevant commands via the drop-down boxes (something I don't always remember to do.) 
+additionally, Stata has some nice materials taking the user through the auto.dta data set that I shamelessly reused for purposes of our first session. For more on this, pull the file. It explains each line of code and provides visual examples of how to access relevant commands via the drop-down boxes (something I don't always remember to do.) 
 
 
