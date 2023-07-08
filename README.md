@@ -29,6 +29,6 @@ we'll look at one do file, *introduction and basics.do*
 
 there is one log file, *introduction and basics.log*
 
-additionally, Stata has some nice materials taking the user through the auto.dta data set that I shamelessly reused for purposes of our first session. For more on this, pull *getting_started_auto.pdf*. It explains each line of code and provides visual examples of how to access relevant commands via the drop-down boxes (something I don't always remember to do.) 
+additionally, Stata has some nice materials taking the user through the auto.dta data set that I shamelessly reused for purposes of our first session. For more on this, pull *getting_started_auto.pdf*. It explains each line of code and provides visual examples of how to access relevant commands via the drop-down boxes (something I don't always remember to do). 
 
 
