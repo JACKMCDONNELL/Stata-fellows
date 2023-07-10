@@ -22,12 +22,18 @@ note that to use this site properly, some knowledge of Stata files is useful. We
 
 in addition to the resources on this course website, there are a number of places to get help using Stata. These include:
 
+-Stata help files. To access, just type **help** (*command name*) in the command prompt of Stata. This only works if you remember the exact command name. Alternately, point your mouse to the "help" option in the Stata drop-down choices.
 
--Stata help files. To access, just type **help** *command name* in the command prompt of Stata. This only works if you remember the exact command name. Alternately, point your mouse to the "help" option in the Stata drop-down choices.
-
--if you remember the overall technique you want to use, but not the actual command name in Stata, type **search** *overall technique*. This pulls information from Stata help files as well as internet sources
+-if you remember the overall technique you want to use, but not the actual command name in Stata, type **search** (*overall technique*). This pulls information from Stata help files as well as internet sources
 
 -google search. Often, it is just easier to type what you are trying to do and then the word "Stata" in the search bar. 
+
+-[Stata YouTube](https://www.youtube.com/@statacorp). Lots of great videos for Stata learners of every level. 
+
+-[Statalist](https://www.statalist.org/). Great source of information and helpful people will answer your questions if you can put them intelligently. Best for questions that can't be addressed with the above methods. 
+
+-[Stata bookstore](https://www.stata.com/bookstore/).
+
 
 
 
