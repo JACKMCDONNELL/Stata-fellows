@@ -16,7 +16,22 @@ note that to use this site properly, some knowledge of Stata files is useful. We
 
 - **.dta** files indicate a dataset that can be pulled up directly in Stata
 - **.do** files are batched code that you can run on your own machine to directly reproduce the results we got in class. You will have to adjust the code slightly to designate particulars of your computer set up; for example, indicate where your working directory is (as opposed to mine).
-- **.log** files are output files. Whereas a do file just has code only, a log file has the code + results (with the exception of graphics.) 
+- **.log** files are output files. Whereas a do file just has code only, a log file has the code + results (with the exception of graphics.)
+
+## getting help in Stata
+
+in addition to the resources on this course website, there are a number of places to get help using Stata. These include:
+
+
+-Stata help files. To access, just type **help** *command name* in the command prompt of Stata. This only works if you remember the exact command name. Alternately, point your mouse to the "help" option in the Stata drop-down choices.
+
+-if you remember the overall technique you want to use, but not the actual command name in Stata, type **search** *overall technique*. This pulls information from Stata help files as well as internet sources
+
+-google search. Often, it is just easier to type what you are trying to do and then the word "Stata" in the search bar. 
+
+
+
+
  
 ## session 1 - introduction and basics
 
