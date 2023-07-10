@@ -34,10 +34,6 @@ in addition to the resources on this course website, there are a number of place
 
 -[Stata bookstore](https://www.stata.com/bookstore/).
 
-
-
-
-
  
 ## session 1 - introduction and basics
 
@@ -49,6 +45,8 @@ first session deals with a general overview of what Stata is and can do. We'll l
 we'll look at one do file, *introduction and basics.do*
 
 there is one log file, *introduction and basics.log*
+
+there is also one short power point, *introduction_basics_ppt.pptx*
 
 additionally, Stata has some nice materials taking the user through the auto.dta data set that I shamelessly reused for purposes of our first session. For more on this, pull *getting_started_auto.pdf*. It explains each line of code and provides visual examples of how to access relevant commands via the drop-down boxes (something I don't always remember to do). 
 
