@@ -54,17 +54,16 @@ additionally, Stata has some nice materials taking the user through the auto.dta
 
 the second session deals with data management in Stata. 
 
-We'll look at **two data sets**:
+we'll look at **two data sets**:
 
-- *auto.dta* - this is a preloaded teaching data set that comes installed with Stata.
-- *SarahsSTATAtest.dta* - this is a Stata file that has been created by [Sarah Worley](https://www.linkedin.com/in/sarah-worley-bba82816/) and [Wei Liu](https://www.linkedin.com/in/wei-liu-2ab97b156/) for purposes of this course. This file contains completely made up data - there are no patient privacy concerns. 
+- *medical_specialty_toy_example* - a completely unbiased ranking of pediatric subspecialties that should be considered the gospel truth 
+- *SarahsSTATAtest.dta* - fabricated RedCap data. 
 
-we'll look at one do file, *introduction and basics.do*
+we'll look at one do file, *data management.do*. Remember, this is the file that you can ultimately download to your computer and reproduce
 
-there is one log file, *introduction and basics.log*
+there is one log file, *data management.log*
 
-there is also one short power point, *introduction_basics_ppt.pptx*
+there is also one short power point, *data_management.pptx*. This is a powerpoint you should check out, because I screen shot the exact process for data import and export in Stata. I figure you each will have to do this at some point. 
 
-additionally, Stata has some nice materials taking the user through the auto.dta data set that I shamelessly reused for purposes of our first session. For more on this, pull *getting_started_auto.pdf*. It explains each line of code and provides visual examples of how to access relevant commands via the drop-down boxes (something I don't always remember to do). 
-
+note that this session may feel a bit overwhelming. There was a lot of material to get through and not a lot of time to do so. Remember, the chief value in our sessions is to get used to the concept and figure out a resource for the code (the do file) so that when you have to do this yourself you have everything in place. So don't worry if you didn't get everything the first time. 
 
