@@ -59,7 +59,7 @@ we'll look at **two data sets**:
 - *medical_specialty_toy_example* - a completely unbiased ranking of pediatric subspecialties that should be considered the gospel truth 
 - *SarahsSTATAtest.dta* - fabricated RedCap data. 
 
-we'll look at one do file, *data management.do*. Remember, this is the file that you can ultimately download to your computer and reproduce
+we'll look at one do file, *data management.do*. Remember, this is the file that you can ultimately download to your computer and reproduce the analyses. To successfully do this, however, you will have to **change your working directory as detailed in the do file**. 
 
 there is one log file, *data management.log*
 
