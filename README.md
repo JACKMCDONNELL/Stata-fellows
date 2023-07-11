@@ -50,4 +50,21 @@ there is also one short power point, *introduction_basics_ppt.pptx*
 
 additionally, Stata has some nice materials taking the user through the auto.dta data set that I shamelessly reused for purposes of our first session. For more on this, pull *getting_started_auto.pdf*. It explains each line of code and provides visual examples of how to access relevant commands via the drop-down boxes (something I don't always remember to do). 
 
+## session 2 - data management
+
+the second session deals with data management in Stata. 
+
+We'll look at **two data sets**:
+
+- *auto.dta* - this is a preloaded teaching data set that comes installed with Stata.
+- *SarahsSTATAtest.dta* - this is a Stata file that has been created by [Sarah Worley](https://www.linkedin.com/in/sarah-worley-bba82816/) and [Wei Liu](https://www.linkedin.com/in/wei-liu-2ab97b156/) for purposes of this course. This file contains completely made up data - there are no patient privacy concerns. 
+
+we'll look at one do file, *introduction and basics.do*
+
+there is one log file, *introduction and basics.log*
+
+there is also one short power point, *introduction_basics_ppt.pptx*
+
+additionally, Stata has some nice materials taking the user through the auto.dta data set that I shamelessly reused for purposes of our first session. For more on this, pull *getting_started_auto.pdf*. It explains each line of code and provides visual examples of how to access relevant commands via the drop-down boxes (something I don't always remember to do). 
+
 
