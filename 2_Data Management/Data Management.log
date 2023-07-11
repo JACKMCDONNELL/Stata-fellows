@@ -1,0 +1,3921 @@
+--------------------------------------------------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  /Users/johnmcdonnell/Desktop/Stata fellow training/Data Management.log
+  log type:  text
+ opened on:  11 Jul 2023, 16:50:07
+
+. 
+. 
+. * Stata: Data Management
+. 
+. * set working directory - always the first step!
+. 
+. pwd /* print working directory */
+/Users/johnmcdonnell/Desktop/Stata fellow training
+
+. 
+. cd "/Users/johnmcdonnell/Desktop/Stata fellow training"
+/Users/johnmcdonnell/Desktop/Stata fellow training
+
+. 
+. ************************************************************** READING AND IMPORTING DATA FILES
+. ********************* importing an Excel file - see slides for screen shots
+. 
+. import excel "/Users/johnmcdonnell/Desktop/Stata fellow training/medical specialty toy example.xlsx", sheet ("Sheet1") f
+> irstrow case(lower) clear
+(3 vars, 8 obs)
+
+. 
+. save medical_specialty_toy_example, replace
+file medical_specialty_toy_example.dta saved
+
+. 
+. browse
+
+. 
+. ********************** importing a Redcap file - more common for CCF users
+. 
+. clear
+
+. 
+. do SarahsSTATATest_STATA_2023-07-11_1125 /* this is the "do file" we downloaded from Redcap. */
+
+. cd "/Users/johnmcdonnell/Desktop/Stata fellow training"
+/Users/johnmcdonnell/Desktop/Stata fellow training
+
+. 
+. clear
+
+. 
+. import delimited record_id mrn gender age_years overweight age_gt_12 hemoglobin_a1c non_hdl_cholesterol bp_ord ahtn_med 
+> med___1 med___2 med___3 med___4 med___5 med___9 htn_relative my_first_instrument_complete using "SarahsSTATATest_DATA_NO
+> HDRS_2023-07-11_1125.csv", varnames(nonames)
+(encoding automatically selected: UTF-8)
+(18 vars, 120 obs)
+
+. 
+. label data "SarahsSTATATest_DATA_NOHDRS_2023-07-11_1125.csv"
+
+. 
+. label define gender_ 0 "Male" 1 "Female" 
+
+. label define overweight_ 1 "Yes" 0 "No" 
+
+. label define age_gt_12_ 1 "Yes" 0 "No" 
+
+. label define bp_ord_ 1 "Normal BP" 2 "Elevated BP" 3 "Stage 1 HTN" 4 "Stage 2 HTN" 5 "Hypertensive urgency" 
+
+. label define ahtn_med_ 1 "Yes" 0 "No" 
+
+. label define med___1_ 0 "Unchecked" 1 "Checked" 
+
+. label define med___2_ 0 "Unchecked" 1 "Checked" 
+
+. label define med___3_ 0 "Unchecked" 1 "Checked" 
+
+. label define med___4_ 0 "Unchecked" 1 "Checked" 
+
+. label define med___5_ 0 "Unchecked" 1 "Checked" 
+
+. label define med___9_ 0 "Unchecked" 1 "Checked" 
+
+. label define htn_relative_ 1 "First degree relative (Brother, Sister, Mother, or Father)" 2 "Aunt or Uncle" 3 "Grandpare
+> nt" 4 "Others" 5 "Not applicable" 
+
+. label define my_first_instrument_complete_ 0 "Incomplete" 1 "Unverified" 2 "Complete" 
+
+. 
+. label values gender gender_
+
+. label values overweight overweight_
+
+. label values age_gt_12 age_gt_12_
+
+. label values bp_ord bp_ord_
+
+. label values ahtn_med ahtn_med_
+
+. label values med___1 med___1_
+
+. label values med___2 med___2_
+
+. label values med___3 med___3_
+
+. label values med___4 med___4_
+
+. label values med___5 med___5_
+
+. label values med___9 med___9_
+
+. label values htn_relative htn_relative_
+
+. label values my_first_instrument_complete my_first_instrument_complete_
+
+. 
+. 
+. 
+. label variable record_id "Record ID"
+
+. label variable mrn "MRN"
+
+. label variable gender "Gender"
+
+. label variable age_years "Age (years)"
+
+. label variable overweight "Overweight"
+
+. label variable age_gt_12 "Age > 12 years"
+
+. label variable hemoglobin_a1c "Hemoglobin A1c"
+
+. label variable non_hdl_cholesterol "Non HDL cholesterol "
+
+. label variable bp_ord "Blood pressure levels"
+
+. label variable ahtn_med "Antihypertensive medication use"
+
+. label variable med___1 "Antihypertensive medication (choice=ACEi)"
+
+. label variable med___2 "Antihypertensive medication (choice=Angiotensin receptor blocker)"
+
+. label variable med___3 "Antihypertensive medication (choice=Calcium channel blocker)"
+
+. label variable med___4 "Antihypertensive medication (choice=Beta blocker)"
+
+. label variable med___5 "Antihypertensive medication (choice=Alpha blocker)"
+
+. label variable med___9 "Antihypertensive medication (choice=Others)"
+
+. label variable htn_relative "Relatives with hypertension"
+
+. label variable my_first_instrument_complete "Complete?"
+
+. 
+. order record_id mrn gender age_years overweight age_gt_12 hemoglobin_a1c non_hdl_cholesterol bp_ord ahtn_med med___1 med
+> ___2 med___3 med___4 med___5 med___9 htn_relative my_first_instrument_complete 
+
+. set more off
+
+. describe
+
+Contains data
+ Observations:           120                  SarahsSTATATest_DATA_NOHDRS_2023-07-11_1125.csv
+    Variables:            18                  
+--------------------------------------------------------------------------------------------------------------------------
+Variable      Storage   Display    Value
+    name         type    format    label      Variable label
+--------------------------------------------------------------------------------------------------------------------------
+record_id       int     %8.0g                 Record ID
+mrn             long    %12.0g                MRN
+gender          byte    %8.0g      gender_    Gender
+age_years       byte    %8.0g                 Age (years)
+overweight      byte    %8.0g      overweight_
+                                              Overweight
+age_gt_12       byte    %8.0g      age_gt_12_
+                                              Age > 12 years
+hemoglobin_a1c  float   %9.0g                 Hemoglobin A1c
+non_hdl_chole~l int     %8.0g                 Non HDL cholesterol
+bp_ord          byte    %20.0g     bp_ord_    Blood pressure levels
+ahtn_med        byte    %8.0g      ahtn_med_
+                                              Antihypertensive medication use
+med___1         byte    %9.0g      med___1_   Antihypertensive medication (choice=ACEi)
+med___2         byte    %9.0g      med___2_   Antihypertensive medication (choice=Angiotensin receptor blocker)
+med___3         byte    %9.0g      med___3_   Antihypertensive medication (choice=Calcium channel blocker)
+med___4         byte    %9.0g      med___4_   Antihypertensive medication (choice=Beta blocker)
+med___5         byte    %9.0g      med___5_   Antihypertensive medication (choice=Alpha blocker)
+med___9         byte    %9.0g      med___9_   Antihypertensive medication (choice=Others)
+htn_relative    byte    %58.0g     htn_relative_
+                                              Relatives with hypertension
+my_first_inst~e byte    %10.0g     my_first_instrument_complete_
+                                              Complete?
+--------------------------------------------------------------------------------------------------------------------------
+Sorted by: 
+     Note: Dataset has changed since last saved.
+
+. 
+. save SarahsSTATAtest, replace
+file SarahsSTATAtest.dta saved
+
+. 
+. 
+end of do-file
+
+. 
+. *note that you can nest do-files in other do-files. Here I told Stata to do the file we downloaded. This only works if t
+> hey are in the same working directory. 
+. 
+. *otherwise, you have to provide a full file path "/Users/You/Desktop/Whatever", etc
+. 
+. 
+. ************************************************************** EXPORTING DATA FILES
+. export excel using "/Users/johnmcdonnell/Desktop/Stata fellow training/export_test.xls", replace /* probably simpler to 
+> use the export menu option */
+file /Users/johnmcdonnell/Desktop/Stata fellow training/export_test.xls saved
+
+. 
+. ************************************************************** MANIPULATING AND CLEANING DATA
+. 
+. use SarahsSTATAtest, clear
+(SarahsSTATATest_DATA_NOHDRS_2023-07-11_1125.csv)
+
+. 
+. * code I used to deliberately mess up Sarah and Wei's data, so that we could talk about strategies for cleaning messy da
+> ta. You can mostly ignore everything from here to line 69
+. 
+. replace age_years = -5 in 15
+(1 real change made)
+
+. replace hemoglobin_a1c=20 in 7
+(1 real change made)
+
+. replace non_hdl_cholesterol=300 in 2
+(1 real change made)
+
+. replace bp_ord = 4 in 1/50
+(49 real changes made)
+
+. tostring age_years, generate(age_years_str)
+age_years_str generated as str2
+
+. replace age_years_str = " " + age_years_str in 1/60
+variable age_years_str was str2 now str3
+(60 real changes made)
+
+. replace age_years_str = age_years_str + " " in 61/l
+(60 real changes made)
+
+. replace age_years_str = "unknown" in 5
+variable age_years_str was str3 now str7
+(1 real change made)
+
+. replace age_years_str = "fifteen" in 100
+(1 real change made)
+
+. replace mrn=. in 120
+(1 real change made, 1 to missing)
+
+. replace hemoglobin_a1c=. in 30/35
+(6 real changes made, 6 to missing)
+
+. replace bp_ord = . in 30/35
+(6 real changes made, 6 to missing)
+
+. replace gender = . in 20/25
+(6 real changes made, 6 to missing)
+
+. generate random_date = /// 
+> floor((mdy(12,31,2023)-mdy(12,1,2020)+1)*runiform() + mdy(12,1,2020))
+
+. generate random_date_1 = /// 
+> floor((mdy(12,31,1900)-mdy(12,1,1800)+1)*runiform() + mdy(12,1,1800))
+
+. expand 2 if !missing(mrn)
+(119 observations created)
+
+. 
+. ************************ quick review of session 1 key commands
+. 
+. describe
+
+Contains data from SarahsSTATAtest.dta
+ Observations:           239                  SarahsSTATATest_DATA_NOHDRS_2023-07-11_1125.csv
+    Variables:            21                  11 Jul 2023 16:50
+--------------------------------------------------------------------------------------------------------------------------
+Variable      Storage   Display    Value
+    name         type    format    label      Variable label
+--------------------------------------------------------------------------------------------------------------------------
+record_id       int     %8.0g                 Record ID
+mrn             long    %12.0g                MRN
+gender          byte    %8.0g      gender_    Gender
+age_years       byte    %8.0g                 Age (years)
+age_years_str   str7    %9s                   Age (years)
+overweight      byte    %8.0g      overweight_
+                                              Overweight
+age_gt_12       byte    %8.0g      age_gt_12_
+                                              Age > 12 years
+hemoglobin_a1c  float   %9.0g                 Hemoglobin A1c
+non_hdl_chole~l int     %8.0g                 Non HDL cholesterol
+bp_ord          byte    %20.0g     bp_ord_    Blood pressure levels
+ahtn_med        byte    %8.0g      ahtn_med_
+                                              Antihypertensive medication use
+med___1         byte    %9.0g      med___1_   Antihypertensive medication (choice=ACEi)
+med___2         byte    %9.0g      med___2_   Antihypertensive medication (choice=Angiotensin receptor blocker)
+med___3         byte    %9.0g      med___3_   Antihypertensive medication (choice=Calcium channel blocker)
+med___4         byte    %9.0g      med___4_   Antihypertensive medication (choice=Beta blocker)
+med___5         byte    %9.0g      med___5_   Antihypertensive medication (choice=Alpha blocker)
+med___9         byte    %9.0g      med___9_   Antihypertensive medication (choice=Others)
+htn_relative    byte    %58.0g     htn_relative_
+                                              Relatives with hypertension
+my_first_inst~e byte    %10.0g     my_first_instrument_complete_
+                                              Complete?
+random_date     float   %9.0g                 
+random_date_1   float   %9.0g                 
+--------------------------------------------------------------------------------------------------------------------------
+Sorted by: 
+     Note: Dataset has changed since last saved.
+
+. summarize
+
+    Variable |        Obs        Mean    Std. dev.       Min        Max
+-------------+---------------------------------------------------------
+   record_id |        239    60.25105    34.56968          1        120
+         mrn |        238       74040    42478.63       1234     146846
+      gender |        227    .4625551    .4996978          0          1
+   age_years |        239    10.86611    3.554921         -5         17
+age_years_~r |          0
+-------------+---------------------------------------------------------
+  overweight |        239    .1924686    .3950664          0          1
+   age_gt_12 |        239     .376569    .4855422          0          1
+hemoglobi~1c |        227     8.75815    2.245637        3.3         20
+non_hdl_ch~l |        239    100.9498     46.0344          6        300
+      bp_ord |        227    2.374449     1.40664          1          4
+-------------+---------------------------------------------------------
+    ahtn_med |        239    .1757322    .3813909          0          1
+     med___1 |        239    .0502092    .2188347          0          1
+     med___2 |        239    .0334728    .1802451          0          1
+     med___3 |        239    .1087866    .3120248          0          1
+     med___4 |        239    .0334728    .1802451          0          1
+-------------+---------------------------------------------------------
+     med___5 |        239    .0167364    .1285513          0          1
+     med___9 |        239    .0083682    .0912855          0          1
+htn_relative |        239    4.112971    1.384108          1          5
+my_first_i~e |        239           0           0          0          0
+ random_date |        239    22800.26    331.6778      22256      23366
+-------------+---------------------------------------------------------
+random_dat~1 |        239   -37869.45    10339.48     -58077     -21675
+
+. codebook
+
+--------------------------------------------------------------------------------------------------------------------------
+record_id                                                                                                        Record ID
+--------------------------------------------------------------------------------------------------------------------------
+
+                  Type: Numeric (int)
+
+                 Range: [1,120]                       Units: 1
+         Unique values: 120                       Missing .: 0/239
+
+                  Mean:  60.251
+             Std. dev.: 34.5697
+
+           Percentiles:     10%       25%       50%       75%       90%
+                             12        30        60        90       108
+
+--------------------------------------------------------------------------------------------------------------------------
+mrn                                                                                                                    MRN
+--------------------------------------------------------------------------------------------------------------------------
+
+                  Type: Numeric (long)
+
+                 Range: [1234,146846]                 Units: 1
+         Unique values: 119                       Missing .: 1/239
+
+                  Mean:   74040
+             Std. dev.: 42478.6
+
+           Percentiles:     10%       25%       50%       75%       90%
+                          14808     37020     74040    111060    133272
+
+--------------------------------------------------------------------------------------------------------------------------
+gender                                                                                                              Gender
+--------------------------------------------------------------------------------------------------------------------------
+
+                  Type: Numeric (byte)
+                 Label: gender_
+
+                 Range: [0,1]                         Units: 1
+         Unique values: 2                         Missing .: 12/239
+
+            Tabulation: Freq.   Numeric  Label
+                          122         0  Male
+                          105         1  Female
+                           12         .  
+
+--------------------------------------------------------------------------------------------------------------------------
+age_years                                                                                                      Age (years)
+--------------------------------------------------------------------------------------------------------------------------
+
+                  Type: Numeric (byte)
+
+                 Range: [-5,17]                       Units: 1
+         Unique values: 13                        Missing .: 0/239
+
+                  Mean: 10.8661
+             Std. dev.: 3.55492
+
+           Percentiles:     10%       25%       50%       75%       90%
+                              6         8        11        14        16
+
+--------------------------------------------------------------------------------------------------------------------------
+age_years_str                                                                                                  Age (years)
+--------------------------------------------------------------------------------------------------------------------------
+
+                  Type: String (str7)
+
+         Unique values: 27                        Missing "": 0/239
+
+              Examples: "13"
+                        "8"
+                        "13 "
+                        "6 "
+
+               Warning: Variable has leading and trailing blanks.
+
+--------------------------------------------------------------------------------------------------------------------------
+overweight                                                                                                      Overweight
+--------------------------------------------------------------------------------------------------------------------------
+
+                  Type: Numeric (byte)
+                 Label: overweight_
+
+                 Range: [0,1]                         Units: 1
+         Unique values: 2                         Missing .: 0/239
+
+            Tabulation: Freq.   Numeric  Label
+                          193         0  No
+                           46         1  Yes
+
+--------------------------------------------------------------------------------------------------------------------------
+age_gt_12                                                                                                   Age > 12 years
+--------------------------------------------------------------------------------------------------------------------------
+
+                  Type: Numeric (byte)
+                 Label: age_gt_12_
+
+                 Range: [0,1]                         Units: 1
+         Unique values: 2                         Missing .: 0/239
+
+            Tabulation: Freq.   Numeric  Label
+                          149         0  No
+                           90         1  Yes
+
+--------------------------------------------------------------------------------------------------------------------------
+hemoglobin_a1c                                                                                              Hemoglobin A1c
+--------------------------------------------------------------------------------------------------------------------------
+
+                  Type: Numeric (float)
+
+                 Range: [3.3,20]                      Units: .1
+         Unique values: 61                        Missing .: 12/239
+
+                  Mean: 8.75815
+             Std. dev.: 2.24564
+
+           Percentiles:     10%       25%       50%       75%       90%
+                            6.2       7.7       8.5       9.8      11.6
+
+--------------------------------------------------------------------------------------------------------------------------
+non_hdl_cholesterol                                                                                   Non HDL cholesterol 
+--------------------------------------------------------------------------------------------------------------------------
+
+                  Type: Numeric (int)
+
+                 Range: [6,300]                       Units: 1
+         Unique values: 83                        Missing .: 0/239
+
+                  Mean:  100.95
+             Std. dev.: 46.0344
+
+           Percentiles:     10%       25%       50%       75%       90%
+                             39        70       106       131       150
+
+--------------------------------------------------------------------------------------------------------------------------
+bp_ord                                                                                               Blood pressure levels
+--------------------------------------------------------------------------------------------------------------------------
+
+                  Type: Numeric (byte)
+                 Label: bp_ord_
+
+                 Range: [1,4]                         Units: 1
+         Unique values: 4                         Missing .: 12/239
+
+            Tabulation: Freq.   Numeric  Label
+                          109         1  Normal BP
+                           12         2  Elevated BP
+                           18         3  Stage 1 HTN
+                           88         4  Stage 2 HTN
+                           12         .  
+
+--------------------------------------------------------------------------------------------------------------------------
+ahtn_med                                                                                   Antihypertensive medication use
+--------------------------------------------------------------------------------------------------------------------------
+
+                  Type: Numeric (byte)
+                 Label: ahtn_med_
+
+                 Range: [0,1]                         Units: 1
+         Unique values: 2                         Missing .: 0/239
+
+            Tabulation: Freq.   Numeric  Label
+                          197         0  No
+                           42         1  Yes
+
+--------------------------------------------------------------------------------------------------------------------------
+med___1                                                                          Antihypertensive medication (choice=ACEi)
+--------------------------------------------------------------------------------------------------------------------------
+
+                  Type: Numeric (byte)
+                 Label: med___1_
+
+                 Range: [0,1]                         Units: 1
+         Unique values: 2                         Missing .: 0/239
+
+            Tabulation: Freq.   Numeric  Label
+                          227         0  Unchecked
+                           12         1  Checked
+
+--------------------------------------------------------------------------------------------------------------------------
+med___2                                                  Antihypertensive medication (choice=Angiotensin receptor blocker)
+--------------------------------------------------------------------------------------------------------------------------
+
+                  Type: Numeric (byte)
+                 Label: med___2_
+
+                 Range: [0,1]                         Units: 1
+         Unique values: 2                         Missing .: 0/239
+
+            Tabulation: Freq.   Numeric  Label
+                          231         0  Unchecked
+                            8         1  Checked
+
+--------------------------------------------------------------------------------------------------------------------------
+med___3                                                       Antihypertensive medication (choice=Calcium channel blocker)
+--------------------------------------------------------------------------------------------------------------------------
+
+                  Type: Numeric (byte)
+                 Label: med___3_
+
+                 Range: [0,1]                         Units: 1
+         Unique values: 2                         Missing .: 0/239
+
+            Tabulation: Freq.   Numeric  Label
+                          213         0  Unchecked
+                           26         1  Checked
+
+--------------------------------------------------------------------------------------------------------------------------
+med___4                                                                  Antihypertensive medication (choice=Beta blocker)
+--------------------------------------------------------------------------------------------------------------------------
+
+                  Type: Numeric (byte)
+                 Label: med___4_
+
+                 Range: [0,1]                         Units: 1
+         Unique values: 2                         Missing .: 0/239
+
+            Tabulation: Freq.   Numeric  Label
+                          231         0  Unchecked
+                            8         1  Checked
+
+--------------------------------------------------------------------------------------------------------------------------
+med___5                                                                 Antihypertensive medication (choice=Alpha blocker)
+--------------------------------------------------------------------------------------------------------------------------
+
+                  Type: Numeric (byte)
+                 Label: med___5_
+
+                 Range: [0,1]                         Units: 1
+         Unique values: 2                         Missing .: 0/239
+
+            Tabulation: Freq.   Numeric  Label
+                          235         0  Unchecked
+                            4         1  Checked
+
+--------------------------------------------------------------------------------------------------------------------------
+med___9                                                                        Antihypertensive medication (choice=Others)
+--------------------------------------------------------------------------------------------------------------------------
+
+                  Type: Numeric (byte)
+                 Label: med___9_
+
+                 Range: [0,1]                         Units: 1
+         Unique values: 2                         Missing .: 0/239
+
+            Tabulation: Freq.   Numeric  Label
+                          237         0  Unchecked
+                            2         1  Checked
+
+--------------------------------------------------------------------------------------------------------------------------
+htn_relative                                                                                   Relatives with hypertension
+--------------------------------------------------------------------------------------------------------------------------
+
+                  Type: Numeric (byte)
+                 Label: htn_relative_
+
+                 Range: [1,5]                         Units: 1
+         Unique values: 4                         Missing .: 0/239
+
+            Tabulation: Freq.   Numeric  Label
+                           26         1  First degree relative (Brother,
+                                         Sister, Mother, or Father)
+                            4         2  Aunt or Uncle
+                           48         3  Grandparent
+                          161         5  Not applicable
+
+--------------------------------------------------------------------------------------------------------------------------
+my_first_instrument_complete                                                                                     Complete?
+--------------------------------------------------------------------------------------------------------------------------
+
+                  Type: Numeric (byte)
+                 Label: my_first_instrument_complete_
+
+                 Range: [0,0]                         Units: 1
+         Unique values: 1                         Missing .: 0/239
+
+            Tabulation: Freq.   Numeric  Label
+                          239         0  Incomplete
+
+--------------------------------------------------------------------------------------------------------------------------
+random_date                                                                                                    (unlabeled)
+--------------------------------------------------------------------------------------------------------------------------
+
+                  Type: Numeric (float)
+
+                 Range: [22256,23366]                 Units: 1
+         Unique values: 110                       Missing .: 0/239
+
+                  Mean: 22800.3
+             Std. dev.: 331.678
+
+           Percentiles:     10%       25%       50%       75%       90%
+                          22345     22528     22780     23081     23280
+
+--------------------------------------------------------------------------------------------------------------------------
+random_date_1                                                                                                  (unlabeled)
+--------------------------------------------------------------------------------------------------------------------------
+
+                  Type: Numeric (float)
+
+                 Range: [-58077,-21675]               Units: 1
+         Unique values: 120                       Missing .: 0/239
+
+                  Mean: -37869.4
+             Std. dev.:  10339.5
+
+           Percentiles:      10%       25%       50%       75%       90%
+                          -53074    -46368    -38057    -30170    -23445
+
+. tabulate med___1
+
+Antihyperte |
+      nsive |
+ medication |
+(choice=ACE |
+         i) |      Freq.     Percent        Cum.
+------------+-----------------------------------
+  Unchecked |        227       94.98       94.98
+    Checked |         12        5.02      100.00
+------------+-----------------------------------
+      Total |        239      100.00
+
+. tab1 med* /* if I want a tabulation of all the variables that start with "med" */
+
+-> tabulation of med___1  
+
+Antihyperte |
+      nsive |
+ medication |
+(choice=ACE |
+         i) |      Freq.     Percent        Cum.
+------------+-----------------------------------
+  Unchecked |        227       94.98       94.98
+    Checked |         12        5.02      100.00
+------------+-----------------------------------
+      Total |        239      100.00
+
+-> tabulation of med___2  
+
+Antihyperte |
+      nsive |
+ medication |
+(choice=Ang |
+   iotensin |
+   receptor |
+   blocker) |      Freq.     Percent        Cum.
+------------+-----------------------------------
+  Unchecked |        231       96.65       96.65
+    Checked |          8        3.35      100.00
+------------+-----------------------------------
+      Total |        239      100.00
+
+-> tabulation of med___3  
+
+Antihyperte |
+      nsive |
+ medication |
+(choice=Cal |
+       cium |
+    channel |
+   blocker) |      Freq.     Percent        Cum.
+------------+-----------------------------------
+  Unchecked |        213       89.12       89.12
+    Checked |         26       10.88      100.00
+------------+-----------------------------------
+      Total |        239      100.00
+
+-> tabulation of med___4  
+
+Antihyperte |
+      nsive |
+ medication |
+(choice=Bet |
+ a blocker) |      Freq.     Percent        Cum.
+------------+-----------------------------------
+  Unchecked |        231       96.65       96.65
+    Checked |          8        3.35      100.00
+------------+-----------------------------------
+      Total |        239      100.00
+
+-> tabulation of med___5  
+
+Antihyperte |
+      nsive |
+ medication |
+(choice=Alp |
+ha blocker) |      Freq.     Percent        Cum.
+------------+-----------------------------------
+  Unchecked |        235       98.33       98.33
+    Checked |          4        1.67      100.00
+------------+-----------------------------------
+      Total |        239      100.00
+
+-> tabulation of med___9  
+
+Antihyperte |
+      nsive |
+ medication |
+(choice=Oth |
+       ers) |      Freq.     Percent        Cum.
+------------+-----------------------------------
+  Unchecked |        237       99.16       99.16
+    Checked |          2        0.84      100.00
+------------+-----------------------------------
+      Total |        239      100.00
+
+. 
+. ********************** looking for duplicates
+. 
+. duplicates report /* this works because all variables are duplicated here */
+
+Duplicates in terms of all variables
+
+--------------------------------------
+   Copies | Observations       Surplus
+----------+---------------------------
+        1 |            1             0
+        2 |          238           119
+--------------------------------------
+
+. 
+. duplicates report mrn /* this might be more realistic. Here, we ask Stata to count duplicates in terms of MRN only. */
+
+Duplicates in terms of mrn
+
+--------------------------------------
+   Copies | Observations       Surplus
+----------+---------------------------
+        1 |            1             0
+        2 |          238           119
+--------------------------------------
+
+. 
+. duplicates list mrn, nolabel sepby(mrn)
+
+Duplicates in terms of mrn
+
+  +----------------------+
+  | Group   Obs      mrn |
+  |----------------------|
+  |     1     1     1234 |
+  |     1   121     1234 |
+  |----------------------|
+  |     2     2     2468 |
+  |     2   122     2468 |
+  |----------------------|
+  |     3     3     3702 |
+  |     3   123     3702 |
+  |----------------------|
+  |     4     4     4936 |
+  |     4   124     4936 |
+  |----------------------|
+  |     5     5     6170 |
+  |     5   125     6170 |
+  |----------------------|
+  |     6     6     7404 |
+  |     6   126     7404 |
+  |----------------------|
+  |     7     7     8638 |
+  |     7   127     8638 |
+  |----------------------|
+  |     8     8     9872 |
+  |     8   128     9872 |
+  |----------------------|
+  |     9     9    11106 |
+  |     9   129    11106 |
+  |----------------------|
+  |    10    10    12340 |
+  |    10   130    12340 |
+  |----------------------|
+  |    11    11    13574 |
+  |    11   131    13574 |
+  |----------------------|
+  |    12    12    14808 |
+  |    12   132    14808 |
+  |----------------------|
+  |    13    13    16042 |
+  |    13   133    16042 |
+  |----------------------|
+  |    14    14    17276 |
+  |    14   134    17276 |
+  |----------------------|
+  |    15    15    18510 |
+  |    15   135    18510 |
+  |----------------------|
+  |    16    16    19744 |
+  |    16   136    19744 |
+  |----------------------|
+  |    17    17    20978 |
+  |    17   137    20978 |
+  |----------------------|
+  |    18    18    22212 |
+  |    18   138    22212 |
+  |----------------------|
+  |    19    19    23446 |
+  |    19   139    23446 |
+  |----------------------|
+  |    20    20    24680 |
+  |    20   140    24680 |
+  |----------------------|
+  |    21    21    25914 |
+  |    21   141    25914 |
+  |----------------------|
+  |    22    22    27148 |
+  |    22   142    27148 |
+  |----------------------|
+  |    23    23    28382 |
+  |    23   143    28382 |
+  |----------------------|
+  |    24    24    29616 |
+  |    24   144    29616 |
+  |----------------------|
+  |    25    25    30850 |
+  |    25   145    30850 |
+  |----------------------|
+  |    26    26    32084 |
+  |    26   146    32084 |
+  |----------------------|
+  |    27    27    33318 |
+  |    27   147    33318 |
+  |----------------------|
+  |    28    28    34552 |
+  |    28   148    34552 |
+  |----------------------|
+  |    29    29    35786 |
+  |    29   149    35786 |
+  |----------------------|
+  |    30    30    37020 |
+  |    30   150    37020 |
+  |----------------------|
+  |    31    31    38254 |
+  |    31   151    38254 |
+  |----------------------|
+  |    32    32    39488 |
+  |    32   152    39488 |
+  |----------------------|
+  |    33    33    40722 |
+  |    33   153    40722 |
+  |----------------------|
+  |    34    34    41956 |
+  |    34   154    41956 |
+  |----------------------|
+  |    35    35    43190 |
+  |    35   155    43190 |
+  |----------------------|
+  |    36    36    44424 |
+  |    36   156    44424 |
+  |----------------------|
+  |    37    37    45658 |
+  |    37   157    45658 |
+  |----------------------|
+  |    38    38    46892 |
+  |    38   158    46892 |
+  |----------------------|
+  |    39    39    48126 |
+  |    39   159    48126 |
+  |----------------------|
+  |    40    40    49360 |
+  |    40   160    49360 |
+  |----------------------|
+  |    41    41    50594 |
+  |    41   161    50594 |
+  |----------------------|
+  |    42    42    51828 |
+  |    42   162    51828 |
+  |----------------------|
+  |    43    43    53062 |
+  |    43   163    53062 |
+  |----------------------|
+  |    44    44    54296 |
+  |    44   164    54296 |
+  |----------------------|
+  |    45    45    55530 |
+  |    45   165    55530 |
+  |----------------------|
+  |    46    46    56764 |
+  |    46   166    56764 |
+  |----------------------|
+  |    47    47    57998 |
+  |    47   167    57998 |
+  |----------------------|
+  |    48    48    59232 |
+  |    48   168    59232 |
+  |----------------------|
+  |    49    49    60466 |
+  |    49   169    60466 |
+  |----------------------|
+  |    50    50    61700 |
+  |    50   170    61700 |
+  |----------------------|
+  |    51    51    62934 |
+  |    51   171    62934 |
+  |----------------------|
+  |    52    52    64168 |
+  |    52   172    64168 |
+  |----------------------|
+  |    53    53    65402 |
+  |    53   173    65402 |
+  |----------------------|
+  |    54    54    66636 |
+  |    54   174    66636 |
+  |----------------------|
+  |    55    55    67870 |
+  |    55   175    67870 |
+  |----------------------|
+  |    56    56    69104 |
+  |    56   176    69104 |
+  |----------------------|
+  |    57    57    70338 |
+  |    57   177    70338 |
+  |----------------------|
+  |    58    58    71572 |
+  |    58   178    71572 |
+  |----------------------|
+  |    59    59    72806 |
+  |    59   179    72806 |
+  |----------------------|
+  |    60    60    74040 |
+  |    60   180    74040 |
+  |----------------------|
+  |    61    61    75274 |
+  |    61   181    75274 |
+  |----------------------|
+  |    62    62    76508 |
+  |    62   182    76508 |
+  |----------------------|
+  |    63    63    77742 |
+  |    63   183    77742 |
+  |----------------------|
+  |    64    64    78976 |
+  |    64   184    78976 |
+  |----------------------|
+  |    65    65    80210 |
+  |    65   185    80210 |
+  |----------------------|
+  |    66    66    81444 |
+  |    66   186    81444 |
+  |----------------------|
+  |    67    67    82678 |
+  |    67   187    82678 |
+  |----------------------|
+  |    68    68    83912 |
+  |    68   188    83912 |
+  |----------------------|
+  |    69    69    85146 |
+  |    69   189    85146 |
+  |----------------------|
+  |    70    70    86380 |
+  |    70   190    86380 |
+  |----------------------|
+  |    71    71    87614 |
+  |    71   191    87614 |
+  |----------------------|
+  |    72    72    88848 |
+  |    72   192    88848 |
+  |----------------------|
+  |    73    73    90082 |
+  |    73   193    90082 |
+  |----------------------|
+  |    74    74    91316 |
+  |    74   194    91316 |
+  |----------------------|
+  |    75    75    92550 |
+  |    75   195    92550 |
+  |----------------------|
+  |    76    76    93784 |
+  |    76   196    93784 |
+  |----------------------|
+  |    77    77    95018 |
+  |    77   197    95018 |
+  |----------------------|
+  |    78    78    96252 |
+  |    78   198    96252 |
+  |----------------------|
+  |    79    79    97486 |
+  |    79   199    97486 |
+  |----------------------|
+  |    80    80    98720 |
+  |    80   200    98720 |
+  |----------------------|
+  |    81    81    99954 |
+  |    81   201    99954 |
+  |----------------------|
+  |    82    82   101188 |
+  |    82   202   101188 |
+  |----------------------|
+  |    83    83   102422 |
+  |    83   203   102422 |
+  |----------------------|
+  |    84    84   103656 |
+  |    84   204   103656 |
+  |----------------------|
+  |    85    85   104890 |
+  |    85   205   104890 |
+  |----------------------|
+  |    86    86   106124 |
+  |    86   206   106124 |
+  |----------------------|
+  |    87    87   107358 |
+  |    87   207   107358 |
+  |----------------------|
+  |    88    88   108592 |
+  |    88   208   108592 |
+  |----------------------|
+  |    89    89   109826 |
+  |    89   209   109826 |
+  |----------------------|
+  |    90    90   111060 |
+  |    90   210   111060 |
+  |----------------------|
+  |    91    91   112294 |
+  |    91   211   112294 |
+  |----------------------|
+  |    92    92   113528 |
+  |    92   212   113528 |
+  |----------------------|
+  |    93    93   114762 |
+  |    93   213   114762 |
+  |----------------------|
+  |    94    94   115996 |
+  |    94   214   115996 |
+  |----------------------|
+  |    95    95   117230 |
+  |    95   215   117230 |
+  |----------------------|
+  |    96    96   118464 |
+  |    96   216   118464 |
+  |----------------------|
+  |    97    97   119698 |
+  |    97   217   119698 |
+  |----------------------|
+  |    98    98   120932 |
+  |    98   218   120932 |
+  |----------------------|
+  |    99    99   122166 |
+  |    99   219   122166 |
+  |----------------------|
+  |   100   100   123400 |
+  |   100   220   123400 |
+  |----------------------|
+  |   101   101   124634 |
+  |   101   221   124634 |
+  |----------------------|
+  |   102   102   125868 |
+  |   102   222   125868 |
+  |----------------------|
+  |   103   103   127102 |
+  |   103   223   127102 |
+  |----------------------|
+  |   104   104   128336 |
+  |   104   224   128336 |
+  |----------------------|
+  |   105   105   129570 |
+  |   105   225   129570 |
+  |----------------------|
+  |   106   106   130804 |
+  |   106   226   130804 |
+  |----------------------|
+  |   107   107   132038 |
+  |   107   227   132038 |
+  |----------------------|
+  |   108   108   133272 |
+  |   108   228   133272 |
+  |----------------------|
+  |   109   109   134506 |
+  |   109   229   134506 |
+  |----------------------|
+  |   110   110   135740 |
+  |   110   230   135740 |
+  |----------------------|
+  |   111   111   136974 |
+  |   111   231   136974 |
+  |----------------------|
+  |   112   112   138208 |
+  |   112   232   138208 |
+  |----------------------|
+  |   113   113   139442 |
+  |   113   233   139442 |
+  |----------------------|
+  |   114   114   140676 |
+  |   114   234   140676 |
+  |----------------------|
+  |   115   115   141910 |
+  |   115   235   141910 |
+  |----------------------|
+  |   116   116   143144 |
+  |   116   236   143144 |
+  |----------------------|
+  |   117   117   144378 |
+  |   117   237   144378 |
+  |----------------------|
+  |   118   118   145612 |
+  |   118   238   145612 |
+  |----------------------|
+  |   119   119   146846 |
+  |   119   239   146846 |
+  +----------------------+
+
+. 
+. duplicates drop /* key command for getting rid of duplicates */
+
+Duplicates in terms of all variables
+
+(119 observations deleted)
+
+. 
+. duplicates report
+
+Duplicates in terms of all variables
+
+--------------------------------------
+   Copies | Observations       Surplus
+----------+---------------------------
+        1 |          120             0
+--------------------------------------
+
+. 
+. browse
+
+. 
+. ********************** checks for data integrity, do the numbers make sense? a useful check for this is the SUMMARIZE co
+> mmand
+. 
+. * continuous variable integrity
+. 
+. summarize age_years hemoglobin_a1c non_hdl_cholesterol /* do these ranges make sense? */
+
+    Variable |        Obs        Mean    Std. dev.       Min        Max
+-------------+---------------------------------------------------------
+   age_years |        120       10.85    3.563706         -5         17
+hemoglobi~1c |        114    8.757018    2.245703        3.3         20
+non_hdl_ch~l |        120     101.075    46.07542          6        300
+
+. 
+. * categorical variable integrity
+. 
+. tabulate bp_ord, plot /* does this breakdown of blood pressures make clinical sense?*/
+
+      Blood pressure |
+              levels |      Freq.
+---------------------+------------+--------------------------------------------
+           Normal BP |         55 |********************************************
+         Elevated BP |          6 |*****
+         Stage 1 HTN |          9 |*******
+         Stage 2 HTN |         44 |***********************************
+---------------------+------------+--------------------------------------------
+               Total |        114 
+
+. 
+. **********************  converting data to an ANALYZABLE FORMAT
+. 
+. summarize age_years_str /* why can't Stata give us a summary of these ages? */
+
+    Variable |        Obs        Mean    Std. dev.       Min        Max
+-------------+---------------------------------------------------------
+age_years_~r |          0
+
+. 
+. codebook age_years_str /* it turns out that Stata treats "string" variables as characters and doesn't do math on them, e
+> ven if the strings are just numbers */
+
+--------------------------------------------------------------------------------------------------------------------------
+age_years_str                                                                                                  Age (years)
+--------------------------------------------------------------------------------------------------------------------------
+
+                  Type: String (str7)
+
+         Unique values: 27                        Missing "": 0/120
+
+              Examples: "13"
+                        "8"
+                        "13 "
+                        "6 "
+
+               Warning: Variable has leading and trailing blanks.
+
+. * note the warning here after the codebook command
+. 
+. * Stata has a command for making string variables numeric (see "help destring") and vice versa (see "help tostring")
+. 
+. * lets try to destring this so Stata can analyze the ages
+. 
+. destring age_years_str, replace /* no dice, what happened?*/
+age_years_str: contains nonnumeric characters; no replace
+
+. 
+. list age_years_str
+
+     +----------+
+     | age_ye~r |
+     |----------|
+  1. |       10 |
+  2. |        9 |
+  3. |       17 |
+  4. |       11 |
+  5. |  unknown |
+     |----------|
+  6. |       16 |
+  7. |       13 |
+  8. |       12 |
+  9. |       13 |
+ 10. |        9 |
+     |----------|
+ 11. |        8 |
+ 12. |       17 |
+ 13. |        9 |
+ 14. |        8 |
+ 15. |       -5 |
+     |----------|
+ 16. |        6 |
+ 17. |       14 |
+ 18. |       12 |
+ 19. |       11 |
+ 20. |       13 |
+     |----------|
+ 21. |        8 |
+ 22. |        8 |
+ 23. |       10 |
+ 24. |       15 |
+ 25. |       12 |
+     |----------|
+ 26. |        9 |
+ 27. |       15 |
+ 28. |       17 |
+ 29. |       14 |
+ 30. |       12 |
+     |----------|
+ 31. |       12 |
+ 32. |        6 |
+ 33. |       10 |
+ 34. |        6 |
+ 35. |       16 |
+     |----------|
+ 36. |       10 |
+ 37. |       14 |
+ 38. |       10 |
+ 39. |       11 |
+ 40. |        8 |
+     |----------|
+ 41. |       12 |
+ 42. |        9 |
+ 43. |       15 |
+ 44. |       15 |
+ 45. |       14 |
+     |----------|
+ 46. |       14 |
+ 47. |       10 |
+ 48. |       16 |
+ 49. |        9 |
+ 50. |        6 |
+     |----------|
+ 51. |       13 |
+ 52. |       16 |
+ 53. |        6 |
+ 54. |        9 |
+ 55. |       10 |
+     |----------|
+ 56. |       12 |
+ 57. |       10 |
+ 58. |        6 |
+ 59. |        7 |
+ 60. |       13 |
+     |----------|
+ 61. |       7  |
+ 62. |       7  |
+ 63. |       6  |
+ 64. |      13  |
+ 65. |      14  |
+     |----------|
+ 66. |      16  |
+ 67. |      14  |
+ 68. |      12  |
+ 69. |      11  |
+ 70. |      15  |
+     |----------|
+ 71. |      16  |
+ 72. |       8  |
+ 73. |      14  |
+ 74. |       6  |
+ 75. |      11  |
+     |----------|
+ 76. |      15  |
+ 77. |       8  |
+ 78. |      11  |
+ 79. |       7  |
+ 80. |       9  |
+     |----------|
+ 81. |       8  |
+ 82. |      11  |
+ 83. |      10  |
+ 84. |      13  |
+ 85. |      11  |
+     |----------|
+ 86. |      15  |
+ 87. |      14  |
+ 88. |       8  |
+ 89. |       7  |
+ 90. |       8  |
+     |----------|
+ 91. |      16  |
+ 92. |      13  |
+ 93. |      13  |
+ 94. |       8  |
+ 95. |      13  |
+     |----------|
+ 96. |      14  |
+ 97. |      14  |
+ 98. |      14  |
+ 99. |      13  |
+100. |  fifteen |
+     |----------|
+101. |       6  |
+102. |      11  |
+103. |      13  |
+104. |      12  |
+105. |      17  |
+     |----------|
+106. |       8  |
+107. |       6  |
+108. |       8  |
+109. |      17  |
+110. |      10  |
+     |----------|
+111. |      12  |
+112. |      13  |
+113. |      11  |
+114. |       6  |
+115. |       6  |
+     |----------|
+116. |       7  |
+117. |       9  |
+118. |       6  |
+119. |       7  |
+120. |       7  |
+     +----------+
+
+. 
+. * the issue is that there are some illegal characters blocking Stata from destringing. Stata would like to make a numeri
+> c variable but can't because of "unknown" and "invalid" 
+. 
+. * the fix for this isn't difficult, but does require a little knowledge of Stata coding
+. 
+. replace age_years_str = "15" if age_years_str=="fifteen" /* whats with this ==? Stata uses that as a coding equivalent t
+> o the word "is", where as the "=" just indicates assigning a new value */
+(1 real change made)
+
+. 
+. replace age_years_str = "" if age_years_str=="unknown"
+(1 real change made)
+
+. 
+. *note that forgetting the == issue will result in an error message, like below:
+. // replace age_years_str = "" if age_years_str="unknown"
+. 
+. destring age_years_str, replace /* now that we have gotten rid of illegal characters (nonnumerics) the command will work
+> */
+age_years_str: all characters numeric; replaced as byte
+(1 missing value generated)
+
+. 
+. summarize age_years_str /* however, we forgot to fix the -5 age from before. Perhaps we go into Epic and verify the age 
+> is actually 5 */
+
+    Variable |        Obs        Mean    Std. dev.       Min        Max
+-------------+---------------------------------------------------------
+age_years_~r |        119    10.90756     3.59376         -5         17
+
+. replace age_years_str=5 if age_years_str==-5 /* note the slight change of syntax. Because string variables are character
+> s, Stata requires quotations around them. No quotations are allowed for numerics */
+(1 real change made)
+
+. 
+. *  if we try this, it won't work because Stata now recognizes age_years_str as a numeric, not a string  
+. // replace age_years_str="5" if age_years_str=="-5"
+. 
+. * this may seem arcane and technical, but a lot of the misery of data cleaning comes from issues like this. Luckily, Red
+> cap does help us out by only letting users fill in data with predetermined formats. So, it shouldn't even be possible fo
+> r the user to put in "fifteen" instead of "15" if the Redcap is set up correctly
+. 
+. ********************** generating indicator/dummy variables
+. 
+. * there will be times where the user might want to generate an indicator variable (0/1). For example, maybe we want a va
+> riable to look specifically at subjects with multiple metabolic risk factors. We accomplish this with the "generate" com
+> mand and appropriate "if" statements
+. 
+. generate multiple_metabolic_risk = 0 /* create a new numeric variable in everyone */
+
+. replace multiple_metabolic_risk = 1 if overweight == 1 & hemoglobin_a1c >= 5.7 & bp_ord >= 2
+(21 real changes made)
+
+. 
+. * now we have a variable corresponding to 0 in subjects without multiple metabolic risk factors, and 1 in subjects with 
+> these risk factors
+. 
+. * we could then look at these subjects specifically
+. 
+. browse if multiple_metabolic_risk == 1
+
+. 
+. * note that Stata will accept many different variations of "if" statements --> >, <, >=, <=, !=, ==, missing() 
+. * for example:
+. 
+. list mrn if age_years > 10
+
+     +--------+
+     |    mrn |
+     |--------|
+  3. |   3702 |
+  4. |   4936 |
+  6. |   7404 |
+  7. |   8638 |
+  8. |   9872 |
+     |--------|
+  9. |  11106 |
+ 12. |  14808 |
+ 17. |  20978 |
+ 18. |  22212 |
+ 19. |  23446 |
+     |--------|
+ 20. |  24680 |
+ 24. |  29616 |
+ 25. |  30850 |
+ 27. |  33318 |
+ 28. |  34552 |
+     |--------|
+ 29. |  35786 |
+ 30. |  37020 |
+ 31. |  38254 |
+ 35. |  43190 |
+ 37. |  45658 |
+     |--------|
+ 39. |  48126 |
+ 41. |  50594 |
+ 43. |  53062 |
+ 44. |  54296 |
+ 45. |  55530 |
+     |--------|
+ 46. |  56764 |
+ 48. |  59232 |
+ 51. |  62934 |
+ 52. |  64168 |
+ 56. |  69104 |
+     |--------|
+ 60. |  74040 |
+ 64. |  78976 |
+ 65. |  80210 |
+ 66. |  81444 |
+ 67. |  82678 |
+     |--------|
+ 68. |  83912 |
+ 69. |  85146 |
+ 70. |  86380 |
+ 71. |  87614 |
+ 73. |  90082 |
+     |--------|
+ 75. |  92550 |
+ 76. |  93784 |
+ 78. |  96252 |
+ 82. | 101188 |
+ 84. | 103656 |
+     |--------|
+ 85. | 104890 |
+ 86. | 106124 |
+ 87. | 107358 |
+ 91. | 112294 |
+ 92. | 113528 |
+     |--------|
+ 93. | 114762 |
+ 95. | 117230 |
+ 96. | 118464 |
+ 97. | 119698 |
+ 98. | 120932 |
+     |--------|
+ 99. | 122166 |
+102. | 125868 |
+103. | 127102 |
+104. | 128336 |
+105. | 129570 |
+     |--------|
+109. | 134506 |
+111. | 136974 |
+112. | 138208 |
+113. | 139442 |
+     +--------+
+
+. list bp_ord if hemoglobin_a1c < 5
+
+     +-------------+
+     |      bp_ord |
+     |-------------|
+  8. | Stage 2 HTN |
+ 51. |   Normal BP |
+ 76. |   Normal BP |
+ 90. |   Normal BP |
+112. |   Normal BP |
+     +-------------+
+
+. browse if gender != 0 
+
+. browse if missing(mrn)
+
+. 
+. ********************** missing values
+. 
+. * as mentioned before, Stata indicates missing values as a "." for numerics, for strings missingness will be indicated b
+> y "" 
+. 
+. * it is important to keep a close eye on missing values, because Stata will often pretend that they don't exist. This is
+>  annoying
+. 
+. * for example:
+. 
+. count 
+  120
+
+. summarize /* look specifically at hemoglobin_a1c here, although others have missing data, too. The fact that there are 1
+> 14 observations here is our only clue that something is potentially wrong */
+
+    Variable |        Obs        Mean    Std. dev.       Min        Max
+-------------+---------------------------------------------------------
+   record_id |        120        60.5    34.78505          1        120
+         mrn |        119       74040    42568.53       1234     146846
+      gender |        114    .4649123    .5009694          0          1
+   age_years |        120       10.85    3.563706         -5         17
+age_years_~r |        119     10.9916    3.325545          5         17
+-------------+---------------------------------------------------------
+  overweight |        120    .1916667    .3952626          0          1
+   age_gt_12 |        120        .375    .4861528          0          1
+hemoglobi~1c |        114    8.757018    2.245703        3.3         20
+non_hdl_ch~l |        120     101.075    46.07542          6        300
+      bp_ord |        114    2.368421    1.409595          1          4
+-------------+---------------------------------------------------------
+    ahtn_med |        120        .175    .3815603          0          1
+     med___1 |        120         .05    .2188588          0          1
+     med___2 |        120    .0333333    .1802581          0          1
+     med___3 |        120    .1083333    .3121041          0          1
+     med___4 |        120    .0333333    .1802581          0          1
+-------------+---------------------------------------------------------
+     med___5 |        120    .0166667    .1285559          0          1
+     med___9 |        120    .0083333    .0912871          0          1
+htn_relative |        120    4.116667    1.385297          1          5
+my_first_i~e |        120           0           0          0          0
+ random_date |        120    22801.92    332.6791      22256      23366
+-------------+---------------------------------------------------------
+random_dat~1 |        120   -37940.73    10398.53     -58077     -21675
+multiple_m~k |        120        .175    .3815603          0          1
+
+. 
+. inspect hemoglobin_a1c /* we get a little more detail if we use the "inspect" command */
+
+hemoglobin_a1c:  Hemoglobin A1c                 Number of observations
+-------------------------------        ---------------------------------------
+                                             Total      Integers   Nonintegers
+|      #                     Negative            -             -             -
+|      #                     Zero                -             -             -
+|      #                     Positive          114            10           104
+|      #                               -----------   -----------   -----------
+|      #   #                 Total             114            10           104
+|  #   #   #   .   .         Missing             6
++----------------------                -----------
+3.3                  20                        120
+  (61 unique values)
+
+. 
+. * in fact, I sometimes just use "inspect" by itself (as opposed to putting a variable name by it) to look at all the var
+> iables in the dataset
+. 
+. inspect
+
+record_id:  Record ID                           Number of observations
+---------------------                  ---------------------------------------
+                                             Total      Integers   Nonintegers
+|  #   #   #   #   #         Negative            -             -             -
+|  #   #   #   #   #         Zero                -             -             -
+|  #   #   #   #   #         Positive          120           120             -
+|  #   #   #   #   #                   -----------   -----------   -----------
+|  #   #   #   #   #         Total             120           120             -
+|  #   #   #   #   #         Missing             -
++----------------------                -----------
+1                   120                        120
+(More than 99 unique values)
+
+mrn:  MRN                                       Number of observations
+---------                              ---------------------------------------
+                                             Total      Integers   Nonintegers
+|  #   #       #   #         Negative            -             -             -
+|  #   #   #   #   #         Zero                -             -             -
+|  #   #   #   #   #         Positive          119           119             -
+|  #   #   #   #   #                   -----------   -----------   -----------
+|  #   #   #   #   #         Total             119           119             -
+|  #   #   #   #   #         Missing             1
++----------------------                -----------
+1234             146846                        120
+(More than 99 unique values)
+
+gender:  Gender                                 Number of observations
+---------------                        ---------------------------------------
+                                             Total      Integers   Nonintegers
+|  #                         Negative            -             -             -
+|  #   #                     Zero               61            61             -
+|  #   #                     Positive           53            53             -
+|  #   #                               -----------   -----------   -----------
+|  #   #                     Total             114           114             -
+|  #   #                     Missing             6
++----------------------                -----------
+0                     1                        120
+   (2 unique values)
+
+      gender is labeled and all values are documented in the label.
+
+age_years:  Age (years)                         Number of observations
+-----------------------                ---------------------------------------
+                                             Total      Integers   Nonintegers
+|                  #         Negative            1             1             -
+|              #   #         Zero                -             -             -
+|          #   #   #         Positive          119           119             -
+|          #   #   #                   -----------   -----------   -----------
+|          #   #   #         Total             120           120             -
+|  .   .   #   #   #         Missing             -
++----------------------                -----------
+-5                   17                        120
+  (13 unique values)
+
+age_years_str:  Age (years)                     Number of observations
+---------------------------            ---------------------------------------
+                                             Total      Integers   Nonintegers
+|          #                 Negative            -             -             -
+|          #   #             Zero                -             -             -
+|  #   #   #   #   #         Positive          119           119             -
+|  #   #   #   #   #                   -----------   -----------   -----------
+|  #   #   #   #   #         Total             119           119             -
+|  #   #   #   #   #         Missing             1
++----------------------                -----------
+5                    17                        120
+  (13 unique values)
+
+overweight:  Overweight                         Number of observations
+-----------------------                ---------------------------------------
+                                             Total      Integers   Nonintegers
+|  #                         Negative            -             -             -
+|  #                         Zero               97            97             -
+|  #                         Positive           23            23             -
+|  #                                   -----------   -----------   -----------
+|  #                         Total             120           120             -
+|  #   #                     Missing             -
++----------------------                -----------
+0                     1                        120
+   (2 unique values)
+
+      overweight is labeled and all values are documented in the label.
+
+age_gt_12:  Age > 12 years                      Number of observations
+--------------------------             ---------------------------------------
+                                             Total      Integers   Nonintegers
+|  #                         Negative            -             -             -
+|  #                         Zero               75            75             -
+|  #                         Positive           45            45             -
+|  #   #                               -----------   -----------   -----------
+|  #   #                     Total             120           120             -
+|  #   #                     Missing             -
++----------------------                -----------
+0                     1                        120
+   (2 unique values)
+
+      age_gt_12 is labeled and all values are documented in the label.
+
+hemoglobin_a1c:  Hemoglobin A1c                 Number of observations
+-------------------------------        ---------------------------------------
+                                             Total      Integers   Nonintegers
+|      #                     Negative            -             -             -
+|      #                     Zero                -             -             -
+|      #                     Positive          114            10           104
+|      #                               -----------   -----------   -----------
+|      #   #                 Total             114            10           104
+|  #   #   #   .   .         Missing             6
++----------------------                -----------
+3.3                  20                        120
+  (61 unique values)
+
+non_hdl_cholesterol:  Non HDL cholestero        Number of observations
+-------------------------------------------------------------------------------
+                                             Total      Integers   Nonintegers
+|      #                     Negative            -             -             -
+|      #                     Zero                -             -             -
+|      #                     Positive          120           120             -
+|      #   #                           -----------   -----------   -----------
+|  #   #   #                 Total             120           120             -
+|  #   #   #   .   .         Missing             -
++----------------------                -----------
+6                   300                        120
+  (83 unique values)
+
+bp_ord:  Blood pressure levels                  Number of observations
+------------------------------         ---------------------------------------
+                                             Total      Integers   Nonintegers
+|  #                         Negative            -             -             -
+|  #                         Zero                -             -             -
+|  #           #             Positive          114           114             -
+|  #           #                       -----------   -----------   -----------
+|  #           #             Total             114           114             -
+|  #   .   .   #             Missing             6
++----------------------                -----------
+1                     4                        120
+   (4 unique values)
+
+      bp_ord is labeled and all values are documented in the label.
+
+ahtn_med:  Antihypertensive medication u        Number of observations
+-------------------------------------------------------------------------------
+                                             Total      Integers   Nonintegers
+|  #                         Negative            -             -             -
+|  #                         Zero               99            99             -
+|  #                         Positive           21            21             -
+|  #                                   -----------   -----------   -----------
+|  #                         Total             120           120             -
+|  #   #                     Missing             -
++----------------------                -----------
+0                     1                        120
+   (2 unique values)
+
+      ahtn_med is labeled and all values are documented in the label.
+
+med___1:  Antihypertensive medication (c        Number of observations
+-------------------------------------------------------------------------------
+                                             Total      Integers   Nonintegers
+|  #                         Negative            -             -             -
+|  #                         Zero              114           114             -
+|  #                         Positive            6             6             -
+|  #                                   -----------   -----------   -----------
+|  #                         Total             120           120             -
+|  #   .                     Missing             -
++----------------------                -----------
+0                     1                        120
+   (2 unique values)
+
+      med___1 is labeled and all values are documented in the label.
+
+med___2:  Antihypertensive medication (c        Number of observations
+-------------------------------------------------------------------------------
+                                             Total      Integers   Nonintegers
+|  #                         Negative            -             -             -
+|  #                         Zero              116           116             -
+|  #                         Positive            4             4             -
+|  #                                   -----------   -----------   -----------
+|  #                         Total             120           120             -
+|  #   .                     Missing             -
++----------------------                -----------
+0                     1                        120
+   (2 unique values)
+
+      med___2 is labeled and all values are documented in the label.
+
+med___3:  Antihypertensive medication (c        Number of observations
+-------------------------------------------------------------------------------
+                                             Total      Integers   Nonintegers
+|  #                         Negative            -             -             -
+|  #                         Zero              107           107             -
+|  #                         Positive           13            13             -
+|  #                                   -----------   -----------   -----------
+|  #                         Total             120           120             -
+|  #   .                     Missing             -
++----------------------                -----------
+0                     1                        120
+   (2 unique values)
+
+      med___3 is labeled and all values are documented in the label.
+
+med___4:  Antihypertensive medication (c        Number of observations
+-------------------------------------------------------------------------------
+                                             Total      Integers   Nonintegers
+|  #                         Negative            -             -             -
+|  #                         Zero              116           116             -
+|  #                         Positive            4             4             -
+|  #                                   -----------   -----------   -----------
+|  #                         Total             120           120             -
+|  #   .                     Missing             -
++----------------------                -----------
+0                     1                        120
+   (2 unique values)
+
+      med___4 is labeled and all values are documented in the label.
+
+med___5:  Antihypertensive medication (c        Number of observations
+-------------------------------------------------------------------------------
+                                             Total      Integers   Nonintegers
+|  #                         Negative            -             -             -
+|  #                         Zero              118           118             -
+|  #                         Positive            2             2             -
+|  #                                   -----------   -----------   -----------
+|  #                         Total             120           120             -
+|  #   .                     Missing             -
++----------------------                -----------
+0                     1                        120
+   (2 unique values)
+
+      med___5 is labeled and all values are documented in the label.
+
+med___9:  Antihypertensive medication (c        Number of observations
+-------------------------------------------------------------------------------
+                                             Total      Integers   Nonintegers
+|  #                         Negative            -             -             -
+|  #                         Zero              119           119             -
+|  #                         Positive            1             1             -
+|  #                                   -----------   -----------   -----------
+|  #                         Total             120           120             -
+|  #   .                     Missing             -
++----------------------                -----------
+0                     1                        120
+   (2 unique values)
+
+      med___9 is labeled and all values are documented in the label.
+
+htn_relative:  Relatives with hypertensi        Number of observations
+-------------------------------------------------------------------------------
+                                             Total      Integers   Nonintegers
+|              #             Negative            -             -             -
+|              #             Zero                -             -             -
+|              #             Positive          120           120             -
+|              #                       -----------   -----------   -----------
+|              #             Total             120           120             -
+|  .   .   #   #             Missing             -
++----------------------                -----------
+1                     5                        120
+   (4 unique values)
+
+      htn_relative is labeled and all values are documented in the label.
+
+my_first_instrument_complete:  Complete?        Number of observations
+-------------------------------------------------------------------------------
+                                             Total      Integers   Nonintegers
+|  #                         Negative            -             -             -
+|  #                         Zero              120           120             -
+|  #                         Positive            -             -             -
+|  #                                   -----------   -----------   -----------
+|  #                         Total             120           120             -
+|  #                         Missing             -
++----------------------                -----------
+0                                              120
+   (1 unique value)
+
+      my_first_instrument_complete is labeled and all values are documented in the label.
+
+random_date:                                    Number of observations
+--------------                         ---------------------------------------
+                                             Total      Integers   Nonintegers
+|          #                 Negative            -             -             -
+|          #                 Zero                -             -             -
+|  #       #       #         Positive          120           120             -
+|  #   #   #       #                   -----------   -----------   -----------
+|  #   #   #   #   #         Total             120           120             -
+|  #   #   #   #   #         Missing             -
++----------------------                -----------
+22256             23366                        120
+(More than 99 unique values)
+
+random_date_1:                                  Number of observations
+----------------                       ---------------------------------------
+                                             Total      Integers   Nonintegers
+|                  #         Negative          120           120             -
+|          #   #   #         Zero                -             -             -
+|      #   #   #   #         Positive            -             -             -
+|  #   #   #   #   #                   -----------   -----------   -----------
+|  #   #   #   #   #         Total             120           120             -
+|  #   #   #   #   #         Missing             -
++----------------------                -----------
+-58077           -21675                        120
+(More than 99 unique values)
+
+multiple_metabolic_risk:                        Number of observations
+--------------------------             ---------------------------------------
+                                             Total      Integers   Nonintegers
+|  #                         Negative            -             -             -
+|  #                         Zero               99            99             -
+|  #                         Positive           21            21             -
+|  #                                   -----------   -----------   -----------
+|  #                         Total             120           120             -
+|  #   #                     Missing             -
++----------------------                -----------
+0                     1                        120
+   (2 unique values)
+
+. 
+. * you need to look at missingness in categorical variables, too. it looks like we are missing some data in bp_ord and ge
+> nder
+. 
+. * the missing data may not be obvious if we run this command:
+. 
+. tabulate bp_ord
+
+      Blood pressure |
+              levels |      Freq.     Percent        Cum.
+---------------------+-----------------------------------
+           Normal BP |         55       48.25       48.25
+         Elevated BP |          6        5.26       53.51
+         Stage 1 HTN |          9        7.89       61.40
+         Stage 2 HTN |         44       38.60      100.00
+---------------------+-----------------------------------
+               Total |        114      100.00
+
+. tabulate gender
+
+     Gender |      Freq.     Percent        Cum.
+------------+-----------------------------------
+       Male |         61       53.51       53.51
+     Female |         53       46.49      100.00
+------------+-----------------------------------
+      Total |        114      100.00
+
+. 
+. * we may have to actually remember that the complete data set has 120 observations to realize there is missingness here.
+>  If we type this instead:
+. 
+. tabulate bp_ord, missing
+
+      Blood pressure |
+              levels |      Freq.     Percent        Cum.
+---------------------+-----------------------------------
+           Normal BP |         55       45.83       45.83
+         Elevated BP |          6        5.00       50.83
+         Stage 1 HTN |          9        7.50       58.33
+         Stage 2 HTN |         44       36.67       95.00
+                   . |          6        5.00      100.00
+---------------------+-----------------------------------
+               Total |        120      100.00
+
+. tabulate gender, missing
+
+     Gender |      Freq.     Percent        Cum.
+------------+-----------------------------------
+       Male |         61       50.83       50.83
+     Female |         53       44.17       95.00
+          . |          6        5.00      100.00
+------------+-----------------------------------
+      Total |        120      100.00
+
+. 
+. * it becomes easier to see
+. 
+. * note that we can look at missingness for cross-tabulations, where we are comparing two variables together
+. 
+. tabulate bp_ord gender /* in this case our number of has decreased considerably to 108. This is because the cross-tab is
+>  only including patients with complete data in both bp_ord and gender. We may MISS this if we aren't paying attention (p
+> un intended) */
+
+      Blood pressure |        Gender
+              levels |      Male     Female |     Total
+---------------------+----------------------+----------
+           Normal BP |        26         29 |        55 
+         Elevated BP |         4          2 |         6 
+         Stage 1 HTN |         5          4 |         9 
+         Stage 2 HTN |        22         16 |        38 
+---------------------+----------------------+----------
+               Total |        57         51 |       108 
+
+. 
+. * it is much easier to see what is going on if we type this instead:
+. 
+. tabulate bp_ord gender, missing
+
+      Blood pressure |              Gender
+              levels |      Male     Female          . |     Total
+---------------------+---------------------------------+----------
+           Normal BP |        26         29          0 |        55 
+         Elevated BP |         4          2          0 |         6 
+         Stage 1 HTN |         5          4          0 |         9 
+         Stage 2 HTN |        22         16          6 |        44 
+                   . |         4          2          0 |         6 
+---------------------+---------------------------------+----------
+               Total |        61         53          6 |       120 
+
+. 
+. * personally, I find the missing data in tables to be the biggest issue when it comes time to complete a "table 1", and 
+> things aren't adding up properly
+. 
+. * in general, for most of the research you will be doing here, it is probably better to just note the missing data and/o
+> r go into Epic and figure out what is missing (if possible)
+. 
+. * however, be aware that Stata has a number of more sophisticated methods for dealing with this issue, including multipl
+> e imputation. You should see a statistician for help with this
+. 
+. 
+. ********************** intelligent labeling of variables
+. 
+. describe
+
+Contains data from SarahsSTATAtest.dta
+ Observations:           120                  SarahsSTATATest_DATA_NOHDRS_2023-07-11_1125.csv
+    Variables:            22                  11 Jul 2023 16:50
+--------------------------------------------------------------------------------------------------------------------------
+Variable      Storage   Display    Value
+    name         type    format    label      Variable label
+--------------------------------------------------------------------------------------------------------------------------
+record_id       int     %8.0g                 Record ID
+mrn             long    %12.0g                MRN
+gender          byte    %8.0g      gender_    Gender
+age_years       byte    %8.0g                 Age (years)
+age_years_str   byte    %10.0g                Age (years)
+overweight      byte    %8.0g      overweight_
+                                              Overweight
+age_gt_12       byte    %8.0g      age_gt_12_
+                                              Age > 12 years
+hemoglobin_a1c  float   %9.0g                 Hemoglobin A1c
+non_hdl_chole~l int     %8.0g                 Non HDL cholesterol
+bp_ord          byte    %20.0g     bp_ord_    Blood pressure levels
+ahtn_med        byte    %8.0g      ahtn_med_
+                                              Antihypertensive medication use
+med___1         byte    %9.0g      med___1_   Antihypertensive medication (choice=ACEi)
+med___2         byte    %9.0g      med___2_   Antihypertensive medication (choice=Angiotensin receptor blocker)
+med___3         byte    %9.0g      med___3_   Antihypertensive medication (choice=Calcium channel blocker)
+med___4         byte    %9.0g      med___4_   Antihypertensive medication (choice=Beta blocker)
+med___5         byte    %9.0g      med___5_   Antihypertensive medication (choice=Alpha blocker)
+med___9         byte    %9.0g      med___9_   Antihypertensive medication (choice=Others)
+htn_relative    byte    %58.0g     htn_relative_
+                                              Relatives with hypertension
+my_first_inst~e byte    %10.0g     my_first_instrument_complete_
+                                              Complete?
+random_date     float   %9.0g                 
+random_date_1   float   %9.0g                 
+multiple_meta~k float   %9.0g                 
+--------------------------------------------------------------------------------------------------------------------------
+Sorted by: 
+     Note: Dataset has changed since last saved.
+
+. 
+. * one issue we brought up in session 1 was the noninformative labelling of the med___ variables
+. 
+. * however, because RedCap allowed us to import the labels right into Stata, we can at least see what these variables are
+>  supposed to mean
+. 
+. describe med* /* hot tip: if you apply the "*" after a variable name, it will give you every variable that starts with t
+> hose letters */
+
+Variable      Storage   Display    Value
+    name         type    format    label      Variable label
+--------------------------------------------------------------------------------------------------------------------------
+med___1         byte    %9.0g      med___1_   Antihypertensive medication (choice=ACEi)
+med___2         byte    %9.0g      med___2_   Antihypertensive medication (choice=Angiotensin receptor blocker)
+med___3         byte    %9.0g      med___3_   Antihypertensive medication (choice=Calcium channel blocker)
+med___4         byte    %9.0g      med___4_   Antihypertensive medication (choice=Beta blocker)
+med___5         byte    %9.0g      med___5_   Antihypertensive medication (choice=Alpha blocker)
+med___9         byte    %9.0g      med___9_   Antihypertensive medication (choice=Others)
+
+. 
+. rename med___1  ACEi
+
+. rename med___2  ARB
+
+. rename med___3  CCB
+
+. rename med___4  BB
+
+. rename med___5  AB
+
+. rename med___9  Other_antihypertensive
+
+. 
+. describe ACEi ARB CCB BB AB Other_antihypertensive /* this looks better, but I hate the variable labels on the right */
+
+Variable      Storage   Display    Value
+    name         type    format    label      Variable label
+--------------------------------------------------------------------------------------------------------------------------
+ACEi            byte    %9.0g      med___1_   Antihypertensive medication (choice=ACEi)
+ARB             byte    %9.0g      med___2_   Antihypertensive medication (choice=Angiotensin receptor blocker)
+CCB             byte    %9.0g      med___3_   Antihypertensive medication (choice=Calcium channel blocker)
+BB              byte    %9.0g      med___4_   Antihypertensive medication (choice=Beta blocker)
+AB              byte    %9.0g      med___5_   Antihypertensive medication (choice=Alpha blocker)
+Other_antihyp~e byte    %9.0g      med___9_   Antihypertensive medication (choice=Others)
+
+. 
+. label variable ACEi "patient on ACE inhibitor"
+
+. label variable ARB "patient on angiotensin receptor blocker"
+
+. label variable CCB "patient on calcium channel blocker"
+
+. label variable BB "patient on beta blocker"
+
+. label variable AB "patient on alpha blocker"
+
+. label variable Other_antihypertensive "patient on other antihypertensive"
+
+. 
+. describe ACEi ARB CCB BB AB Other_antihypertensive /* this looks much better */
+
+Variable      Storage   Display    Value
+    name         type    format    label      Variable label
+--------------------------------------------------------------------------------------------------------------------------
+ACEi            byte    %9.0g      med___1_   patient on ACE inhibitor
+ARB             byte    %9.0g      med___2_   patient on angiotensin receptor blocker
+CCB             byte    %9.0g      med___3_   patient on calcium channel blocker
+BB              byte    %9.0g      med___4_   patient on beta blocker
+AB              byte    %9.0g      med___5_   patient on alpha blocker
+Other_antihyp~e byte    %9.0g      med___9_   patient on other antihypertensive
+
+. 
+. tab1 ACEi ARB CCB BB AB Other_antihypertensive /* however, our data still looks messy. a lot of this has to do with the 
+> "checked" v "unchecked" distinction from RedCap */
+
+-> tabulation of ACEi  
+
+ patient on |
+        ACE |
+  inhibitor |      Freq.     Percent        Cum.
+------------+-----------------------------------
+  Unchecked |        114       95.00       95.00
+    Checked |          6        5.00      100.00
+------------+-----------------------------------
+      Total |        120      100.00
+
+-> tabulation of ARB  
+
+ patient on |
+angiotensin |
+   receptor |
+    blocker |      Freq.     Percent        Cum.
+------------+-----------------------------------
+  Unchecked |        116       96.67       96.67
+    Checked |          4        3.33      100.00
+------------+-----------------------------------
+      Total |        120      100.00
+
+-> tabulation of CCB  
+
+ patient on |
+    calcium |
+    channel |
+    blocker |      Freq.     Percent        Cum.
+------------+-----------------------------------
+  Unchecked |        107       89.17       89.17
+    Checked |         13       10.83      100.00
+------------+-----------------------------------
+      Total |        120      100.00
+
+-> tabulation of BB  
+
+ patient on |
+       beta |
+    blocker |      Freq.     Percent        Cum.
+------------+-----------------------------------
+  Unchecked |        116       96.67       96.67
+    Checked |          4        3.33      100.00
+------------+-----------------------------------
+      Total |        120      100.00
+
+-> tabulation of AB  
+
+ patient on |
+      alpha |
+    blocker |      Freq.     Percent        Cum.
+------------+-----------------------------------
+  Unchecked |        118       98.33       98.33
+    Checked |          2        1.67      100.00
+------------+-----------------------------------
+      Total |        120      100.00
+
+-> tabulation of Other_antihypertensive  
+
+ patient on |
+      other |
+antihyperte |
+      nsive |      Freq.     Percent        Cum.
+------------+-----------------------------------
+  Unchecked |        119       99.17       99.17
+    Checked |          1        0.83      100.00
+------------+-----------------------------------
+      Total |        120      100.00
+
+. * hot tip: putting tab1 followed by a list of variables enables you to get serial tabulation commands
+. 
+. /* so, */ tab1 ACEi ARB CCB BB AB Other_antihypertensive /* is equivalent to the following: */
+
+-> tabulation of ACEi  
+
+ patient on |
+        ACE |
+  inhibitor |      Freq.     Percent        Cum.
+------------+-----------------------------------
+  Unchecked |        114       95.00       95.00
+    Checked |          6        5.00      100.00
+------------+-----------------------------------
+      Total |        120      100.00
+
+-> tabulation of ARB  
+
+ patient on |
+angiotensin |
+   receptor |
+    blocker |      Freq.     Percent        Cum.
+------------+-----------------------------------
+  Unchecked |        116       96.67       96.67
+    Checked |          4        3.33      100.00
+------------+-----------------------------------
+      Total |        120      100.00
+
+-> tabulation of CCB  
+
+ patient on |
+    calcium |
+    channel |
+    blocker |      Freq.     Percent        Cum.
+------------+-----------------------------------
+  Unchecked |        107       89.17       89.17
+    Checked |         13       10.83      100.00
+------------+-----------------------------------
+      Total |        120      100.00
+
+-> tabulation of BB  
+
+ patient on |
+       beta |
+    blocker |      Freq.     Percent        Cum.
+------------+-----------------------------------
+  Unchecked |        116       96.67       96.67
+    Checked |          4        3.33      100.00
+------------+-----------------------------------
+      Total |        120      100.00
+
+-> tabulation of AB  
+
+ patient on |
+      alpha |
+    blocker |      Freq.     Percent        Cum.
+------------+-----------------------------------
+  Unchecked |        118       98.33       98.33
+    Checked |          2        1.67      100.00
+------------+-----------------------------------
+      Total |        120      100.00
+
+-> tabulation of Other_antihypertensive  
+
+ patient on |
+      other |
+antihyperte |
+      nsive |      Freq.     Percent        Cum.
+------------+-----------------------------------
+  Unchecked |        119       99.17       99.17
+    Checked |          1        0.83      100.00
+------------+-----------------------------------
+      Total |        120      100.00
+
+. 
+. tab ACEi 
+
+ patient on |
+        ACE |
+  inhibitor |      Freq.     Percent        Cum.
+------------+-----------------------------------
+  Unchecked |        114       95.00       95.00
+    Checked |          6        5.00      100.00
+------------+-----------------------------------
+      Total |        120      100.00
+
+. tab ARB
+
+ patient on |
+angiotensin |
+   receptor |
+    blocker |      Freq.     Percent        Cum.
+------------+-----------------------------------
+  Unchecked |        116       96.67       96.67
+    Checked |          4        3.33      100.00
+------------+-----------------------------------
+      Total |        120      100.00
+
+. tab CCB
+
+ patient on |
+    calcium |
+    channel |
+    blocker |      Freq.     Percent        Cum.
+------------+-----------------------------------
+  Unchecked |        107       89.17       89.17
+    Checked |         13       10.83      100.00
+------------+-----------------------------------
+      Total |        120      100.00
+
+. tab BB
+
+ patient on |
+       beta |
+    blocker |      Freq.     Percent        Cum.
+------------+-----------------------------------
+  Unchecked |        116       96.67       96.67
+    Checked |          4        3.33      100.00
+------------+-----------------------------------
+      Total |        120      100.00
+
+. tab AB
+
+ patient on |
+      alpha |
+    blocker |      Freq.     Percent        Cum.
+------------+-----------------------------------
+  Unchecked |        118       98.33       98.33
+    Checked |          2        1.67      100.00
+------------+-----------------------------------
+      Total |        120      100.00
+
+. tab Other_antihypertensive
+
+ patient on |
+      other |
+antihyperte |
+      nsive |      Freq.     Percent        Cum.
+------------+-----------------------------------
+  Unchecked |        119       99.17       99.17
+    Checked |          1        0.83      100.00
+------------+-----------------------------------
+      Total |        120      100.00
+
+. 
+. * note also: I'm getting lazy and starting to abbreviate command names. You can do this, too, so long as you include suf
+> ficient characters for Stata to recognize a unique command
+. 
+. * hot tip: Stata will tell you the minimum number of characters required for a given command in the help section for tha
+> t command. Look for what is underlined for the commands
+. 
+. help describe
+
+. 
+. d
+
+Contains data from SarahsSTATAtest.dta
+ Observations:           120                  SarahsSTATATest_DATA_NOHDRS_2023-07-11_1125.csv
+    Variables:            22                  11 Jul 2023 16:50
+--------------------------------------------------------------------------------------------------------------------------
+Variable      Storage   Display    Value
+    name         type    format    label      Variable label
+--------------------------------------------------------------------------------------------------------------------------
+record_id       int     %8.0g                 Record ID
+mrn             long    %12.0g                MRN
+gender          byte    %8.0g      gender_    Gender
+age_years       byte    %8.0g                 Age (years)
+age_years_str   byte    %10.0g                Age (years)
+overweight      byte    %8.0g      overweight_
+                                              Overweight
+age_gt_12       byte    %8.0g      age_gt_12_
+                                              Age > 12 years
+hemoglobin_a1c  float   %9.0g                 Hemoglobin A1c
+non_hdl_chole~l int     %8.0g                 Non HDL cholesterol
+bp_ord          byte    %20.0g     bp_ord_    Blood pressure levels
+ahtn_med        byte    %8.0g      ahtn_med_
+                                              Antihypertensive medication use
+ACEi            byte    %9.0g      med___1_   patient on ACE inhibitor
+ARB             byte    %9.0g      med___2_   patient on angiotensin receptor blocker
+CCB             byte    %9.0g      med___3_   patient on calcium channel blocker
+BB              byte    %9.0g      med___4_   patient on beta blocker
+AB              byte    %9.0g      med___5_   patient on alpha blocker
+Other_antihyp~e byte    %9.0g      med___9_   patient on other antihypertensive
+htn_relative    byte    %58.0g     htn_relative_
+                                              Relatives with hypertension
+my_first_inst~e byte    %10.0g     my_first_instrument_complete_
+                                              Complete?
+random_date     float   %9.0g                 
+random_date_1   float   %9.0g                 
+multiple_meta~k float   %9.0g                 
+--------------------------------------------------------------------------------------------------------------------------
+Sorted by: 
+     Note: Dataset has changed since last saved.
+
+. su
+
+    Variable |        Obs        Mean    Std. dev.       Min        Max
+-------------+---------------------------------------------------------
+   record_id |        120        60.5    34.78505          1        120
+         mrn |        119       74040    42568.53       1234     146846
+      gender |        114    .4649123    .5009694          0          1
+   age_years |        120       10.85    3.563706         -5         17
+age_years_~r |        119     10.9916    3.325545          5         17
+-------------+---------------------------------------------------------
+  overweight |        120    .1916667    .3952626          0          1
+   age_gt_12 |        120        .375    .4861528          0          1
+hemoglobi~1c |        114    8.757018    2.245703        3.3         20
+non_hdl_ch~l |        120     101.075    46.07542          6        300
+      bp_ord |        114    2.368421    1.409595          1          4
+-------------+---------------------------------------------------------
+    ahtn_med |        120        .175    .3815603          0          1
+        ACEi |        120         .05    .2188588          0          1
+         ARB |        120    .0333333    .1802581          0          1
+         CCB |        120    .1083333    .3121041          0          1
+          BB |        120    .0333333    .1802581          0          1
+-------------+---------------------------------------------------------
+          AB |        120    .0166667    .1285559          0          1
+Other_anti~e |        120    .0083333    .0912871          0          1
+htn_relative |        120    4.116667    1.385297          1          5
+my_first_i~e |        120           0           0          0          0
+ random_date |        120    22801.92    332.6791      22256      23366
+-------------+---------------------------------------------------------
+random_dat~1 |        120   -37940.73    10398.53     -58077     -21675
+multiple_m~k |        120        .175    .3815603          0          1
+
+. ins
+
+record_id:  Record ID                           Number of observations
+---------------------                  ---------------------------------------
+                                             Total      Integers   Nonintegers
+|  #   #   #   #   #         Negative            -             -             -
+|  #   #   #   #   #         Zero                -             -             -
+|  #   #   #   #   #         Positive          120           120             -
+|  #   #   #   #   #                   -----------   -----------   -----------
+|  #   #   #   #   #         Total             120           120             -
+|  #   #   #   #   #         Missing             -
++----------------------                -----------
+1                   120                        120
+(More than 99 unique values)
+
+mrn:  MRN                                       Number of observations
+---------                              ---------------------------------------
+                                             Total      Integers   Nonintegers
+|  #   #       #   #         Negative            -             -             -
+|  #   #   #   #   #         Zero                -             -             -
+|  #   #   #   #   #         Positive          119           119             -
+|  #   #   #   #   #                   -----------   -----------   -----------
+|  #   #   #   #   #         Total             119           119             -
+|  #   #   #   #   #         Missing             1
++----------------------                -----------
+1234             146846                        120
+(More than 99 unique values)
+
+gender:  Gender                                 Number of observations
+---------------                        ---------------------------------------
+                                             Total      Integers   Nonintegers
+|  #                         Negative            -             -             -
+|  #   #                     Zero               61            61             -
+|  #   #                     Positive           53            53             -
+|  #   #                               -----------   -----------   -----------
+|  #   #                     Total             114           114             -
+|  #   #                     Missing             6
++----------------------                -----------
+0                     1                        120
+   (2 unique values)
+
+      gender is labeled and all values are documented in the label.
+
+age_years:  Age (years)                         Number of observations
+-----------------------                ---------------------------------------
+                                             Total      Integers   Nonintegers
+|                  #         Negative            1             1             -
+|              #   #         Zero                -             -             -
+|          #   #   #         Positive          119           119             -
+|          #   #   #                   -----------   -----------   -----------
+|          #   #   #         Total             120           120             -
+|  .   .   #   #   #         Missing             -
++----------------------                -----------
+-5                   17                        120
+  (13 unique values)
+
+age_years_str:  Age (years)                     Number of observations
+---------------------------            ---------------------------------------
+                                             Total      Integers   Nonintegers
+|          #                 Negative            -             -             -
+|          #   #             Zero                -             -             -
+|  #   #   #   #   #         Positive          119           119             -
+|  #   #   #   #   #                   -----------   -----------   -----------
+|  #   #   #   #   #         Total             119           119             -
+|  #   #   #   #   #         Missing             1
++----------------------                -----------
+5                    17                        120
+  (13 unique values)
+
+overweight:  Overweight                         Number of observations
+-----------------------                ---------------------------------------
+                                             Total      Integers   Nonintegers
+|  #                         Negative            -             -             -
+|  #                         Zero               97            97             -
+|  #                         Positive           23            23             -
+|  #                                   -----------   -----------   -----------
+|  #                         Total             120           120             -
+|  #   #                     Missing             -
++----------------------                -----------
+0                     1                        120
+   (2 unique values)
+
+      overweight is labeled and all values are documented in the label.
+
+age_gt_12:  Age > 12 years                      Number of observations
+--------------------------             ---------------------------------------
+                                             Total      Integers   Nonintegers
+|  #                         Negative            -             -             -
+|  #                         Zero               75            75             -
+|  #                         Positive           45            45             -
+|  #   #                               -----------   -----------   -----------
+|  #   #                     Total             120           120             -
+|  #   #                     Missing             -
++----------------------                -----------
+0                     1                        120
+   (2 unique values)
+
+      age_gt_12 is labeled and all values are documented in the label.
+
+hemoglobin_a1c:  Hemoglobin A1c                 Number of observations
+-------------------------------        ---------------------------------------
+                                             Total      Integers   Nonintegers
+|      #                     Negative            -             -             -
+|      #                     Zero                -             -             -
+|      #                     Positive          114            10           104
+|      #                               -----------   -----------   -----------
+|      #   #                 Total             114            10           104
+|  #   #   #   .   .         Missing             6
++----------------------                -----------
+3.3                  20                        120
+  (61 unique values)
+
+non_hdl_cholesterol:  Non HDL cholestero        Number of observations
+-------------------------------------------------------------------------------
+                                             Total      Integers   Nonintegers
+|      #                     Negative            -             -             -
+|      #                     Zero                -             -             -
+|      #                     Positive          120           120             -
+|      #   #                           -----------   -----------   -----------
+|  #   #   #                 Total             120           120             -
+|  #   #   #   .   .         Missing             -
++----------------------                -----------
+6                   300                        120
+  (83 unique values)
+
+bp_ord:  Blood pressure levels                  Number of observations
+------------------------------         ---------------------------------------
+                                             Total      Integers   Nonintegers
+|  #                         Negative            -             -             -
+|  #                         Zero                -             -             -
+|  #           #             Positive          114           114             -
+|  #           #                       -----------   -----------   -----------
+|  #           #             Total             114           114             -
+|  #   .   .   #             Missing             6
++----------------------                -----------
+1                     4                        120
+   (4 unique values)
+
+      bp_ord is labeled and all values are documented in the label.
+
+ahtn_med:  Antihypertensive medication u        Number of observations
+-------------------------------------------------------------------------------
+                                             Total      Integers   Nonintegers
+|  #                         Negative            -             -             -
+|  #                         Zero               99            99             -
+|  #                         Positive           21            21             -
+|  #                                   -----------   -----------   -----------
+|  #                         Total             120           120             -
+|  #   #                     Missing             -
++----------------------                -----------
+0                     1                        120
+   (2 unique values)
+
+      ahtn_med is labeled and all values are documented in the label.
+
+ACEi:  patient on ACE inhibitor                 Number of observations
+-------------------------------        ---------------------------------------
+                                             Total      Integers   Nonintegers
+|  #                         Negative            -             -             -
+|  #                         Zero              114           114             -
+|  #                         Positive            6             6             -
+|  #                                   -----------   -----------   -----------
+|  #                         Total             120           120             -
+|  #   .                     Missing             -
++----------------------                -----------
+0                     1                        120
+   (2 unique values)
+
+      ACEi is labeled and all values are documented in the label.
+
+ARB:  patient on angiotensin receptor bl        Number of observations
+-------------------------------------------------------------------------------
+                                             Total      Integers   Nonintegers
+|  #                         Negative            -             -             -
+|  #                         Zero              116           116             -
+|  #                         Positive            4             4             -
+|  #                                   -----------   -----------   -----------
+|  #                         Total             120           120             -
+|  #   .                     Missing             -
++----------------------                -----------
+0                     1                        120
+   (2 unique values)
+
+      ARB is labeled and all values are documented in the label.
+
+CCB:  patient on calcium channel blocker        Number of observations
+-------------------------------------------------------------------------------
+                                             Total      Integers   Nonintegers
+|  #                         Negative            -             -             -
+|  #                         Zero              107           107             -
+|  #                         Positive           13            13             -
+|  #                                   -----------   -----------   -----------
+|  #                         Total             120           120             -
+|  #   .                     Missing             -
++----------------------                -----------
+0                     1                        120
+   (2 unique values)
+
+      CCB is labeled and all values are documented in the label.
+
+BB:  patient on beta blocker                    Number of observations
+----------------------------           ---------------------------------------
+                                             Total      Integers   Nonintegers
+|  #                         Negative            -             -             -
+|  #                         Zero              116           116             -
+|  #                         Positive            4             4             -
+|  #                                   -----------   -----------   -----------
+|  #                         Total             120           120             -
+|  #   .                     Missing             -
++----------------------                -----------
+0                     1                        120
+   (2 unique values)
+
+      BB is labeled and all values are documented in the label.
+
+AB:  patient on alpha blocker                   Number of observations
+-----------------------------          ---------------------------------------
+                                             Total      Integers   Nonintegers
+|  #                         Negative            -             -             -
+|  #                         Zero              118           118             -
+|  #                         Positive            2             2             -
+|  #                                   -----------   -----------   -----------
+|  #                         Total             120           120             -
+|  #   .                     Missing             -
++----------------------                -----------
+0                     1                        120
+   (2 unique values)
+
+      AB is labeled and all values are documented in the label.
+
+Other_antihypertensive:  patient on othe        Number of observations
+-------------------------------------------------------------------------------
+                                             Total      Integers   Nonintegers
+|  #                         Negative            -             -             -
+|  #                         Zero              119           119             -
+|  #                         Positive            1             1             -
+|  #                                   -----------   -----------   -----------
+|  #                         Total             120           120             -
+|  #   .                     Missing             -
++----------------------                -----------
+0                     1                        120
+   (2 unique values)
+
+      Other_antihypertensive is labeled and all values are documented in the label.
+
+htn_relative:  Relatives with hypertensi        Number of observations
+-------------------------------------------------------------------------------
+                                             Total      Integers   Nonintegers
+|              #             Negative            -             -             -
+|              #             Zero                -             -             -
+|              #             Positive          120           120             -
+|              #                       -----------   -----------   -----------
+|              #             Total             120           120             -
+|  .   .   #   #             Missing             -
++----------------------                -----------
+1                     5                        120
+   (4 unique values)
+
+      htn_relative is labeled and all values are documented in the label.
+
+my_first_instrument_complete:  Complete?        Number of observations
+-------------------------------------------------------------------------------
+                                             Total      Integers   Nonintegers
+|  #                         Negative            -             -             -
+|  #                         Zero              120           120             -
+|  #                         Positive            -             -             -
+|  #                                   -----------   -----------   -----------
+|  #                         Total             120           120             -
+|  #                         Missing             -
++----------------------                -----------
+0                                              120
+   (1 unique value)
+
+      my_first_instrument_complete is labeled and all values are documented in the label.
+
+random_date:                                    Number of observations
+--------------                         ---------------------------------------
+                                             Total      Integers   Nonintegers
+|          #                 Negative            -             -             -
+|          #                 Zero                -             -             -
+|  #       #       #         Positive          120           120             -
+|  #   #   #       #                   -----------   -----------   -----------
+|  #   #   #   #   #         Total             120           120             -
+|  #   #   #   #   #         Missing             -
++----------------------                -----------
+22256             23366                        120
+(More than 99 unique values)
+
+random_date_1:                                  Number of observations
+----------------                       ---------------------------------------
+                                             Total      Integers   Nonintegers
+|                  #         Negative          120           120             -
+|          #   #   #         Zero                -             -             -
+|      #   #   #   #         Positive            -             -             -
+|  #   #   #   #   #                   -----------   -----------   -----------
+|  #   #   #   #   #         Total             120           120             -
+|  #   #   #   #   #         Missing             -
++----------------------                -----------
+-58077           -21675                        120
+(More than 99 unique values)
+
+multiple_metabolic_risk:                        Number of observations
+--------------------------             ---------------------------------------
+                                             Total      Integers   Nonintegers
+|  #                         Negative            -             -             -
+|  #                         Zero               99            99             -
+|  #                         Positive           21            21             -
+|  #                                   -----------   -----------   -----------
+|  #                         Total             120           120             -
+|  #   #                     Missing             -
++----------------------                -----------
+0                     1                        120
+   (2 unique values)
+
+. 
+. * there may be benefit to typing more of the command out, however, especially if you are new to Stata and forget what th
+> e abbreviations mean!
+. 
+. * turning back to these ugly labels
+. 
+. labelbook /* direct command to see all the labels in your data */
+
+--------------------------------------------------------------------------------------------------------------------------
+Value label age_gt_12_ 
+--------------------------------------------------------------------------------------------------------------------------
+
+      Values                                    Labels
+       Range:  [0,1]                     String length:  [2,3]
+           N:  2                 Unique at full length:  yes
+        Gaps:  no                  Unique at length 12:  yes
+  Missing .*:  0                           Null string:  no
+                               Leading/trailing blanks:  no
+                                    Numeric -> numeric:  no
+  Definition
+           0   No
+           1   Yes
+
+   Variables:  age_gt_12
+
+
+--------------------------------------------------------------------------------------------------------------------------
+Value label ahtn_med_ 
+--------------------------------------------------------------------------------------------------------------------------
+
+      Values                                    Labels
+       Range:  [0,1]                     String length:  [2,3]
+           N:  2                 Unique at full length:  yes
+        Gaps:  no                  Unique at length 12:  yes
+  Missing .*:  0                           Null string:  no
+                               Leading/trailing blanks:  no
+                                    Numeric -> numeric:  no
+  Definition
+           0   No
+           1   Yes
+
+   Variables:  ahtn_med
+
+
+--------------------------------------------------------------------------------------------------------------------------
+Value label bp_ord_ 
+--------------------------------------------------------------------------------------------------------------------------
+
+      Values                                    Labels
+       Range:  [1,5]                     String length:  [9,20]
+           N:  5                 Unique at full length:  yes
+        Gaps:  no                  Unique at length 12:  yes
+  Missing .*:  0                           Null string:  no
+                               Leading/trailing blanks:  no
+                                    Numeric -> numeric:  no
+  Definition
+           1   Normal BP
+           2   Elevated BP
+           3   Stage 1 HTN
+           4   Stage 2 HTN
+           5   Hypertensive urgency
+
+   Variables:  bp_ord
+
+
+--------------------------------------------------------------------------------------------------------------------------
+Value label gender_ 
+--------------------------------------------------------------------------------------------------------------------------
+
+      Values                                    Labels
+       Range:  [0,1]                     String length:  [4,6]
+           N:  2                 Unique at full length:  yes
+        Gaps:  no                  Unique at length 12:  yes
+  Missing .*:  0                           Null string:  no
+                               Leading/trailing blanks:  no
+                                    Numeric -> numeric:  no
+  Definition
+           0   Male
+           1   Female
+
+   Variables:  gender
+
+
+--------------------------------------------------------------------------------------------------------------------------
+Value label htn_relative_ 
+--------------------------------------------------------------------------------------------------------------------------
+
+      Values                                    Labels
+       Range:  [1,5]                     String length:  [6,58]
+           N:  5                 Unique at full length:  yes
+        Gaps:  no                  Unique at length 12:  yes
+  Missing .*:  0                           Null string:  no
+                               Leading/trailing blanks:  no
+                                    Numeric -> numeric:  no
+  Definition
+           1   First degree relative (Brother, Sister, Mother, or Father)
+           2   Aunt or Uncle
+           3   Grandparent
+           4   Others
+           5   Not applicable
+
+   Variables:  htn_relative
+
+
+--------------------------------------------------------------------------------------------------------------------------
+Value label med___1_ 
+--------------------------------------------------------------------------------------------------------------------------
+
+      Values                                    Labels
+       Range:  [0,1]                     String length:  [7,9]
+           N:  2                 Unique at full length:  yes
+        Gaps:  no                  Unique at length 12:  yes
+  Missing .*:  0                           Null string:  no
+                               Leading/trailing blanks:  no
+                                    Numeric -> numeric:  no
+  Definition
+           0   Unchecked
+           1   Checked
+
+   Variables:  ACEi
+
+
+--------------------------------------------------------------------------------------------------------------------------
+Value label med___2_ 
+--------------------------------------------------------------------------------------------------------------------------
+
+      Values                                    Labels
+       Range:  [0,1]                     String length:  [7,9]
+           N:  2                 Unique at full length:  yes
+        Gaps:  no                  Unique at length 12:  yes
+  Missing .*:  0                           Null string:  no
+                               Leading/trailing blanks:  no
+                                    Numeric -> numeric:  no
+  Definition
+           0   Unchecked
+           1   Checked
+
+   Variables:  ARB
+
+
+--------------------------------------------------------------------------------------------------------------------------
+Value label med___3_ 
+--------------------------------------------------------------------------------------------------------------------------
+
+      Values                                    Labels
+       Range:  [0,1]                     String length:  [7,9]
+           N:  2                 Unique at full length:  yes
+        Gaps:  no                  Unique at length 12:  yes
+  Missing .*:  0                           Null string:  no
+                               Leading/trailing blanks:  no
+                                    Numeric -> numeric:  no
+  Definition
+           0   Unchecked
+           1   Checked
+
+   Variables:  CCB
+
+
+--------------------------------------------------------------------------------------------------------------------------
+Value label med___4_ 
+--------------------------------------------------------------------------------------------------------------------------
+
+      Values                                    Labels
+       Range:  [0,1]                     String length:  [7,9]
+           N:  2                 Unique at full length:  yes
+        Gaps:  no                  Unique at length 12:  yes
+  Missing .*:  0                           Null string:  no
+                               Leading/trailing blanks:  no
+                                    Numeric -> numeric:  no
+  Definition
+           0   Unchecked
+           1   Checked
+
+   Variables:  BB
+
+
+--------------------------------------------------------------------------------------------------------------------------
+Value label med___5_ 
+--------------------------------------------------------------------------------------------------------------------------
+
+      Values                                    Labels
+       Range:  [0,1]                     String length:  [7,9]
+           N:  2                 Unique at full length:  yes
+        Gaps:  no                  Unique at length 12:  yes
+  Missing .*:  0                           Null string:  no
+                               Leading/trailing blanks:  no
+                                    Numeric -> numeric:  no
+  Definition
+           0   Unchecked
+           1   Checked
+
+   Variables:  AB
+
+
+--------------------------------------------------------------------------------------------------------------------------
+Value label med___9_ 
+--------------------------------------------------------------------------------------------------------------------------
+
+      Values                                    Labels
+       Range:  [0,1]                     String length:  [7,9]
+           N:  2                 Unique at full length:  yes
+        Gaps:  no                  Unique at length 12:  yes
+  Missing .*:  0                           Null string:  no
+                               Leading/trailing blanks:  no
+                                    Numeric -> numeric:  no
+  Definition
+           0   Unchecked
+           1   Checked
+
+   Variables:  Other_antihypertensive
+
+
+--------------------------------------------------------------------------------------------------------------------------
+Value label my_first_instrument_complete_ 
+--------------------------------------------------------------------------------------------------------------------------
+
+      Values                                    Labels
+       Range:  [0,2]                     String length:  [8,10]
+           N:  3                 Unique at full length:  yes
+        Gaps:  no                  Unique at length 12:  yes
+  Missing .*:  0                           Null string:  no
+                               Leading/trailing blanks:  no
+                                    Numeric -> numeric:  no
+  Definition
+           0   Incomplete
+           1   Unverified
+           2   Complete
+
+   Variables:  my_first_instrument_complete
+
+
+--------------------------------------------------------------------------------------------------------------------------
+Value label overweight_ 
+--------------------------------------------------------------------------------------------------------------------------
+
+      Values                                    Labels
+       Range:  [0,1]                     String length:  [2,3]
+           N:  2                 Unique at full length:  yes
+        Gaps:  no                  Unique at length 12:  yes
+  Missing .*:  0                           Null string:  no
+                               Leading/trailing blanks:  no
+                                    Numeric -> numeric:  no
+  Definition
+           0   No
+           1   Yes
+
+   Variables:  overweight
+
+
+. 
+. * simpler alternative: use the menu. Personally, I normally use the menu for label issues and graphics as opposed to fre
+> e texting. Notice that whether you use the menu or not, Stata still gives you the code in the Command History box. 
+. 
+. * in this case, follow Data > Data utilities > Label utilities > Manage value labels
+. 
+. label drop med___1_
+
+. label drop med___2_
+
+. label drop med___3_
+
+. label drop med___4_
+
+. label drop med___5_
+
+. label drop med___9_
+
+. 
+. tab1 ACEi ARB CCB BB AB Other_antihypertensive 
+
+-> tabulation of ACEi  
+
+ patient on |
+        ACE |
+  inhibitor |      Freq.     Percent        Cum.
+------------+-----------------------------------
+          0 |        114       95.00       95.00
+          1 |          6        5.00      100.00
+------------+-----------------------------------
+      Total |        120      100.00
+
+-> tabulation of ARB  
+
+ patient on |
+angiotensin |
+   receptor |
+    blocker |      Freq.     Percent        Cum.
+------------+-----------------------------------
+          0 |        116       96.67       96.67
+          1 |          4        3.33      100.00
+------------+-----------------------------------
+      Total |        120      100.00
+
+-> tabulation of CCB  
+
+ patient on |
+    calcium |
+    channel |
+    blocker |      Freq.     Percent        Cum.
+------------+-----------------------------------
+          0 |        107       89.17       89.17
+          1 |         13       10.83      100.00
+------------+-----------------------------------
+      Total |        120      100.00
+
+-> tabulation of BB  
+
+ patient on |
+       beta |
+    blocker |      Freq.     Percent        Cum.
+------------+-----------------------------------
+          0 |        116       96.67       96.67
+          1 |          4        3.33      100.00
+------------+-----------------------------------
+      Total |        120      100.00
+
+-> tabulation of AB  
+
+ patient on |
+      alpha |
+    blocker |      Freq.     Percent        Cum.
+------------+-----------------------------------
+          0 |        118       98.33       98.33
+          1 |          2        1.67      100.00
+------------+-----------------------------------
+      Total |        120      100.00
+
+-> tabulation of Other_antihypertensive  
+
+ patient on |
+      other |
+antihyperte |
+      nsive |      Freq.     Percent        Cum.
+------------+-----------------------------------
+          0 |        119       99.17       99.17
+          1 |          1        0.83      100.00
+------------+-----------------------------------
+      Total |        120      100.00
+
+. 
+. * rechecking our data cleaning process so far:
+. 
+. describe record_id-my_first /* the only thing I see that I don't really like is the my_first_instrument_complete variabl
+> e, which is incomplete for everyone. So, we know that this variable is not adding any value to our analysis */
+
+Variable      Storage   Display    Value
+    name         type    format    label      Variable label
+--------------------------------------------------------------------------------------------------------------------------
+record_id       int     %8.0g                 Record ID
+mrn             long    %12.0g                MRN
+gender          byte    %8.0g      gender_    Gender
+age_years       byte    %8.0g                 Age (years)
+age_years_str   byte    %10.0g                Age (years)
+overweight      byte    %8.0g      overweight_
+                                              Overweight
+age_gt_12       byte    %8.0g      age_gt_12_
+                                              Age > 12 years
+hemoglobin_a1c  float   %9.0g                 Hemoglobin A1c
+non_hdl_chole~l int     %8.0g                 Non HDL cholesterol
+bp_ord          byte    %20.0g     bp_ord_    Blood pressure levels
+ahtn_med        byte    %8.0g      ahtn_med_
+                                              Antihypertensive medication use
+ACEi            byte    %9.0g      med___1_   patient on ACE inhibitor
+ARB             byte    %9.0g      med___2_   patient on angiotensin receptor blocker
+CCB             byte    %9.0g      med___3_   patient on calcium channel blocker
+BB              byte    %9.0g      med___4_   patient on beta blocker
+AB              byte    %9.0g      med___5_   patient on alpha blocker
+Other_antihyp~e byte    %9.0g      med___9_   patient on other antihypertensive
+htn_relative    byte    %58.0g     htn_relative_
+                                              Relatives with hypertension
+my_first_inst~e byte    %10.0g     my_first_instrument_complete_
+                                              Complete?
+
+. 
+. drop my_first_instrument_complete
+
+. 
+. describe record_id-htn_relative
+
+Variable      Storage   Display    Value
+    name         type    format    label      Variable label
+--------------------------------------------------------------------------------------------------------------------------
+record_id       int     %8.0g                 Record ID
+mrn             long    %12.0g                MRN
+gender          byte    %8.0g      gender_    Gender
+age_years       byte    %8.0g                 Age (years)
+age_years_str   byte    %10.0g                Age (years)
+overweight      byte    %8.0g      overweight_
+                                              Overweight
+age_gt_12       byte    %8.0g      age_gt_12_
+                                              Age > 12 years
+hemoglobin_a1c  float   %9.0g                 Hemoglobin A1c
+non_hdl_chole~l int     %8.0g                 Non HDL cholesterol
+bp_ord          byte    %20.0g     bp_ord_    Blood pressure levels
+ahtn_med        byte    %8.0g      ahtn_med_
+                                              Antihypertensive medication use
+ACEi            byte    %9.0g      med___1_   patient on ACE inhibitor
+ARB             byte    %9.0g      med___2_   patient on angiotensin receptor blocker
+CCB             byte    %9.0g      med___3_   patient on calcium channel blocker
+BB              byte    %9.0g      med___4_   patient on beta blocker
+AB              byte    %9.0g      med___5_   patient on alpha blocker
+Other_antihyp~e byte    %9.0g      med___9_   patient on other antihypertensive
+htn_relative    byte    %58.0g     htn_relative_
+                                              Relatives with hypertension
+
+. 
+. 
+. ********************** dates in Stata 
+. 
+. * before we conclude, lets have a brief word about how Stata handles dates. Warning: it is kind of vexxing (but so are t
+> he other statistical programs out there)
+. 
+. list random_date /* we seem to have dates in here, but they don't make sense. This is because the dates are not in a "hu
+> man readable format" */
+
+     +----------+
+     | random~e |
+     |----------|
+  1. |    22994 |
+  2. |    23058 |
+  3. |    23079 |
+  4. |    22396 |
+  5. |    22844 |
+     |----------|
+  6. |    22813 |
+  7. |    23081 |
+  8. |    23246 |
+  9. |    23301 |
+ 10. |    23307 |
+     |----------|
+ 11. |    22896 |
+ 12. |    22793 |
+ 13. |    22475 |
+ 14. |    23338 |
+ 15. |    22531 |
+     |----------|
+ 16. |    23152 |
+ 17. |    23237 |
+ 18. |    22693 |
+ 19. |    22413 |
+ 20. |    22910 |
+     |----------|
+ 21. |    22345 |
+ 22. |    23031 |
+ 23. |    22703 |
+ 24. |    23366 |
+ 25. |    22904 |
+     |----------|
+ 26. |    22853 |
+ 27. |    23246 |
+ 28. |    23280 |
+ 29. |    22881 |
+ 30. |    22294 |
+     |----------|
+ 31. |    22899 |
+ 32. |    22863 |
+ 33. |    23238 |
+ 34. |    23141 |
+ 35. |    22641 |
+     |----------|
+ 36. |    22801 |
+ 37. |    22720 |
+ 38. |    23342 |
+ 39. |    22633 |
+ 40. |    22467 |
+     |----------|
+ 41. |    22419 |
+ 42. |    22283 |
+ 43. |    23084 |
+ 44. |    22256 |
+ 45. |    22648 |
+     |----------|
+ 46. |    22546 |
+ 47. |    22930 |
+ 48. |    22481 |
+ 49. |    22518 |
+ 50. |    22732 |
+     |----------|
+ 51. |    22567 |
+ 52. |    22851 |
+ 53. |    22601 |
+ 54. |    22275 |
+ 55. |    22531 |
+     |----------|
+ 56. |    22830 |
+ 57. |    22264 |
+ 58. |    22780 |
+ 59. |    22388 |
+ 60. |    23273 |
+     |----------|
+ 61. |    23196 |
+ 62. |    23357 |
+ 63. |    22773 |
+ 64. |    23342 |
+ 65. |    22930 |
+     |----------|
+ 66. |    22257 |
+ 67. |    23270 |
+ 68. |    22932 |
+ 69. |    23252 |
+ 70. |    22750 |
+     |----------|
+ 71. |    22864 |
+ 72. |    22560 |
+ 73. |    22660 |
+ 74. |    23020 |
+ 75. |    22286 |
+     |----------|
+ 76. |    23328 |
+ 77. |    22528 |
+ 78. |    22770 |
+ 79. |    22877 |
+ 80. |    22712 |
+     |----------|
+ 81. |    22332 |
+ 82. |    22425 |
+ 83. |    22346 |
+ 84. |    22609 |
+ 85. |    22418 |
+     |----------|
+ 86. |    22599 |
+ 87. |    23214 |
+ 88. |    22718 |
+ 89. |    22683 |
+ 90. |    22671 |
+     |----------|
+ 91. |    22775 |
+ 92. |    22941 |
+ 93. |    22606 |
+ 94. |    22786 |
+ 95. |    23265 |
+     |----------|
+ 96. |    22515 |
+ 97. |    22814 |
+ 98. |    22477 |
+ 99. |    22345 |
+100. |    22370 |
+     |----------|
+101. |    23111 |
+102. |    22833 |
+103. |    22775 |
+104. |    22304 |
+105. |    22730 |
+     |----------|
+106. |    22390 |
+107. |    22274 |
+108. |    22463 |
+109. |    22853 |
+110. |    22849 |
+     |----------|
+111. |    22422 |
+112. |    23361 |
+113. |    23270 |
+114. |    23353 |
+115. |    23203 |
+     |----------|
+116. |    23143 |
+117. |    22615 |
+118. |    22720 |
+119. |    23328 |
+120. |    23199 |
+     +----------+
+
+. 
+. * it turns out that Stata stores dates as the number of days from January 1, 1960. This is completely arbitrary, however
+>  computationally useful because it makes it easier to do fast math with the dates. 
+. 
+. * it is RELATIVELY easy to convert these to dates we can understand, but it requires a trip to the help files. Even for 
+> me. Every. Single. Time.
+. 
+. gen random_date_intelligible = random_date
+
+. format random_date_intelligible %td
+
+. 
+. list random_date random_date_intelligible in 1/10
+
+     +----------------------+
+     | rando~te   random~le |
+     |----------------------|
+  1. |    22994   15dec2022 |
+  2. |    23058   17feb2023 |
+  3. |    23079   10mar2023 |
+  4. |    22396   26apr2021 |
+  5. |    22844   18jul2022 |
+     |----------------------|
+  6. |    22813   17jun2022 |
+  7. |    23081   12mar2023 |
+  8. |    23246   24aug2023 |
+  9. |    23301   18oct2023 |
+ 10. |    23307   24oct2023 |
+     +----------------------+
+
+. 
+. * this makes the dates make much more sense, although all that has changed is the format Stata uses to present the date 
+> to our eyes. The actual data are encoded as dates from January 1, 1960, as before. 
+. 
+. 
+. * there is a whole lot more to say about dates but not at this point. For now, it is just important to remember that the
+> re is a way to deal with dates in Stata. 
+. 
+. * what if I want to make a variable corresponding to the number of days between two date variables, random_date and rand
+> om_date_1? it is easy
+. 
+. generate delta_date = random_date-random_date_1
+
+. 
+. list random_date_1 random_date delta_date
+
+     +--------------------------------+
+     | random~1   rando~te   delta_~e |
+     |--------------------------------|
+  1. |   -45136      22994      68130 |
+  2. |   -30784      23058      53842 |
+  3. |   -45131      23079      68210 |
+  4. |   -25401      22396      47797 |
+  5. |   -33640      22844      56484 |
+     |--------------------------------|
+  6. |   -22029      22813      44842 |
+  7. |   -55285      23081      78366 |
+  8. |   -52618      23246      75864 |
+  9. |   -38057      23301      61358 |
+ 10. |   -32661      23307      55968 |
+     |--------------------------------|
+ 11. |   -41375      22896      64271 |
+ 12. |   -50190      22793      72983 |
+ 13. |   -48676      22475      71151 |
+ 14. |   -34493      23338      57831 |
+ 15. |   -36782      22531      59313 |
+     |--------------------------------|
+ 16. |   -23804      23152      46956 |
+ 17. |   -40135      23237      63372 |
+ 18. |   -46372      22693      69065 |
+ 19. |   -22008      22413      44421 |
+ 20. |   -39229      22910      62139 |
+     |--------------------------------|
+ 21. |   -54244      22345      76589 |
+ 22. |   -39932      23031      62963 |
+ 23. |   -46368      22703      69071 |
+ 24. |   -44375      23366      67741 |
+ 25. |   -44324      22904      67228 |
+     |--------------------------------|
+ 26. |   -31814      22853      54667 |
+ 27. |   -23445      23246      46691 |
+ 28. |   -30483      23280      53763 |
+ 29. |   -23000      22881      45881 |
+ 30. |   -55205      22294      77499 |
+     |--------------------------------|
+ 31. |   -21971      22899      44870 |
+ 32. |   -24720      22863      47583 |
+ 33. |   -47474      23238      70712 |
+ 34. |   -29451      23141      52592 |
+ 35. |   -37212      22641      59853 |
+     |--------------------------------|
+ 36. |   -38780      22801      61581 |
+ 37. |   -35339      22720      58059 |
+ 38. |   -43388      23342      66730 |
+ 39. |   -39996      22633      62629 |
+ 40. |   -22310      22467      44777 |
+     |--------------------------------|
+ 41. |   -53569      22419      75988 |
+ 42. |   -31103      22283      53386 |
+ 43. |   -30221      23084      53305 |
+ 44. |   -46299      22256      68555 |
+ 45. |   -54451      22648      77099 |
+     |--------------------------------|
+ 46. |   -30170      22546      52716 |
+ 47. |   -32520      22930      55450 |
+ 48. |   -31695      22481      54176 |
+ 49. |   -23070      22518      45588 |
+ 50. |   -34514      22732      57246 |
+     |--------------------------------|
+ 51. |   -47421      22567      69988 |
+ 52. |   -45787      22851      68638 |
+ 53. |   -24154      22601      46755 |
+ 54. |   -33130      22275      55405 |
+ 55. |   -23872      22531      46403 |
+     |--------------------------------|
+ 56. |   -31296      22830      54126 |
+ 57. |   -38156      22264      60420 |
+ 58. |   -31852      22780      54632 |
+ 59. |   -58077      22388      80465 |
+ 60. |   -46948      23273      70221 |
+     |--------------------------------|
+ 61. |   -35395      23196      58591 |
+ 62. |   -27428      23357      50785 |
+ 63. |   -35009      22773      57782 |
+ 64. |   -30898      23342      54240 |
+ 65. |   -39770      22930      62700 |
+     |--------------------------------|
+ 66. |   -23548      22257      45805 |
+ 67. |   -24532      23270      47802 |
+ 68. |   -40824      22932      63756 |
+ 69. |   -31498      23252      54750 |
+ 70. |   -34314      22750      57064 |
+     |--------------------------------|
+ 71. |   -56769      22864      79633 |
+ 72. |   -21675      22560      44235 |
+ 73. |   -41062      22660      63722 |
+ 74. |   -52892      23020      75912 |
+ 75. |   -53650      22286      75936 |
+     |--------------------------------|
+ 76. |   -41428      23328      64756 |
+ 77. |   -28298      22528      50826 |
+ 78. |   -56637      22770      79407 |
+ 79. |   -52775      22877      75652 |
+ 80. |   -49920      22712      72632 |
+     |--------------------------------|
+ 81. |   -22614      22332      44946 |
+ 82. |   -38882      22425      61307 |
+ 83. |   -43965      22346      66311 |
+ 84. |   -32151      22609      54760 |
+ 85. |   -27035      22418      49453 |
+     |--------------------------------|
+ 86. |   -37820      22599      60419 |
+ 87. |   -50771      23214      73985 |
+ 88. |   -31772      22718      54490 |
+ 89. |   -39674      22683      62357 |
+ 90. |   -22207      22671      44878 |
+     |--------------------------------|
+ 91. |   -48106      22775      70881 |
+ 92. |   -27703      22941      50644 |
+ 93. |   -51046      22606      73652 |
+ 94. |   -28188      22786      50974 |
+ 95. |   -43833      23265      67098 |
+     |--------------------------------|
+ 96. |   -55267      22515      77782 |
+ 97. |   -39759      22814      62573 |
+ 98. |   -37488      22477      59965 |
+ 99. |   -48640      22345      70985 |
+100. |   -40547      22370      62917 |
+     |--------------------------------|
+101. |   -53074      23111      76185 |
+102. |   -43927      22833      66760 |
+103. |   -47056      22775      69831 |
+104. |   -47660      22304      69964 |
+105. |   -36280      22730      59010 |
+     |--------------------------------|
+106. |   -24171      22390      46561 |
+107. |   -22605      22274      44879 |
+108. |   -26324      22463      48787 |
+109. |   -46980      22853      69833 |
+110. |   -38789      22849      61638 |
+     |--------------------------------|
+111. |   -23064      22422      45486 |
+112. |   -26882      23361      50243 |
+113. |   -41238      23270      64508 |
+114. |   -42112      23353      65465 |
+115. |   -41985      23203      65188 |
+     |--------------------------------|
+116. |   -27346      23143      50489 |
+117. |   -54526      22615      77141 |
+118. |   -30451      22720      53171 |
+119. |   -31708      23328      55036 |
+120. |   -54978      23199      78177 |
+     +--------------------------------+
+
+. 
+. * if I am not a computer, I may prefer the following
+. 
+. format random_date %td
+
+. format random_date_1 %td
+
+. 
+. list random_date_1 random_date delta_date
+
+     +----------------------------------+
+     | random_~1   random~te   delta_~e |
+     |----------------------------------|
+  1. | 03jun1836   15dec2022      68130 |
+  2. | 19sep1875   17feb2023      53842 |
+  3. | 08jun1836   10mar2023      68210 |
+  4. | 15jun1890   26apr2021      47797 |
+  5. | 24nov1867   18jul2022      56484 |
+     |----------------------------------|
+  6. | 08sep1899   17jun2022      44842 |
+  7. | 20aug1808   12mar2023      78366 |
+  8. | 09dec1815   24aug2023      75864 |
+  9. | 21oct1855   18oct2023      61358 |
+ 10. | 30jul1870   24oct2023      55968 |
+     |----------------------------------|
+ 11. | 20sep1846   08sep2022      64271 |
+ 12. | 02aug1822   28may2022      72983 |
+ 13. | 24sep1826   14jul2021      71151 |
+ 14. | 24jul1865   24nov2023      57831 |
+ 15. | 18apr1859   08sep2021      59313 |
+     |----------------------------------|
+ 16. | 29oct1894   22may2023      46956 |
+ 17. | 11feb1850   15aug2023      63372 |
+ 18. | 14jan1833   17feb2022      69065 |
+ 19. | 29sep1899   13may2021      44421 |
+ 20. | 05aug1852   22sep2022      62139 |
+     |----------------------------------|
+ 21. | 27jun1811   06mar2021      76589 |
+ 22. | 02sep1850   21jan2023      62963 |
+ 23. | 18jan1833   27feb2022      69071 |
+ 24. | 04jul1838   22dec2023      67741 |
+ 25. | 24aug1838   16sep2022      67228 |
+     |----------------------------------|
+ 26. | 23nov1872   27jul2022      54667 |
+ 27. | 23oct1895   24aug2023      46691 |
+ 28. | 16jul1876   27sep2023      53763 |
+ 29. | 10jan1897   24aug2022      45881 |
+ 30. | 08nov1808   14jan2021      77499 |
+     |----------------------------------|
+ 31. | 05nov1899   11sep2022      44870 |
+ 32. | 26apr1892   06aug2022      47583 |
+ 33. | 08jan1830   16aug2023      70712 |
+ 34. | 14may1879   11may2023      52592 |
+ 35. | 12feb1858   27dec2021      59853 |
+     |----------------------------------|
+ 36. | 28oct1853   05jun2022      61581 |
+ 37. | 31mar1863   16mar2022      58059 |
+ 38. | 17mar1841   28nov2023      66730 |
+ 39. | 30jun1850   19dec2021      62629 |
+ 40. | 01dec1898   06jul2021      44777 |
+     |----------------------------------|
+ 41. | 02may1813   19may2021      75988 |
+ 42. | 04nov1874   03jan2021      53386 |
+ 43. | 04apr1877   15mar2023      53305 |
+ 44. | 28mar1833   07dec2020      68555 |
+ 45. | 02dec1810   03jan2022      77099 |
+     |----------------------------------|
+ 46. | 25may1877   23sep2021      52716 |
+ 47. | 18dec1870   12oct2022      55450 |
+ 48. | 22mar1873   20jul2021      54176 |
+ 49. | 01nov1896   26aug2021      45588 |
+ 50. | 03jul1865   28mar2022      57246 |
+     |----------------------------------|
+ 51. | 02mar1830   14oct2021      69988 |
+ 52. | 22aug1834   25jul2022      68638 |
+ 53. | 13nov1893   17nov2021      46755 |
+ 54. | 17apr1869   26dec2020      55405 |
+ 55. | 22aug1894   08sep2021      46403 |
+     |----------------------------------|
+ 56. | 25apr1874   04jul2022      54126 |
+ 57. | 14jul1855   15dec2020      60420 |
+ 58. | 16oct1872   15may2022      54632 |
+ 59. | 28dec1800   18apr2021      80465 |
+ 60. | 18jun1831   20sep2023      70221 |
+     |----------------------------------|
+ 61. | 03feb1863   05jul2023      58591 |
+ 62. | 26nov1884   13dec2023      50785 |
+ 63. | 24feb1864   08may2022      57782 |
+ 64. | 28may1875   28nov2023      54240 |
+ 65. | 11feb1851   12oct2022      62700 |
+     |----------------------------------|
+ 66. | 12jul1895   08dec2020      45805 |
+ 67. | 31oct1892   17sep2023      47802 |
+ 68. | 24mar1848   14oct2022      63756 |
+ 69. | 05oct1873   30aug2023      54750 |
+ 70. | 19jan1866   15apr2022      57064 |
+     |----------------------------------|
+ 71. | 28jul1804   07aug2022      79633 |
+ 72. | 28aug1900   07oct2021      44235 |
+ 73. | 30jul1847   15jan2022      63722 |
+ 74. | 10mar1815   10jan2023      75912 |
+ 75. | 10feb1813   06jan2021      75936 |
+     |----------------------------------|
+ 76. | 29jul1846   14nov2023      64756 |
+ 77. | 10jul1882   05sep2021      50826 |
+ 78. | 07dec1804   05may2022      79407 |
+ 79. | 05jul1815   20aug2022      75652 |
+ 80. | 29apr1823   08mar2022      72632 |
+     |----------------------------------|
+ 81. | 31jan1898   21feb2021      44946 |
+ 82. | 18jul1853   25may2021      61307 |
+ 83. | 18aug1839   07mar2021      66311 |
+ 84. | 22dec1871   25nov2021      54760 |
+ 85. | 24dec1885   18may2021      49453 |
+     |----------------------------------|
+ 86. | 14jun1856   15nov2021      60419 |
+ 87. | 29dec1820   23jul2023      73985 |
+ 88. | 04jan1873   14mar2022      54490 |
+ 89. | 18may1851   07feb2022      62357 |
+ 90. | 14mar1899   26jan2022      44878 |
+     |----------------------------------|
+ 91. | 16apr1828   10may2022      70881 |
+ 92. | 25feb1884   23oct2022      50644 |
+ 93. | 29mar1820   22nov2021      73652 |
+ 94. | 28oct1882   21may2022      50974 |
+ 95. | 28dec1839   12sep2023      67098 |
+     |----------------------------------|
+ 96. | 07sep1808   23aug2021      77782 |
+ 97. | 22feb1851   18jun2022      62573 |
+ 98. | 12may1857   16jul2021      59965 |
+ 99. | 30oct1826   06mar2021      70985 |
+100. | 26dec1848   31mar2021      62917 |
+     |----------------------------------|
+101. | 09sep1814   11apr2023      76185 |
+102. | 25sep1839   07jul2022      66760 |
+103. | 02mar1831   10may2022      69831 |
+104. | 06jul1829   24jan2021      69964 |
+105. | 01sep1860   26mar2022      59010 |
+     |----------------------------------|
+106. | 27oct1893   20apr2021      46561 |
+107. | 09feb1898   25dec2020      44879 |
+108. | 05dec1887   02jul2021      48787 |
+109. | 17may1831   27jul2022      69833 |
+110. | 19oct1853   23jul2022      61638 |
+     |----------------------------------|
+111. | 07nov1896   22may2021      45486 |
+112. | 26may1886   17dec2023      50243 |
+113. | 04feb1847   17sep2023      64508 |
+114. | 13sep1844   09dec2023      65465 |
+115. | 18jan1845   12jul2023      65188 |
+     |----------------------------------|
+116. | 16feb1885   13may2023      50489 |
+117. | 18sep1810   01dec2021      77141 |
+118. | 17aug1876   16mar2022      53171 |
+119. | 09mar1873   14nov2023      55036 |
+120. | 23jun1809   08jul2023      78177 |
+     +----------------------------------+
+
+. 
+. * note that we still don't have delta_date in a format that is immediately accessible, because it is giving us the numbe
+> r of days in between the two points in time. We may find it easier to think in terms of years. 
+. 
+. replace delta_date = floor(delta_date/365.25) /* no one here is expected to come up with this code on their own */
+(120 real changes made)
+
+. 
+. list random_date_1 random_date delta_date /* looks better */
+
+     +----------------------------------+
+     | random_~1   random~te   delta_~e |
+     |----------------------------------|
+  1. | 03jun1836   15dec2022        186 |
+  2. | 19sep1875   17feb2023        147 |
+  3. | 08jun1836   10mar2023        186 |
+  4. | 15jun1890   26apr2021        130 |
+  5. | 24nov1867   18jul2022        154 |
+     |----------------------------------|
+  6. | 08sep1899   17jun2022        122 |
+  7. | 20aug1808   12mar2023        214 |
+  8. | 09dec1815   24aug2023        207 |
+  9. | 21oct1855   18oct2023        167 |
+ 10. | 30jul1870   24oct2023        153 |
+     |----------------------------------|
+ 11. | 20sep1846   08sep2022        175 |
+ 12. | 02aug1822   28may2022        199 |
+ 13. | 24sep1826   14jul2021        194 |
+ 14. | 24jul1865   24nov2023        158 |
+ 15. | 18apr1859   08sep2021        162 |
+     |----------------------------------|
+ 16. | 29oct1894   22may2023        128 |
+ 17. | 11feb1850   15aug2023        173 |
+ 18. | 14jan1833   17feb2022        189 |
+ 19. | 29sep1899   13may2021        121 |
+ 20. | 05aug1852   22sep2022        170 |
+     |----------------------------------|
+ 21. | 27jun1811   06mar2021        209 |
+ 22. | 02sep1850   21jan2023        172 |
+ 23. | 18jan1833   27feb2022        189 |
+ 24. | 04jul1838   22dec2023        185 |
+ 25. | 24aug1838   16sep2022        184 |
+     |----------------------------------|
+ 26. | 23nov1872   27jul2022        149 |
+ 27. | 23oct1895   24aug2023        127 |
+ 28. | 16jul1876   27sep2023        147 |
+ 29. | 10jan1897   24aug2022        125 |
+ 30. | 08nov1808   14jan2021        212 |
+     |----------------------------------|
+ 31. | 05nov1899   11sep2022        122 |
+ 32. | 26apr1892   06aug2022        130 |
+ 33. | 08jan1830   16aug2023        193 |
+ 34. | 14may1879   11may2023        143 |
+ 35. | 12feb1858   27dec2021        163 |
+     |----------------------------------|
+ 36. | 28oct1853   05jun2022        168 |
+ 37. | 31mar1863   16mar2022        158 |
+ 38. | 17mar1841   28nov2023        182 |
+ 39. | 30jun1850   19dec2021        171 |
+ 40. | 01dec1898   06jul2021        122 |
+     |----------------------------------|
+ 41. | 02may1813   19may2021        208 |
+ 42. | 04nov1874   03jan2021        146 |
+ 43. | 04apr1877   15mar2023        145 |
+ 44. | 28mar1833   07dec2020        187 |
+ 45. | 02dec1810   03jan2022        211 |
+     |----------------------------------|
+ 46. | 25may1877   23sep2021        144 |
+ 47. | 18dec1870   12oct2022        151 |
+ 48. | 22mar1873   20jul2021        148 |
+ 49. | 01nov1896   26aug2021        124 |
+ 50. | 03jul1865   28mar2022        156 |
+     |----------------------------------|
+ 51. | 02mar1830   14oct2021        191 |
+ 52. | 22aug1834   25jul2022        187 |
+ 53. | 13nov1893   17nov2021        128 |
+ 54. | 17apr1869   26dec2020        151 |
+ 55. | 22aug1894   08sep2021        127 |
+     |----------------------------------|
+ 56. | 25apr1874   04jul2022        148 |
+ 57. | 14jul1855   15dec2020        165 |
+ 58. | 16oct1872   15may2022        149 |
+ 59. | 28dec1800   18apr2021        220 |
+ 60. | 18jun1831   20sep2023        192 |
+     |----------------------------------|
+ 61. | 03feb1863   05jul2023        160 |
+ 62. | 26nov1884   13dec2023        139 |
+ 63. | 24feb1864   08may2022        158 |
+ 64. | 28may1875   28nov2023        148 |
+ 65. | 11feb1851   12oct2022        171 |
+     |----------------------------------|
+ 66. | 12jul1895   08dec2020        125 |
+ 67. | 31oct1892   17sep2023        130 |
+ 68. | 24mar1848   14oct2022        174 |
+ 69. | 05oct1873   30aug2023        149 |
+ 70. | 19jan1866   15apr2022        156 |
+     |----------------------------------|
+ 71. | 28jul1804   07aug2022        218 |
+ 72. | 28aug1900   07oct2021        121 |
+ 73. | 30jul1847   15jan2022        174 |
+ 74. | 10mar1815   10jan2023        207 |
+ 75. | 10feb1813   06jan2021        207 |
+     |----------------------------------|
+ 76. | 29jul1846   14nov2023        177 |
+ 77. | 10jul1882   05sep2021        139 |
+ 78. | 07dec1804   05may2022        217 |
+ 79. | 05jul1815   20aug2022        207 |
+ 80. | 29apr1823   08mar2022        198 |
+     |----------------------------------|
+ 81. | 31jan1898   21feb2021        123 |
+ 82. | 18jul1853   25may2021        167 |
+ 83. | 18aug1839   07mar2021        181 |
+ 84. | 22dec1871   25nov2021        149 |
+ 85. | 24dec1885   18may2021        135 |
+     |----------------------------------|
+ 86. | 14jun1856   15nov2021        165 |
+ 87. | 29dec1820   23jul2023        202 |
+ 88. | 04jan1873   14mar2022        149 |
+ 89. | 18may1851   07feb2022        170 |
+ 90. | 14mar1899   26jan2022        122 |
+     |----------------------------------|
+ 91. | 16apr1828   10may2022        194 |
+ 92. | 25feb1884   23oct2022        138 |
+ 93. | 29mar1820   22nov2021        201 |
+ 94. | 28oct1882   21may2022        139 |
+ 95. | 28dec1839   12sep2023        183 |
+     |----------------------------------|
+ 96. | 07sep1808   23aug2021        212 |
+ 97. | 22feb1851   18jun2022        171 |
+ 98. | 12may1857   16jul2021        164 |
+ 99. | 30oct1826   06mar2021        194 |
+100. | 26dec1848   31mar2021        172 |
+     |----------------------------------|
+101. | 09sep1814   11apr2023        208 |
+102. | 25sep1839   07jul2022        182 |
+103. | 02mar1831   10may2022        191 |
+104. | 06jul1829   24jan2021        191 |
+105. | 01sep1860   26mar2022        161 |
+     |----------------------------------|
+106. | 27oct1893   20apr2021        127 |
+107. | 09feb1898   25dec2020        122 |
+108. | 05dec1887   02jul2021        133 |
+109. | 17may1831   27jul2022        191 |
+110. | 19oct1853   23jul2022        168 |
+     |----------------------------------|
+111. | 07nov1896   22may2021        124 |
+112. | 26may1886   17dec2023        137 |
+113. | 04feb1847   17sep2023        176 |
+114. | 13sep1844   09dec2023        179 |
+115. | 18jan1845   12jul2023        178 |
+     |----------------------------------|
+116. | 16feb1885   13may2023        138 |
+117. | 18sep1810   01dec2021        211 |
+118. | 17aug1876   16mar2022        145 |
+119. | 09mar1873   14nov2023        150 |
+120. | 23jun1809   08jul2023        214 |
+     +----------------------------------+
+
+. 
+. 
+. ********************** putting it all together (plus a bit more), and assuming we went back to the data and figured the 
+> missing valuees we are left with the following:
+. 
+. use SarahsSTATAtest, clear
+(SarahsSTATATest_DATA_NOHDRS_2023-07-11_1125.csv)
+
+. 
+. notes: these data were downloaded from RedCap on July 11, 2023
+
+. notes
+
+_dta:
+  1.  these data were downloaded from RedCap on July 11, 2023
+
+. 
+. rename med___1  ACEi
+
+. rename med___2  ARB
+
+. rename med___3  CCB
+
+. rename med___4  BB
+
+. rename med___5  AB
+
+. rename med___9  Other_antihypertensive
+
+. 
+. label variable ACEi "patient on ACE inhibitor"
+
+. label variable ARB "patient on angiotensin receptor blocker"
+
+. label variable CCB "patient on calcium channel blocker"
+
+. label variable BB "patient on beta blocker"
+
+. label variable AB "patient on alpha blocker"
+
+. label variable Other_antihypertensive "patient on other antihypertensive"
+
+. 
+. label drop med___1_
+
+. label drop med___2_
+
+. label drop med___3_
+
+. label drop med___4_
+
+. label drop med___5_
+
+. label drop med___9_
+
+. 
+. drop my_first_instrument_complete
+
+. 
+. describe
+
+Contains data from SarahsSTATAtest.dta
+ Observations:           120                  SarahsSTATATest_DATA_NOHDRS_2023-07-11_1125.csv
+    Variables:            17                  11 Jul 2023 16:50
+                                              (_dta has notes)
+--------------------------------------------------------------------------------------------------------------------------
+Variable      Storage   Display    Value
+    name         type    format    label      Variable label
+--------------------------------------------------------------------------------------------------------------------------
+record_id       int     %8.0g                 Record ID
+mrn             long    %12.0g                MRN
+gender          byte    %8.0g      gender_    Gender
+age_years       byte    %8.0g                 Age (years)
+overweight      byte    %8.0g      overweight_
+                                              Overweight
+age_gt_12       byte    %8.0g      age_gt_12_
+                                              Age > 12 years
+hemoglobin_a1c  float   %9.0g                 Hemoglobin A1c
+non_hdl_chole~l int     %8.0g                 Non HDL cholesterol
+bp_ord          byte    %20.0g     bp_ord_    Blood pressure levels
+ahtn_med        byte    %8.0g      ahtn_med_
+                                              Antihypertensive medication use
+ACEi            byte    %9.0g      med___1_   patient on ACE inhibitor
+ARB             byte    %9.0g      med___2_   patient on angiotensin receptor blocker
+CCB             byte    %9.0g      med___3_   patient on calcium channel blocker
+BB              byte    %9.0g      med___4_   patient on beta blocker
+AB              byte    %9.0g      med___5_   patient on alpha blocker
+Other_antihyp~e byte    %9.0g      med___9_   patient on other antihypertensive
+htn_relative    byte    %58.0g     htn_relative_
+                                              Relatives with hypertension
+--------------------------------------------------------------------------------------------------------------------------
+Sorted by: 
+     Note: Dataset has changed since last saved.
+
+. 
+. capture log close
