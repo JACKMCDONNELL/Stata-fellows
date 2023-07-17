@@ -1,0 +1,32 @@
+--------------------------------------------------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  /Users/johnmcdonnell/Desktop/Stata fellow training/workflow files/example3.log
+  log type:  text
+ opened on:  17 Jul 2023, 14:47:42
+
+. use wws2, clear
+(Working Women Survey w/fixes)
+
+. summarize age wage hours
+
+    Variable |        Obs        Mean    Std. dev.       Min        Max
+-------------+---------------------------------------------------------
+         age |      2,246    36.22707    5.337859         21         48
+        wage |      2,244    7.796781     5.82459          0   40.74659
+       hours |      2,242    37.21811    10.50914          1         80
+
+. tabulate married
+
+    married |      Freq.     Percent        Cum.
+------------+-----------------------------------
+          0 |        804       35.80       35.80
+          1 |      1,442       64.20      100.00
+------------+-----------------------------------
+      Total |      2,246      100.00
+
+. log close
+      name:  <unnamed>
+       log:  /Users/johnmcdonnell/Desktop/Stata fellow training/workflow files/example3.log
+  log type:  text
+ closed on:  17 Jul 2023, 14:47:42
+--------------------------------------------------------------------------------------------------------------------------

@@ -1,0 +1,35 @@
+{smcl}
+{com}{sf}{ul off}{txt}{.-}
+      name:  {res}<unnamed>
+       {txt}log:  {res}/Users/johnmcdonnell/Desktop/Stata fellow training/workflow files/example2.smcl
+  {txt}log type:  {res}smcl
+ {txt}opened on:  {res}17 Jul 2023, 14:47:42
+{txt}
+{com}. use wws2, clear
+{txt}(Working Women Survey w/fixes)
+
+{com}. summarize age wage hours
+
+{txt}    Variable {c |}        Obs        Mean    Std. dev.       Min        Max
+{hline 13}{c +}{hline 57}
+{space 9}age {c |}{res}      2,246    36.22707    5.337859         21         48
+{txt}{space 8}wage {c |}{res}      2,244    7.796781     5.82459          0   40.74659
+{txt}{space 7}hours {c |}{res}      2,242    37.21811    10.50914          1         80
+{txt}
+{com}. tabulate married
+
+    {txt}married {c |}      Freq.     Percent        Cum.
+{hline 12}{c +}{hline 35}
+          0 {c |}{res}        804       35.80       35.80
+{txt}          1 {c |}{res}      1,442       64.20      100.00
+{txt}{hline 12}{c +}{hline 35}
+      Total {c |}{res}      2,246      100.00
+{txt}
+{com}. log close
+      {txt}name:  {res}<unnamed>
+       {txt}log:  {res}/Users/johnmcdonnell/Desktop/Stata fellow training/workflow files/example2.smcl
+  {txt}log type:  {res}smcl
+ {txt}closed on:  {res}17 Jul 2023, 14:47:42
+{txt}{.-}
+{smcl}
+{txt}{sf}{ul off}
