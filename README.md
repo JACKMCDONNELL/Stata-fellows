@@ -67,3 +67,9 @@ there is also one short power point, *data_management.pptx*. This is a powerpoin
 
 note that this session may feel a bit overwhelming. There was a lot of material to get through and not a lot of time to do so. Remember, the chief value in our sessions is to get used to the concept and figure out a resource for the code (the do file) so that when you have to do this yourself you have everything in place. So don't worry if you didn't get everything the first time. 
 
+## session 3 - workflow
+
+I took most of the materials for this from Chapter 10 of Michael Mitchell's book, *[Data Management Using Stata](https://www.stata.com/bookstore/data-management-using-stata/)*
+
+the main do file is *3_workflow.do*. 
+
