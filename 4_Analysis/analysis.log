@@ -1,0 +1,524 @@
+---------------------------------------------------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  /Users/johnmcdonnell/Desktop/Stata fellow training/analysis.log
+  log type:  text
+ opened on:  19 Jul 2023, 06:32:34
+
+. 
+. 
+. * Stata: analysis
+. 
+. * set working directory - always the first step!
+. 
+. pwd /* print working directory */
+/Users/johnmcdonnell/Desktop/Stata fellow training
+
+. 
+. cd "/Users/johnmcdonnell/Desktop/Stata fellow training"
+/Users/johnmcdonnell/Desktop/Stata fellow training
+
+. 
+. use SarahsSTATAtest, clear /* version up to date as of July 12, 2023 */
+(SarahsSTATATest_DATA_NOHDRS_2023-07-11_1125.csv)
+
+. 
+. rename med___1  ACEi
+
+. rename med___2  ARB
+
+. rename med___3  CCB
+
+. rename med___4  BB
+
+. rename med___5  AB
+
+. rename med___9  Other_antihypertensive
+
+. 
+. 
+. label variable ACEi "patient on ACE inhibitor"
+
+. label variable ARB "patient on angiotensin receptor blocker"
+
+. label variable CCB "patient on calcium channel blocker"
+
+. label variable BB "patient on beta blocker"
+
+. label variable AB "patient on alpha blocker"
+
+. label variable Other_antihypertensive "patient on other antihypertensive"
+
+. 
+. 
+. label drop med___1_
+
+. label drop med___2_
+
+. label drop med___3_
+
+. label drop med___4_
+
+. label drop med___5_
+
+. label drop med___9_
+
+. 
+. 
+. * 1. suppose you have a clinical question - does the poor control of diabetes predict non-HDL cholesterol after adjusting
+>  for weight
+. 
+. * outcome variable non-HDL cholesterol (non_hdl_cholesterol)
+. * study variable A1C (hemoglobin_a1c)
+. * confounding variable overweight (overweight)
+. 
+. twoway (scatter non_hdl_cholesterol hemoglobin_a1c) // scatter 1
+
+. 
+. twoway (scatter non_hdl_cholesterol hemoglobin_a1c), by(overweight) // scatter 2
+
+. 
+. * simple statistics
+. 
+. corr hemoglobin_a1c non_hdl_cholesterol
+(obs=120)
+
+             | hemog~1c non_hd~l
+-------------+------------------
+hemoglobi~1c |   1.0000
+non_hdl_ch~l |   0.0184   1.0000
+
+
+. 
+. graph box non_hdl_cholesterol, by(overweight) // box 1
+
+. ttest non_hdl_cholesterol, by(overweight)
+
+Two-sample t test with equal variances
+------------------------------------------------------------------------------
+   Group |     Obs        Mean    Std. err.   Std. dev.   [95% conf. interval]
+---------+--------------------------------------------------------------------
+      No |      97    96.10309    4.098903    40.36951    87.96683    104.2394
+     Yes |      23    113.1304    10.03005    48.10245    92.32937    133.9315
+---------+--------------------------------------------------------------------
+Combined |     120    99.36667    3.859815    42.28215    91.72385    107.0095
+---------+--------------------------------------------------------------------
+    diff |           -17.02734    9.722047               -36.27964    2.224957
+------------------------------------------------------------------------------
+    diff = mean(No) - mean(Yes)                                   t =  -1.7514
+H0: diff = 0                                     Degrees of freedom =      118
+
+    Ha: diff < 0                 Ha: diff != 0                 Ha: diff > 0
+ Pr(T < t) = 0.0412         Pr(|T| > |t|) = 0.0825          Pr(T > t) = 0.9588
+
+. 
+. graph box hemoglobin, by(age_gt_12) // box 2
+
+. ttest non_hdl_cholesterol, by(age_gt_12) /* this seems important */
+
+Two-sample t test with equal variances
+------------------------------------------------------------------------------
+   Group |     Obs        Mean    Std. err.   Std. dev.   [95% conf. interval]
+---------+--------------------------------------------------------------------
+      No |      75    124.7867     3.09724    26.82289    118.6153    130.9581
+     Yes |      45          57    3.909972    26.22889    49.11997    64.88003
+---------+--------------------------------------------------------------------
+Combined |     120    99.36667    3.859815    42.28215    91.72385    107.0095
+---------+--------------------------------------------------------------------
+    diff |            67.78667      5.0163                57.85303    77.72031
+------------------------------------------------------------------------------
+    diff = mean(No) - mean(Yes)                                   t =  13.5133
+H0: diff = 0                                     Degrees of freedom =      118
+
+    Ha: diff < 0                 Ha: diff != 0                 Ha: diff > 0
+ Pr(T < t) = 1.0000         Pr(|T| > |t|) = 0.0000          Pr(T > t) = 0.0000
+
+. ranksum non_hdl_cholesterol, by(age_gt_12)
+
+Two-sample Wilcoxon rank-sum (Mann–Whitney) test
+
+   age_gt_12 |      Obs    Rank sum    Expected
+-------------+---------------------------------
+          No |       75      6130.5      4537.5
+         Yes |       45      1129.5      2722.5
+-------------+---------------------------------
+    Combined |      120        7260        7260
+
+Unadjusted variance    34031.25
+Adjustment for ties       -8.86
+                     ----------
+Adjusted variance      34022.39
+
+H0: non_hd~l(age_g~12==No) = non_hd~l(age_g~12==Yes)
+         z =  8.636
+Prob > |z| = 0.0000
+Exact prob = 0.0000
+
+. 
+. tab overweight age_gt
+
+           |    Age > 12 years
+Overweight |        No        Yes |     Total
+-----------+----------------------+----------
+        No |        61         36 |        97 
+       Yes |        14          9 |        23 
+-----------+----------------------+----------
+     Total |        75         45 |       120 
+
+. tab overweight age_gt, chi
+
+           |    Age > 12 years
+Overweight |        No        Yes |     Total
+-----------+----------------------+----------
+        No |        61         36 |        97 
+       Yes |        14          9 |        23 
+-----------+----------------------+----------
+     Total |        75         45 |       120 
+
+          Pearson chi2(1) =   0.0323   Pr = 0.857
+
+. 
+. * linear regression models
+. 
+. regress non_hdl_cholesterol hemoglobin_a1c overweight
+
+      Source |       SS           df       MS      Number of obs   =       120
+-------------+----------------------------------   F(2, 117)       =      1.56
+       Model |  5536.33915         2  2768.16957   Prob > F        =    0.2138
+    Residual |  207209.528       117   1771.0216   R-squared       =    0.0260
+-------------+----------------------------------   Adj R-squared   =    0.0094
+       Total |  212745.867       119  1787.78039   Root MSE        =    42.084
+
+--------------------------------------------------------------------------------
+non_hdl_chol~l | Coefficient  Std. err.      t    P>|t|     [95% conf. interval]
+---------------+----------------------------------------------------------------
+hemoglobin_a1c |   .5290899   1.842427     0.29   0.774     -3.11974     4.17792
+    overweight |   17.16392   9.771647     1.76   0.082    -2.188316    36.51615
+         _cons |   91.44165   16.78533     5.45   0.000     58.19919    124.6841
+--------------------------------------------------------------------------------
+
+. 
+. * does this association differ between younger and older children?
+. 
+. regress non_hdl_cholesterol i.overweight i.age_gt_12##c.hemoglobin_a1c /* note: I am specifying hemoglobin_a1c as a conti
+> nuous variable */
+
+      Source |       SS           df       MS      Number of obs   =       120
+-------------+----------------------------------   F(4, 115)       =     56.80
+       Model |  141247.718         4  35311.9295   Prob > F        =    0.0000
+    Residual |  71498.1487       115  621.723032   R-squared       =    0.6639
+-------------+----------------------------------   Adj R-squared   =    0.6522
+       Total |  212745.867       119  1787.78039   Root MSE        =    24.934
+
+--------------------------------------------------------------------------------------------
+       non_hdl_cholesterol | Coefficient  Std. err.      t    P>|t|     [95% conf. interval]
+---------------------------+----------------------------------------------------------------
+                overweight |
+                      Yes  |   18.91912   5.790898     3.27   0.001     7.448461    30.38977
+                           |
+                 age_gt_12 |
+                      Yes  |  -17.60967   20.14837    -0.87   0.384     -57.5197    22.30037
+            hemoglobin_a1c |   4.100832   1.430021     2.87   0.005     1.268235    6.933429
+                           |
+age_gt_12#c.hemoglobin_a1c |
+                      Yes  |  -5.773918   2.219207    -2.60   0.010    -10.16974   -1.378095
+                           |
+                     _cons |   85.81298   12.77921     6.72   0.000     60.49981    111.1261
+--------------------------------------------------------------------------------------------
+
+. 
+. twoway (scatter non_hdl_cholesterol hemoglobin_a1c), by(age_gt_12) /* you can see the interaction here */ // scatter 3
+
+. 
+. * margins
+. 
+. margins age_gt, at(hemoglobin_a1c=(6(0.5)15)) vsquish
+
+Predictive margins                                         Number of obs = 120
+Model VCE: OLS
+
+Expression: Linear prediction, predict()
+1._at:  hemoglobin_a1c =    6
+2._at:  hemoglobin_a1c =  6.5
+3._at:  hemoglobin_a1c =    7
+4._at:  hemoglobin_a1c =  7.5
+5._at:  hemoglobin_a1c =    8
+6._at:  hemoglobin_a1c =  8.5
+7._at:  hemoglobin_a1c =    9
+8._at:  hemoglobin_a1c =  9.5
+9._at:  hemoglobin_a1c =   10
+10._at: hemoglobin_a1c = 10.5
+11._at: hemoglobin_a1c =   11
+12._at: hemoglobin_a1c = 11.5
+13._at: hemoglobin_a1c =   12
+14._at: hemoglobin_a1c = 12.5
+15._at: hemoglobin_a1c =   13
+16._at: hemoglobin_a1c = 13.5
+17._at: hemoglobin_a1c =   14
+18._at: hemoglobin_a1c = 14.5
+19._at: hemoglobin_a1c =   15
+
+-------------------------------------------------------------------------------
+              |            Delta-method
+              |     Margin   std. err.      t    P>|t|     [95% conf. interval]
+--------------+----------------------------------------------------------------
+_at#age_gt_12 |
+        1#No  |   114.0441   4.750035    24.01   0.000     104.6352     123.453
+       1#Yes  |   61.79096   6.251205     9.88   0.000     49.40852    74.17339
+        2#No  |   116.0945   4.203763    27.62   0.000     107.7677    124.4214
+       2#Yes  |   60.95441   5.591192    10.90   0.000     49.87934    72.02949
+        3#No  |    118.145   3.715226    31.80   0.000     110.7858    125.5041
+       3#Yes  |   60.11787     4.9888    12.05   0.000     50.23602    69.99973
+        4#No  |   120.1954   3.310085    36.31   0.000     113.6387     126.752
+       4#Yes  |   59.28133   4.467401    13.27   0.000     50.43227    68.13039
+        5#No  |   122.2458   3.022068    40.45   0.000     116.2597    128.2319
+       5#Yes  |   58.44479   4.058332    14.40   0.000     50.40601    66.48356
+        6#No  |   124.2962   2.886454    43.06   0.000     118.5787    130.0137
+       6#Yes  |   57.60824   3.798063    15.17   0.000     50.08501    65.13147
+        7#No  |   126.3466   2.924519    43.20   0.000     120.5537    132.1395
+       7#Yes  |    56.7717   3.717975    15.27   0.000     49.40711    64.13629
+        8#No  |    128.397   3.129935    41.02   0.000     122.1972    134.5968
+       8#Yes  |   55.93516   3.829392    14.61   0.000     48.34987    63.52044
+        9#No  |   130.4475   3.473132    37.56   0.000     123.5679    137.3271
+       9#Yes  |   55.09861   4.116793    13.38   0.000     46.94404    63.25319
+       10#No  |   132.4979   3.918072    33.82   0.000     124.7369    140.2588
+      10#Yes  |   54.26207   4.546929    11.93   0.000     45.25548    63.26866
+       11#No  |   134.5483   4.434231    30.34   0.000     125.7649    143.3316
+      11#Yes  |   53.42553   5.083697    10.51   0.000      43.3557    63.49535
+       12#No  |   136.5987   4.999601    27.32   0.000     126.6955     146.502
+      12#Yes  |   52.58898   5.697038     9.23   0.000     41.30425    63.87372
+       13#No  |   138.6491   5.599293    24.76   0.000      127.558    149.7402
+      13#Yes  |   51.75244   6.364851     8.13   0.000      39.1449    64.35999
+       14#No  |   140.6995   6.223395    22.61   0.000     128.3722    153.0269
+      14#Yes  |    50.9159   7.071723     7.20   0.000     36.90817    64.92362
+       15#No  |     142.75   6.865252    20.79   0.000     129.1512    156.3487
+      15#Yes  |   50.07935   7.807051     6.41   0.000     34.61509    65.54362
+       16#No  |   144.8004    7.52032    19.25   0.000     129.9041    159.6967
+      16#Yes  |   49.24281   8.563507     5.75   0.000     32.28015    66.20547
+       17#No  |   146.8508   8.185427    17.94   0.000      130.637    163.0645
+      17#Yes  |   48.40627   9.335958     5.18   0.000     29.91353      66.899
+       18#No  |   148.9012   8.858312    16.81   0.000     131.3546    166.4478
+      18#Yes  |   47.56973   10.12074     4.70   0.000     27.52248    67.61697
+       19#No  |   150.9516   9.537329    15.83   0.000       132.06    169.8432
+      19#Yes  |   46.73318    10.9152     4.28   0.000     25.11228    68.35409
+-------------------------------------------------------------------------------
+
+. 
+. marginsplot // margins 1
+
+Variables that uniquely identify margins: hemoglobin_a1c age_gt_12
+
+. 
+. * 2. suppose you owant to evaluate whether overweight patients are more likely to have elevated BP and/or be treated with
+>  antihypertensive medication
+. 
+. * what do we consider elevated BP?
+. 
+. tab bp_ord
+
+      Blood pressure |
+              levels |      Freq.     Percent        Cum.
+---------------------+-----------------------------------
+           Normal BP |         94       78.33       78.33
+         Elevated BP |         11        9.17       87.50
+         Stage 1 HTN |         14       11.67       99.17
+         Stage 2 HTN |          1        0.83      100.00
+---------------------+-----------------------------------
+               Total |        120      100.00
+
+. tab bp_ord, nolabel
+
+      Blood |
+   pressure |
+     levels |      Freq.     Percent        Cum.
+------------+-----------------------------------
+          1 |         94       78.33       78.33
+          2 |         11        9.17       87.50
+          3 |         14       11.67       99.17
+          4 |          1        0.83      100.00
+------------+-----------------------------------
+      Total |        120      100.00
+
+. 
+. recode bp_ord (min/1=0) (2/max=1), generate(bp_elevated)
+(120 differences between bp_ord and bp_elevated)
+
+. 
+. tab bp_ord bp_elevated /* sanity check */
+
+                     |   RECODE of bp_ord
+                     |    (Blood pressure
+      Blood pressure |        levels)
+              levels |         0          1 |     Total
+---------------------+----------------------+----------
+           Normal BP |        94          0 |        94 
+         Elevated BP |         0         11 |        11 
+         Stage 1 HTN |         0         14 |        14 
+         Stage 2 HTN |         0          1 |         1 
+---------------------+----------------------+----------
+               Total |        94         26 |       120 
+
+. 
+. gen any_BP_med = 0 if bp_elevated==1
+(94 missing values generated)
+
+. replace any_BP_med = 1 if ACEi==1 | ARB==1 | CCB==1 | BB==1 | AB==1 | Other_antihypertensive==1
+(21 real changes made)
+
+. 
+. table1_mc, by(overweight) ///
+> vars( ///
+> gender bin %4.0f \ ///
+> age_years conts %4.0f \ ///
+> hemoglobin_a1c conts %4.0f \ ///
+> bp_elevated cate %4.0f \ ///
+> any_BP_med bin %4.0f \ ///
+> ) ///
+> nospace percent_n onecol missing total(before)
+
+  +------------------------------------------------------------------------------+
+  | factor                                     N_T   N_0   N_1   m_T   m_0   m_1 |
+  |------------------------------------------------------------------------------|
+  | Gender                                     120    97    23     0     0     0 |
+  |------------------------------------------------------------------------------|
+  | Age (years)                                120    97    23     0     0     0 |
+  |------------------------------------------------------------------------------|
+  | Hemoglobin A1c                             120    97    23     0     0     0 |
+  |------------------------------------------------------------------------------|
+  | RECODE of bp_ord (Blood pressure levels)   120    97    23     0     0     0 |
+  |------------------------------------------------------------------------------|
+  | any_BP_med                                  26     5    21    94    92     2 |
+  +------------------------------------------------------------------------------+
+   N_ ... #records used below,   m_ ... #records not used
+ 
+  +----------------------------------------------------------------------------------------+
+  |                                            Total       No          Yes         p-value |
+  |----------------------------------------------------------------------------------------|
+  |                                            N=120       N=97        N=23                |
+  |----------------------------------------------------------------------------------------|
+  | Gender                                     48% (57)    47% (46)    48% (11)     0.97   |
+  |----------------------------------------------------------------------------------------|
+  | Age (years)                                11 (8-14)   11 (8-14)   11 (8-13)    0.69   |
+  |----------------------------------------------------------------------------------------|
+  | Hemoglobin A1c                             8 (8-10)    8 (8-10)    8 (7-10)     0.61   |
+  |----------------------------------------------------------------------------------------|
+  | RECODE of bp_ord (Blood pressure levels)                                       <0.001  |
+  |    0                                       78% (94)    95% (92)    9% (2)              |
+  |    1                                       22% (26)    5% (5)      91% (21)            |
+  |----------------------------------------------------------------------------------------|
+  | any_BP_med                                 81% (21)    60% (3)     86% (18)     0.19   |
+  +----------------------------------------------------------------------------------------+
+Data are presented as median (IQR) for continuous measures, and % (n) for categorical measures.
+ 
+
+. 
+. * if we don't like the medians
+. 
+. table1_mc, by(overweight) ///
+> vars( ///
+> gender bin %4.0f \ ///
+> age_years contn %4.0f \ ///
+> hemoglobin_a1c contn %4.0f \ ///
+> bp_elevated cate %4.0f \ ///
+> any_BP_med bin %4.0f \ ///
+> ) ///
+> nospace percent_n onecol missing total(before)
+
+  +------------------------------------------------------------------------------+
+  | factor                                     N_T   N_0   N_1   m_T   m_0   m_1 |
+  |------------------------------------------------------------------------------|
+  | Gender                                     120    97    23     0     0     0 |
+  |------------------------------------------------------------------------------|
+  | Age (years)                                120    97    23     0     0     0 |
+  |------------------------------------------------------------------------------|
+  | Hemoglobin A1c                             120    97    23     0     0     0 |
+  |------------------------------------------------------------------------------|
+  | RECODE of bp_ord (Blood pressure levels)   120    97    23     0     0     0 |
+  |------------------------------------------------------------------------------|
+  | any_BP_med                                  26     5    21    94    92     2 |
+  +------------------------------------------------------------------------------+
+   N_ ... #records used below,   m_ ... #records not used
+ 
+  +-------------------------------------------------------------------------------------+
+  |                                            Total      No         Yes        p-value |
+  |-------------------------------------------------------------------------------------|
+  |                                            N=120      N=97       N=23               |
+  |-------------------------------------------------------------------------------------|
+  | Gender                                     48% (57)   47% (46)   48% (11)    0.97   |
+  |-------------------------------------------------------------------------------------|
+  | Age (years)                                11 (3)     11 (3)     11 (3)      0.69   |
+  |-------------------------------------------------------------------------------------|
+  | Hemoglobin A1c                             9 (2)      9 (2)      9 (2)       0.60   |
+  |-------------------------------------------------------------------------------------|
+  | RECODE of bp_ord (Blood pressure levels)                                    <0.001  |
+  |    0                                       78% (94)   95% (92)   9% (2)             |
+  |    1                                       22% (26)   5% (5)     91% (21)           |
+  |-------------------------------------------------------------------------------------|
+  | any_BP_med                                 81% (21)   60% (3)    86% (18)    0.19   |
+  +-------------------------------------------------------------------------------------+
+Data are presented as mean (SD) for continuous measures, and % (n) for categorical measures.
+ 
+
+. 
+. * resource https://blog.uvm.edu/tbplante/2019/07/11/make-a-table-1-in-stata-in-no-time-with-table1_mc/
+. 
+. * modeling - logistic. looking at elevated BP as the outcome
+. 
+. logistic bp_elevated overweight non_hdl_cholesterol age_gt_12 /* do we believe these odds ratios? they seem high. Why is 
+> that? */
+
+Logistic regression                                     Number of obs =    120
+                                                        LR chi2(3)    =  84.13
+                                                        Prob > chi2   = 0.0000
+Log likelihood = -20.651818                             Pseudo R2     = 0.6707
+
+-------------------------------------------------------------------------------------
+        bp_elevated | Odds ratio   Std. err.      z    P>|z|     [95% conf. interval]
+--------------------+----------------------------------------------------------------
+         overweight |   380.1686    440.849     5.12   0.000     39.16612    3690.132
+non_hdl_cholesterol |   1.051018   .0189261     2.76   0.006      1.01457    1.088774
+          age_gt_12 |   151.3236   266.4069     2.85   0.004     4.801273    4769.323
+              _cons |   .0000261   .0000769    -3.58   0.000     8.11e-08    .0084068
+-------------------------------------------------------------------------------------
+Note: _cons estimates baseline odds.
+
+. 
+. lroc /* gives C statistic */ // roc 1
+
+Logistic model for bp_elevated
+
+Number of observations =      120
+Area under ROC curve   =   0.9615
+
+. 
+. // ssc install coefplot
+. coefplot /* note: we don't really trust this, do we? */ // coefplot 1
+
+. 
+. * modeling - logistic. looking at any_BP_med as the outcome
+. 
+. logistic any_BP_med overweight non_hdl_cholesterol age_gt_12 /* can you figure out why Stata is freaking out and dropping
+>  variables? */
+note: age_gt_12 != 0 predicts success perfectly;
+      age_gt_12 omitted and 12 obs not used.
+
+note: overweight != 1 predicts failure perfectly;
+      overweight omitted and 2 obs not used.
+
+
+Logistic regression                                     Number of obs =     12
+                                                        LR chi2(1)    =   6.33
+                                                        Prob > chi2   = 0.0119
+Log likelihood = -3.5853561                             Pseudo R2     = 0.4687
+
+-------------------------------------------------------------------------------------
+         any_BP_med | Odds ratio   Std. err.      z    P>|z|     [95% conf. interval]
+--------------------+----------------------------------------------------------------
+         overweight |          1  (omitted)
+non_hdl_cholesterol |   1.152299   .1060393     1.54   0.123     .9621312    1.380055
+          age_gt_12 |          1  (omitted)
+              _cons |   1.45e-08   1.73e-07    -1.51   0.131     9.97e-19    210.0534
+-------------------------------------------------------------------------------------
+Note: _cons estimates baseline odds.
+
+. 
+. capture log close
