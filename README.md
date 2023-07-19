@@ -28,6 +28,8 @@ in addition to the resources on this course website, there are a number of place
 
 -google search. Often, it is just easier to type what you are trying to do and then the word "Stata" in the search bar. 
 
+-[UCLA Stats](https://stats.oarc.ucla.edu/). Great source of information. 
+
 -[Stata YouTube](https://www.youtube.com/@statacorp). Lots of great videos for Stata learners of every level. 
 
 -[Statalist](https://www.statalist.org/). Great source of information and helpful people will answer your questions if you can put them intelligently. Best for questions that can't be addressed with the above methods. 
