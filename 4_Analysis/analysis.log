@@ -1,8 +1,8 @@
----------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------------
       name:  <unnamed>
        log:  /Users/johnmcdonnell/Desktop/Stata fellow training/analysis.log
   log type:  text
- opened on:  19 Jul 2023, 06:32:34
+ opened on:  19 Jul 2023, 18:41:01
 
 . 
 . 
@@ -64,8 +64,8 @@
 
 . 
 . 
-. * 1. suppose you have a clinical question - does the poor control of diabetes predict non-HDL cholesterol after adjusting
->  for weight
+. * 1. suppose you have a clinical question - does the poor control of diabetes predict non-HDL cholesterol after adjusting for we
+> ight
 . 
 . * outcome variable non-HDL cholesterol (non_hdl_cholesterol)
 . * study variable A1C (hemoglobin_a1c)
@@ -197,10 +197,51 @@ hemoglobin_a1c |   .5290899   1.842427     0.29   0.774     -3.11974     4.17792
 --------------------------------------------------------------------------------
 
 . 
+. regress non_hdl_cholesterol hemoglobin_a1c ib0.overweight /* uses overweight==0 as the reference level */
+
+      Source |       SS           df       MS      Number of obs   =       120
+-------------+----------------------------------   F(2, 117)       =      1.56
+       Model |  5536.33915         2  2768.16957   Prob > F        =    0.2138
+    Residual |  207209.528       117   1771.0216   R-squared       =    0.0260
+-------------+----------------------------------   Adj R-squared   =    0.0094
+       Total |  212745.867       119  1787.78039   Root MSE        =    42.084
+
+--------------------------------------------------------------------------------
+non_hdl_chol~l | Coefficient  Std. err.      t    P>|t|     [95% conf. interval]
+---------------+----------------------------------------------------------------
+hemoglobin_a1c |   .5290899   1.842427     0.29   0.774     -3.11974     4.17792
+               |
+    overweight |
+          Yes  |   17.16392   9.771647     1.76   0.082    -2.188316    36.51615
+         _cons |   91.44165   16.78533     5.45   0.000     58.19919    124.6841
+--------------------------------------------------------------------------------
+
+. regress non_hdl_cholesterol hemoglobin_a1c ib1.overweight /* uses overweight==1 as the reference level */
+
+      Source |       SS           df       MS      Number of obs   =       120
+-------------+----------------------------------   F(2, 117)       =      1.56
+       Model |  5536.33915         2  2768.16957   Prob > F        =    0.2138
+    Residual |  207209.528       117   1771.0216   R-squared       =    0.0260
+-------------+----------------------------------   Adj R-squared   =    0.0094
+       Total |  212745.867       119  1787.78039   Root MSE        =    42.084
+
+--------------------------------------------------------------------------------
+non_hdl_chol~l | Coefficient  Std. err.      t    P>|t|     [95% conf. interval]
+---------------+----------------------------------------------------------------
+hemoglobin_a1c |   .5290899   1.842427     0.29   0.774     -3.11974     4.17792
+               |
+    overweight |
+           No  |  -17.16392   9.771647    -1.76   0.082    -36.51615    2.188316
+               |
+         _cons |   108.6056   18.03542     6.02   0.000     72.88737    144.3238
+--------------------------------------------------------------------------------
+
+. 
+. 
 . * does this association differ between younger and older children?
 . 
-. regress non_hdl_cholesterol i.overweight i.age_gt_12##c.hemoglobin_a1c /* note: I am specifying hemoglobin_a1c as a conti
-> nuous variable */
+. regress non_hdl_cholesterol i.overweight i.age_gt_12##c.hemoglobin_a1c /* note: I am specifying hemoglobin_a1c as a continuous v
+> ariable */
 
       Source |       SS           df       MS      Number of obs   =       120
 -------------+----------------------------------   F(4, 115)       =     56.80
@@ -308,8 +349,8 @@ _at#age_gt_12 |
 Variables that uniquely identify margins: hemoglobin_a1c age_gt_12
 
 . 
-. * 2. suppose you owant to evaluate whether overweight patients are more likely to have elevated BP and/or be treated with
->  antihypertensive medication
+. * 2. suppose you owant to evaluate whether overweight patients are more likely to have elevated BP and/or be treated with antihy
+> pertensive medication
 . 
 . * what do we consider elevated BP?
 . 
@@ -463,8 +504,8 @@ Data are presented as mean (SD) for continuous measures, and % (n) for categoric
 . 
 . * modeling - logistic. looking at elevated BP as the outcome
 . 
-. logistic bp_elevated overweight non_hdl_cholesterol age_gt_12 /* do we believe these odds ratios? they seem high. Why is 
-> that? */
+. logistic bp_elevated overweight non_hdl_cholesterol age_gt_12 /* do we believe these odds ratios? they seem high. Why is that? *
+> /
 
 Logistic regression                                     Number of obs =    120
                                                         LR chi2(3)    =  84.13
@@ -496,8 +537,8 @@ Area under ROC curve   =   0.9615
 . 
 . * modeling - logistic. looking at any_BP_med as the outcome
 . 
-. logistic any_BP_med overweight non_hdl_cholesterol age_gt_12 /* can you figure out why Stata is freaking out and dropping
->  variables? */
+. logistic any_BP_med overweight non_hdl_cholesterol age_gt_12 /* can you figure out why Stata is freaking out and dropping variab
+> les? */
 note: age_gt_12 != 0 predicts success perfectly;
       age_gt_12 omitted and 12 obs not used.
 

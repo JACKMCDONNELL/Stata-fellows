@@ -63,6 +63,10 @@ tab overweight age_gt, chi
 
 regress non_hdl_cholesterol hemoglobin_a1c overweight
 
+regress non_hdl_cholesterol hemoglobin_a1c ib0.overweight /* uses overweight==0 as the reference level */
+regress non_hdl_cholesterol hemoglobin_a1c ib1.overweight /* uses overweight==1 as the reference level */
+
+
 * does this association differ between younger and older children?
 
 regress non_hdl_cholesterol i.overweight i.age_gt_12##c.hemoglobin_a1c /* note: I am specifying hemoglobin_a1c as a continuous variable */
