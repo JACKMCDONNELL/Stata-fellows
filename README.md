@@ -75,6 +75,11 @@ the main do file is *3_workflow.do*.
 
 ## session 4 - analysis
 
-We are back to the main dataset we have been using
+we are back to the main dataset we have been using so far - SarahsSTATAtest.dta
 
-the main do file is *3_workflow.do*. 
+the do file is *analysis.do*. The log file is *analysis.log*
+
+this do file generates a number of graphics that are saved as pdfs. The name of each is referenced in the do file.
+
+this is the first session where we will be relying heavily on user-written commands (ssc install) 
+
