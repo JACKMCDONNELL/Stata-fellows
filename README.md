@@ -73,3 +73,8 @@ I took most of the materials for this from Chapter 10 of Michael Mitchell's book
 
 the main do file is *3_workflow.do*. 
 
+## session 4 - analysis
+
+We are back to the main dataset we have been using
+
+the main do file is *3_workflow.do*. 
