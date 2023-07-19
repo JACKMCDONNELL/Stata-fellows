@@ -85,3 +85,8 @@ this do file generates a number of graphics that are saved as pdfs. The name of 
 
 this is the first session where we will be relying heavily on user-written commands (ssc install) 
 
+there were a couple of questions people had in class that I had trouble answering on the spot. I've made slides (analysis mistakes.pptx) going over these, specifically:
+ - accessing linear regression with two way factorials from the menu
+ - changing the reference level in a regression
+
+
