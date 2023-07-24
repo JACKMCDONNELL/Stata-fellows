@@ -1,0 +1,433 @@
+-------------------------------------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  /Users/johnmcdonnell/Desktop/Stata fellow training/graphics.log
+  log type:  text
+ opened on:  24 Jul 2023, 14:06:29
+
+. 
+. capture frame drop _all
+
+. * Stata: graphics
+. 
+. * reference: Data Analysis Using Stata - 3rd Edition
+. * authors: Ulrich Kohler, Frauke Kreuter
+. * chapter 6: creating and changing graphs
+. 
+. * set working directory - always the first step!
+. 
+. pwd /* print working directory */
+/Users/johnmcdonnell/Desktop/Stata fellow training
+
+. 
+. cd "/Users/johnmcdonnell/Desktop/Stata fellow training"
+/Users/johnmcdonnell/Desktop/Stata fellow training
+
+. clear
+
+. 
+. use data1 if hhsize == 1 & rent < 2000, clear
+(SOEP 2009 (Kohler/Kreuter))
+
+. 
+. * SYNTAX
+. 
+. * Stata graph commands always have 2 elements: the "graph" command and a graph type
+. 
+. graph box rent /* sample box plot */
+
+. 
+. * for some graph types, Stata allows you to leave out the "graph" command. In a scatter plot, you can actua
+> lly leave out the "twoway" command, too
+. 
+. twoway scatter rent size
+
+. scatter rent size /* actually identical output to the one above, with less typing */
+
+. 
+. * the plot types of twoway graphs can be overlaid
+. 
+. graph twoway (scatter rent size) (lfit rent size)
+
+. scatter rent size || lfit rent size /* identical output to above, less typing */
+
+. 
+. * overall look of Stata graph is specified by graph sceme, so changing this can change the look of the grap
+> h considerably. 
+. 
+. set scheme economist
+
+. scatter rent size
+
+. 
+. * for more info on schemes, see the following:
+. 
+. help scheme
+
+. graph query, schemes
+
+Available schemes are
+
+    s2color        see help scheme_s2color
+    s2mono         see help scheme_s2mono
+    s2manual       see help scheme_s2manual
+    s2gmanual      see help scheme_s2gmanual
+    s2gcolor       see help scheme_s2gcolor
+    s1color        see help scheme_s1color
+    s1mono         see help scheme_s1mono
+    s1rcolor       see help scheme_s1rcolor
+    s1manual       see help scheme_s1manual
+    sj             see help scheme_sj
+    economist      see help scheme_economist
+    s2color8       see help scheme_s2color8
+    meta
+
+. 
+. * for fun, lets change the scheme to sj, which is the scheme required for publications in the Stata Journal
+. 
+. set scheme sj
+
+. scatter rent size
+
+. 
+. * to reset the default scheme, just type 
+. set scheme s2color 
+
+. 
+. * GRAPH types
+. 
+. * MANY are available in Stata, here are just a few simple ones
+. 
+. graph bar size, over (area1, label(angle(45))) title(bar chart) // bar chart
+
+. graph pie, over(area1) title(pie chart) // pie chart
+
+. graph dot (mean) size, over(area1) title(dot chart) // dot chart
+
+. graph box size, over(area1, label(angle(45))) title(box-and-whisker plot)
+
+. graph twoway scatter rent size, title(scatterplot) // generic scatterplot
+
+. graph twoway function y = sin(x), range(1 20) title(function plot) // function plot
+
+. graph twoway histogram rent, title(histogram) // histogram
+
+. graph matrix dsat rent size, title(scatterplot matrix)
+
+. 
+. * in addition to these basic graphs, there are 50+ statistical graph commands corresponding to regression d
+> iagnostics, time-series graphs, graphs for survival analysis
+. 
+. qnorm income /* I've referenced this special graph type before, it helps to assess for the normality of a v
+> ariable */
+
+. 
+. * APPEARANCE OF DATA
+. 
+. * you specify the way you want your graph to look, based on the command
+. 
+. // twoway line
+. // twoway scatter
+. // graph bar
+. 
+. scatter rent size
+
+. 
+. * if you specify more than one "y" variable, Stata will mark the different ones with various sympbols to ma
+> ke the difference apparent
+. 
+. generate rent_w = rent if state<= 9 /* West Germany */
+(159 missing values generated)
+
+. generate rent_e = rent if state>=10 & !missing(state) /* East Germany */
+(428 missing values generated)
+
+. scatter rent_w rent_e size
+
+. 
+. * this just gives the info with the default makers, you can change these
+. graph query symbolstyle
+
+symbolstyle may be
+
+    arrow              lgx                smcircle_hollow    smtriangle         triangle
+    arrowf             none               smdiamond          smtriangle_hollow  triangle_hollow
+    circle             pipe               smdiamond_hollow   smv                v
+    circle_hollow      plus               smplus             smx                x
+    diamond            point              smsquare           square
+    diamond_hollow     smcircle           smsquare_hollow    square_hollow
+
+    For information on symbolstyle and how to use it, see help symbolstyle.
+
+. 
+. scatter rent size, msymbol(diamond_hollow)
+
+. scatter rent size, msymbol(lgx)
+
+. 
+. * you can choose a different symbol for each y variable, as you probably would expect
+. 
+. scatter rent_w rent_e size, msymbol(+ dh)
+
+. 
+. * unsurprisingly, you can mess with the colors and even define your own
+. 
+. scatter rent_w rent_e size, msymbol(T +) mcolor(lavender lime)
+
+. 
+. help colorstyle
+
+. 
+. scatter rent_w rent_e size, msymbol(T +) mcolor(lavender "255 0 0") // defines a custom color in RGB values
+
+. 
+. * you can adjust the size of markers, too
+. 
+. scatter rent_w rent_e size, msymbol(th oh) msize(*.5 2) // the triangle is now half as large as it was befo
+> re, and the ecircle is 2% of the graph height
+
+. 
+. 
+. * lines are often used in certain types of data, including time series
+. 
+. frame create ka_temp
+
+. frame change ka_temp
+
+. 
+. * what is this frame stuff?
+. 
+. use ka_temp, clear
+(Mean temp. Karlsruhe 1779-2004)
+
+. 
+. line mean year, sort
+
+. 
+. twoway connected mean year, sort /* same as above, but with a visible plot symbol */
+
+. 
+. * many options here, see below:
+. graph query connectstyle
+
+connectstyle may be
+
+    ascending     direct        none          stairstep     stairstep_up  stepstair
+
+    For information on connectstyle and how to use it, see help connectstyle.
+
+. 
+. scatter jan mean jul year, connect(l i J) msymbol(i oh i) sort
+
+. 
+. * notice the "sort" option above
+. * if we don't sort properly, the graph will look wrong
+. 
+. sort mean
+
+. line jan year
+
+. 
+. sort year
+
+. line jan year // things should be sorted by the x variable normally
+
+. 
+. * GRAPH SIZE
+. 
+. frame change default
+
+. 
+. * default graph size is 4 X 5.5 inches
+. 
+. scatter rent size, xsize(1)
+
+. scatter rent size, ysize(1)
+
+. 
+. * GRAPH SCALING
+. 
+. scatter rent size, xscale(range(0 5000)) yscale(range(0 5000))
+
+. 
+. * if you want to zoom in on a dense area of the plot . . . 
+. 
+. scatter rent size if size <=1000 & rent <= 1000
+
+. 
+. * REFERENCE LINES
+. 
+. scatter rent size, xline(1000) yline(1000)
+
+. 
+. summarize rent if !missing(rent)
+
+    Variable |        Obs        Mean    Std. dev.       Min        Max
+-------------+---------------------------------------------------------
+        rent |        587    465.7019    193.5623         51       1364
+
+. local rentmean = r(mean) /* r(mean) is the saved result for mean */
+
+. scatter rent size, yline(`rentmean') /* local macro, remember learning about these */
+
+. 
+. * LABELLING 
+. 
+. scatter rent size, mlabel(persnr) /* too messy to read */
+
+. 
+. * would look better with aggregate data 
+. 
+. frame create data2agg
+
+. frame change data2agg
+
+. 
+. use data2agg, clear
+(Mean life satisfaction 1984-2008 (Kohler/Kreuter))
+
+. 
+. scatter lsat hhinc, mlabel(wave) mlabposition(12) mlabsize(small)
+
+. 
+. * still a bit sloppy, we could fix this with some heroic coding
+. 
+. generate pos = 12
+
+. replace pos = 3 if inlist(wave, 1989, 1998, 2007)
+(3 real changes made)
+
+. replace pos = 7 if inlist(wave, 1991)
+(1 real change made)
+
+. replace pos = 9 if inlist(wave, 1990, 1993, 1994, 1995, 1997, 2006)
+(6 real changes made)
+
+. scatter lsat hhinc, mlabel(wave) mlabvposition(pos)
+
+. 
+. * alternately, use the graph editor. it is almost always easier to use the graph editor if you want to make
+>  these fine adjustments
+. * unfotunately, you can save the final product of the graph editor, but can't save the exact path. this is 
+> a limitation for reproducibility
+. 
+. scatter lsat hhinc, mlabel(wave) mlabposition(12) mlabsize(small)
+
+. 
+. * AXIS LABELLING
+. 
+. * if we are getting confused at all the frames, we can always see a lit
+. frame list
+* data2agg  25 x 4; Mean life satisfaction 1984-2008 (Kohler/Kreuter)
+* default   587 x 67; SOEP 2009 (Kohler/Kreuter)
+  ka_temp   226 x 14; Mean temp. Karlsruhe 1779-2004
+
+Note: Frames marked with * contain unsaved data.
+
+. frame change default
+
+. 
+. scatter rent size, ylabel(0(400)2800)
+
+. 
+. 
+. scatter rent size, xlabel(#15) // tells Stata to label approximately 15 values on the x axis
+
+. 
+. scatter rent size, xlabel(none) ylabel(minmax) // tells Stata to use no labels on X axis, and only min and 
+> max on the y
+
+. 
+. * don't like all the grids? no problem
+. 
+. scatter size area1, xlabel(1(1)8, valuelabel angle(45)) ylabel(,nogrid)
+
+. 
+. * tick lines
+. 
+. * xtick() and ystick() are for big tick lines
+. ** xmtick() and ymtick() are for the small tick lines
+. 
+. scatter rent size, ytick(minmax) xmtick(##10) // put 2 big tick lines on the yaxis at min and max, make the
+>  x small tick lines be 10 inbetween successive
+
+. 
+. * Axis titles
+. 
+. scatter rent size, ytitle("Rent (Monthly) in USD") xtitle("Home Size in Square Feet")
+
+. 
+. * if you want the titles to go over more than one line do the following
+. 
+. scatter rent size, ytitle("Rent (Monthly)" "in USD") xtitle("Home Size" "in Square Feet")
+
+. 
+. * if you want to move the titles around, there are many options
+. help textbox_options
+
+. 
+. scatter rent size, xtitle("Home Size" "in Square Feet", placement(east) box justification(right))
+
+. 
+. * LEGEND
+. 
+. scatter rent_w rent_e size, legend(cols(1) ring(0) position(1) order(2 "East" 1 "West"))
+
+. * cols specifies the number of columns for the legend
+. * ring==0 means a position inside the plot region. rings>0 means a position outside the plot region
+. * position gives the position of numbers on a clock face
+. * order command changes the default ordering
+. 
+. * TITLES
+. 
+. scatter rent size, title("Rent by Home Size") subtitle("Scatterplot") ///
+> note("Data: GSOEP" "Randomized Public Use File") ///
+> caption("This graph is used to demonstrate graph titles." ///
+> "Please note how text is divided into several lines.")
+
+. 
+. * OVERLAYING GRAPHS
+. 
+. twoway || scatter rent size || lfit rent_w size || lfit rent_e size
+
+. 
+. twoway || scatter rent size, msymbol(oh) || lfit rent_w size, clpattern(dot) ///
+> || lfit rent_e size, clpattern(dash) || , title("Scatterplot with Regression-Lines") ///
+> legend(order(2 "West" 3 "East"))
+
+. 
+. 
+. * BY option
+. scatter rent size, by(state)
+
+. scatter rent size, by(state, total) /* gives total, as well */
+
+. 
+. 
+. * COMBINING GRAPHS
+. 
+. scatter rent_w size, name(west, replace)
+
+. scatter rent_e size, name(east, replace)
+
+. graph combine west east
+
+. 
+. graph combine west east, rows(2)
+
+. 
+. * if you get real in the weeds you can make graphs like this
+. 
+. twoway scatter rent size, name(xy, replace) xlabel(, grid) ylabel(, grid gmax)
+
+. 
+. twoway histogram size, name(hx, replace) fraction xscale(alt) xlabel(, grid gmax) fysize(25)
+
+. 
+. twoway histogram rent, fraction name(hy, replace) horizontal yscale(alt) ylabel(0(500)2500, grid gmax) fxsi
+> ze(25)
+
+. 
+. graph combine hx xy hy, imargin(0 0 0 0) hole(2)
+
+. 
+. capture log close
