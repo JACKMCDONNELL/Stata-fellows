@@ -89,4 +89,16 @@ there were a couple of questions people had in class that I had trouble answerin
  - accessing linear regression with two way factorials from the menu
  - changing the reference level in a regression
 
+## session 5 - graphics
+
+there were a couple of questions people had last week in class that I had trouble answering on the spot. I've made slides (analysis mistakes.pptx) going over these, specifically:
+ - accessing linear regression with two way factorials from the menu
+ - changing the reference level in a regression
+
+For the graphics, we will be using material from the book [Data Analysis Using Stata: Third Edition](https://www.stata.com/bookstore/data-analysis-using-stata/), specifically the chapter on graphics.
+
+the do file is *5_graphics.do*. The log file is *graphics.log*
+
+this do file generates a number of graphics. To see them you will have to actually run the program on your computer. 
+
 
