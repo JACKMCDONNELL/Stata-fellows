@@ -1,0 +1,1154 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <meta name="author" content="John McDonnell, Cleveland Clinic" />
+  <meta name="dcterms.date" content="2025-11-28" />
+  <title>Introduction and Basics</title>
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    html {
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 12px;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      html {
+        background-color: white;
+      }
+      body {
+        background-color: transparent;
+        color: black;
+        font-size: 12pt;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: #1a1a1a;
+    }
+    a:visited {
+      color: #1a1a1a;
+    }
+    img {
+      max-width: 100%;
+    }
+    svg {
+      height: auto;
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+      font-size: 85%;
+      margin: 0;
+      hyphens: manual;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      border: none;
+      border-top: 1px solid #1a1a1a;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+  </style>
+<style>
+/* CSS for Markstat 2.0 using Pandoc 2.0 */
+body{padding:14px 28px; max-width:45em;}
+body, table {font-family: Helvetica, Arial, Sans-serif; font-size: 14px;}
+h1, h2, h3, h4 {font-weight: normal; color: #3366cc}
+h1 {font-size: 200%;}
+h2 {font-size: 150%;}
+h3 {font-size: 120%;}
+h4 {font-size: 100%; font-weight:bold}
+img.center {display:block; margin-left:auto; margin-right:auto}
+.small{font-size:8pt;}
+a {color: black;}
+a:visited {color: #808080;}
+a.plain {text-decoration:none;}
+a.plain:hover {text-decoration:underline;}
+.em {font-weight:bold;}
+pre, code {font-family: "lucida console", monospace;}
+pre.stata {font-size:13px; line-height:13px;}
+pre {padding:8px; border:1px solid #c0c0c0; border-radius:8px; background-color:#fdfdfd;}
+code {color:#3366cc; background-color:#fafafa;}
+pre code { color:black; background-color:white}
+/* Added for Pandoc */
+figure > img, div.figure > img {display:block; margin:auto}
+figcaption, p.caption {text-align:center; font-weight:bold; color:#3366cc;}
+h1.title {text-align:center; margin-bottom:0}
+p.author, h2.author {font-style:italic; text-align:center;margin-top:4px;margin-bottom:0}
+p.date, h3.date {text-align:center;margin-top:4px; margin-bottom:0}
+/* Tables*/
+table { margin:auto; border-collapse:collapse; }
+table caption { margin-bottom:1ex;}
+td {padding:0 0 0 0} /* override */
+table:not([class]) th { padding:4px 6px } 
+table:not([class]) td { padding:4px 6px } 
+table:not([class]) thead tr:first-child th {border-top:1px solid black; padding-top:6px}
+table:not([class]) thead tr:last-child  th {padding-bottom:6px}
+table:not([class]) tbody tr:first-child td {border-top:1px solid black; padding-top:6px}
+table:not([class]) tbody tr:last-child  td {padding-bottom:6px;}
+table:not([class]) tbody:last-child tr:last-child td {border-bottom:1px solid black;}
+</style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Introduction and Basics</h1>
+<p class="author">John McDonnell, Cleveland Clinic</p>
+<p class="date">28 November 2025</p>
+</header>
+<h2 id="working-directory">working directory</h2>
+<p>For Stata to work the way you want it to you have to either put all
+your files in your working directory for that project or be really
+consistent with pathnames.</p>
+<p>To find out what your working directory is set to, simply type:</p>
+<pre class='stata'>. pwd
+/Users/johnmcdonnell/Desktop/Stata fellow training
+</pre>
+<p>For files in your working directory already, you can just abbreviate
+filenames. For example, to load this data file:</p>
+<pre class='stata'>. use ka_temp, clear
+(Mean temp. Karlsruhe 1779-2004)
+</pre>
+<p>That only works because the file is contained in the working
+directory.</p>
+<p>Otherwise this does the trick:</p>
+<pre class='stata'>. use "/Users/johnmcdonnell/Desktop/Stata fellow training/ka_temp.dta", clear
+(Mean temp. Karlsruhe 1779-2004)
+</pre>
+<p>If you aren’t where you want to be, just change directory</p>
+<pre class='stata'>. cd "/Users/johnmcdonnell/Desktop/Stata fellow training"
+/Users/johnmcdonnell/Desktop/Stata fellow training
+</pre>
+<h2 id="analyzing-a-sample-file">analyzing a sample file</h2>
+<p>Stata has a lot of prebuilt sample files that you can look at to get
+a sense of how it works. Let’s open one and look around.</p>
+<pre class='stata'>. sysuse auto, clear
+(1978 automobile data)
+</pre>
+<p>To examine the file and see how the dataset is constructed:</p>
+<pre class='stata'>. describe
+
+Contains data from /Applications/Stata/ado/base/a/auto.dta
+ Observations:            74                  1978 automobile data
+    Variables:            12                  13 Apr 2020 17:45
+                                              (_dta has notes)
+──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+Variable      Storage   Display    Value
+    name         type    format    label      Variable label
+──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+make            str18   %-18s                 Make and model
+price           int     %8.0gc                Price
+mpg             int     %8.0g                 Mileage (mpg)
+rep78           int     %8.0g                 Repair record 1978
+headroom        float   %6.1f                 Headroom (in.)
+trunk           int     %8.0g                 Trunk space (cu. ft.)
+weight          int     %8.0gc                Weight (lbs.)
+length          int     %8.0g                 Length (in.)
+turn            int     %8.0g                 Turn circle (ft.)
+displacement    int     %8.0g                 Displacement (cu. in.)
+gear_ratio      float   %6.2f                 Gear ratio
+foreign         byte    %8.0g      origin     Car origin
+──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+Sorted by: foreign
+</pre>
+<p>It looks like there is a note in there, what is all this about?</p>
+<pre class='stata'>. notes
+
+_dta:
+  1.  From Consumer Reports with permission
+</pre>
+<pre class='stata'>. summarize 
+
+    Variable │        Obs        Mean    Std. dev.       Min        Max
+─────────────┼─────────────────────────────────────────────────────────
+        make │          0
+       price │         74    6165.257    2949.496       3291      15906
+         mpg │         74     21.2973    5.785503         12         41
+       rep78 │         69    3.405797    .9899323          1          5
+    headroom │         74    2.993243    .8459948        1.5          5
+─────────────┼─────────────────────────────────────────────────────────
+       trunk │         74    13.75676    4.277404          5         23
+      weight │         74    3019.459    777.1936       1760       4840
+      length │         74    187.9324    22.26634        142        233
+        turn │         74    39.64865    4.399354         31         51
+displacement │         74    197.2973    91.83722         79        425
+─────────────┼─────────────────────────────────────────────────────────
+  gear_ratio │         74    3.014865    .4562871       2.19       3.89
+     foreign │         74    .2972973    .4601885          0          1
+</pre>
+<p>If you want to learn more about a particular variable, using the
+<strong>codebook</strong> command</p>
+<pre class='stata'>. codebook price
+
+──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+price                                                                                                                        Price
+──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+
+                  Type: Numeric (int)
+
+                 Range: [3291,15906]                  Units: 1
+         Unique values: 74                        Missing .: 0/74
+
+                  Mean: 6165.26
+             Std. dev.:  2949.5
+
+           Percentiles:     10%       25%       50%       75%       90%
+                           3895      4195    5006.5      6342     11385
+
+. codebook make
+
+──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+make                                                                                                                Make and model
+──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+
+                  Type: String (str18), but longest is str17
+
+         Unique values: 74                        Missing "": 0/74
+
+              Examples: "Cad. Deville"
+                        "Dodge Magnum"
+                        "Merc. XR-7"
+                        "Pont. Catalina"
+
+               Warning: Variable has embedded blanks.
+
+. codebook rep78 /* what does this "." mean? */
+
+──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+rep78                                                                                                           Repair record 1978
+──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+
+                  Type: Numeric (int)
+
+                 Range: [1,5]                         Units: 1
+         Unique values: 5                         Missing .: 5/74
+
+            Tabulation: Freq.  Value
+                            2  1
+                            8  2
+                           30  3
+                           18  4
+                           11  5
+                            5  .
+</pre>
+<p>If you have sharp eyes, you might have noticed the “.” in the output
+for <em>rep78</em>. The dot symbol is how Stata designates missing
+data.</p>
+<p>Often, if data are missing, you need to figure out why.</p>
+<pre class='stata'>. list if missing(rep78)
+
+     ┌───────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
+     │ make             price   mpg   rep78   headroom   trunk   weight   length   turn   displa~t   gear_r~o    foreign │
+     ├───────────────────────────────────────────────────────────────────────────────────────────────────────────────────┤
+  3. │ AMC Spirit       3,799    22       .        3.0      12    2,640      168     35        121       3.08   Domestic │
+  7. │ Buick Opel       4,453    26       .        3.0      10    2,230      170     34        304       2.87   Domestic │
+ 45. │ Plym. Sapporo    6,486    26       .        1.5       8    2,520      182     38        119       3.54   Domestic │
+ 51. │ Pont. Phoenix    4,424    19       .        3.5      13    3,420      203     43        231       3.08   Domestic │
+ 64. │ Peugeot 604     12,990    14       .        3.5      14    3,420      192     38        163       3.58    Foreign │
+     └───────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+</pre>
+<h2 id="looking-deeper-at-variables">looking deeper at variables</h2>
+<p><strong>Summarize</strong> is often helpful here with continuous
+variables.</p>
+<pre class='stata'>. summarize price, detail
+
+                            Price
+─────────────────────────────────────────────────────────────
+      Percentiles      Smallest
+ 1%         3291           3291
+ 5%         3748           3299
+10%         3895           3667       Obs                  74
+25%         4195           3748       Sum of wgt.          74
+
+50%       5006.5                      Mean           6165.257
+                        Largest       Std. dev.      2949.496
+75%         6342          13466
+90%        11385          13594       Variance        8699526
+95%        13466          14500       Skewness       1.653434
+99%        15906          15906       Kurtosis       4.819188
+</pre>
+<pre class='stata'>. list if price > 13000
+
+     ┌──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
+     │ make                price   mpg   rep78   headroom   trunk   weight   length   turn   displa~t   gear_r~o    foreign │
+     ├──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┤
+ 12. │ Cad. Eldorado      14,500    14       2        3.5      16    3,900      204     43        350       2.19   Domestic │
+ 13. │ Cad. Seville       15,906    21       3        3.0      13    4,290      204     45        350       2.24   Domestic │
+ 27. │ Linc. Mark V       13,594    12       3        2.5      18    4,720      230     48        400       2.47   Domestic │
+ 28. │ Linc. Versailles   13,466    14       3        3.5      15    3,830      201     41        302       2.47   Domestic │
+     └──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+</pre>
+<p>What about variables that are in categories - yes/no,
+foreign/domestic? Use <strong>tabulate</strong> for these.</p>
+<pre class='stata'>. tabulate foreign
+
+ Car origin │      Freq.     Percent        Cum.
+────────────┼───────────────────────────────────
+   Domestic │         52       70.27       70.27
+    Foreign │         22       29.73      100.00
+────────────┼───────────────────────────────────
+      Total │         74      100.00
+</pre>
+<pre class='stata'>. tabulate rep78 
+
+     Repair │
+record 1978 │      Freq.     Percent        Cum.
+────────────┼───────────────────────────────────
+          1 │          2        2.90        2.90
+          2 │          8       11.59       14.49
+          3 │         30       43.48       57.97
+          4 │         18       26.09       84.06
+          5 │         11       15.94      100.00
+────────────┼───────────────────────────────────
+      Total │         69      100.00
+</pre>
+<p>If you want to look at the repair record for foreign vs domestic cars
+. . .</p>
+<pre class='stata'>. tabulate rep78 foreign
+
+    Repair │
+    record │      Car origin
+      1978 │  Domestic    Foreign │     Total
+───────────┼──────────────────────┼──────────
+         1 │         2          0 │         2 
+         2 │         8          0 │         8 
+         3 │        27          3 │        30 
+         4 │         9          9 │        18 
+         5 │         2          9 │        11 
+───────────┼──────────────────────┼──────────
+     Total │        48         21 │        69 
+
+. tabulate rep78 foreign, row
+
+┌────────────────┐
+│ Key            │
+├────────────────┤
+│   frequency    │
+│ row percentage │
+└────────────────┘
+
+    Repair │
+    record │      Car origin
+      1978 │  Domestic    Foreign │     Total
+───────────┼──────────────────────┼──────────
+         1 │         2          0 │         2 
+           │    100.00       0.00 │    100.00 
+───────────┼──────────────────────┼──────────
+         2 │         8          0 │         8 
+           │    100.00       0.00 │    100.00 
+───────────┼──────────────────────┼──────────
+         3 │        27          3 │        30 
+           │     90.00      10.00 │    100.00 
+───────────┼──────────────────────┼──────────
+         4 │         9          9 │        18 
+           │     50.00      50.00 │    100.00 
+───────────┼──────────────────────┼──────────
+         5 │         2          9 │        11 
+           │     18.18      81.82 │    100.00 
+───────────┼──────────────────────┼──────────
+     Total │        48         21 │        69 
+           │     69.57      30.43 │    100.00 
+
+. tabulate rep78 foreign, col
+
+┌───────────────────┐
+│ Key               │
+├───────────────────┤
+│     frequency     │
+│ column percentage │
+└───────────────────┘
+
+    Repair │
+    record │      Car origin
+      1978 │  Domestic    Foreign │     Total
+───────────┼──────────────────────┼──────────
+         1 │         2          0 │         2 
+           │      4.17       0.00 │      2.90 
+───────────┼──────────────────────┼──────────
+         2 │         8          0 │         8 
+           │     16.67       0.00 │     11.59 
+───────────┼──────────────────────┼──────────
+         3 │        27          3 │        30 
+           │     56.25      14.29 │     43.48 
+───────────┼──────────────────────┼──────────
+         4 │         9          9 │        18 
+           │     18.75      42.86 │     26.09 
+───────────┼──────────────────────┼──────────
+         5 │         2          9 │        11 
+           │      4.17      42.86 │     15.94 
+───────────┼──────────────────────┼──────────
+     Total │        48         21 │        69 
+           │    100.00     100.00 │    100.00 
+</pre>
+<p>If you would like to look at a continuous variable, subset by
+category, it’s not hard.</p>
+<pre class='stata'>. by foreign, sort: summarize mpg
+
+──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+-> foreign = Domestic
+
+    Variable │        Obs        Mean    Std. dev.       Min        Max
+─────────────┼─────────────────────────────────────────────────────────
+         mpg │         52    19.82692    4.743297         12         34
+
+──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+-> foreign = Foreign
+
+    Variable │        Obs        Mean    Std. dev.       Min        Max
+─────────────┼─────────────────────────────────────────────────────────
+         mpg │         22    24.77273    6.611187         14         41
+</pre>
+<h2 id="hypothesis-testing">hypothesis testing</h2>
+<p>Hypothesis testing is easy in Stata, maybe dangerously so.</p>
+<pre class='stata'>. ttest mpg, by(foreign)
+
+Two-sample t test with equal variances
+─────────┬────────────────────────────────────────────────────────────────────
+   Group │     Obs        Mean    Std. err.   Std. dev.   [95% conf. interval]
+─────────┼────────────────────────────────────────────────────────────────────
+Domestic │      52    19.82692     .657777    4.743297    18.50638    21.14747
+ Foreign │      22    24.77273     1.40951    6.611187    21.84149    27.70396
+─────────┼────────────────────────────────────────────────────────────────────
+Combined │      74     21.2973    .6725511    5.785503     19.9569    22.63769
+─────────┼────────────────────────────────────────────────────────────────────
+    diff │           -4.945804    1.362162               -7.661225   -2.230384
+─────────┴────────────────────────────────────────────────────────────────────
+    diff = mean(Domestic) - mean(Foreign)                         t =  -3.6308
+H0: diff = 0                                     Degrees of freedom =       72
+
+    Ha: diff &lt; 0                 Ha: diff != 0                 Ha: diff > 0
+ Pr(T &lt; t) = 0.0003         Pr(|T| > |t|) = 0.0005          Pr(T > t) = 0.9997
+</pre>
+<p>Note, to learn more about a given command you can just type
+<strong>help</strong>. Any command name will work.</p>
+<pre class="s/"><code>  // help ttest
+  // help tabulate
+  // help list</code></pre>
+<h2 id="descriptive-statistics-correlation-matrices">descriptive
+statistics: correlation matrices</h2>
+<p>To look at correlations between variables (they each need to be
+continuous)</p>
+<pre class='stata'>. correlate mpg weight
+(obs=74)
+
+             │      mpg   weight
+─────────────┼──────────────────
+         mpg │   1.0000
+      weight │  -0.8072   1.0000
+</pre>
+<p>The grammar of Stata allows more complicated commands.</p>
+<pre class='stata'>. by foreign, sort: correlate mpg weight
+
+──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+-> foreign = Domestic
+(obs=52)
+
+             │      mpg   weight
+─────────────┼──────────────────
+         mpg │   1.0000
+      weight │  -0.8759   1.0000
+
+
+──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+-> foreign = Foreign
+(obs=22)
+
+             │      mpg   weight
+─────────────┼──────────────────
+         mpg │   1.0000
+      weight │  -0.6829   1.0000
+</pre>
+<h2 id="simple-graphics">simple graphics</h2>
+<p>Graphics aren’t difficult in Stata, but for these types of commands I
+often find the GUI dropdown menus easier. Still, command line inputs are
+easy for the simple stuff.</p>
+<pre class='stata'>. twoway (scatter mpg weight)
+
+. graph export efficiency_by_weight.png, width(500) replace
+file /Users/johnmcdonnell/Desktop/Stata fellow training/efficiency_by_weight.png saved as PNG format
+</pre>
+<figure>
+<img src="efficiency_by_weight.png" alt="Fuel Efficiency by Weight" />
+<figcaption aria-hidden="true">Fuel Efficiency by Weight</figcaption>
+</figure>
+<pre class='stata'>. twoway (scatter mpg weight), by(foreign, total)
+
+. graph export efficiency_by_weight_by_foreign.png, width(500) replace
+file /Users/johnmcdonnell/Desktop/Stata fellow training/efficiency_by_weight_by_foreign.png saved as PNG format
+</pre>
+<figure>
+<img src="efficiency_by_weight_by_foreign.png"
+alt="Fuel Efficiency by Weight by Foreign vs Domestic" />
+<figcaption aria-hidden="true">Fuel Efficiency by Weight by Foreign vs
+Domestic</figcaption>
+</figure>
+<h2 id="simple-regression-modelling">simple regression modelling</h2>
+<p>Maybe, from looking at these graphs, we want to fit a regression
+model predicting MPG from the weight and type of car. Lets generate a
+new variable for the weight^2 (it will make the model work better), see
+what we generated, and then fit the regression.</p>
+<pre class='stata'>. generate wtsq = weight ^ 2
+</pre>
+<pre class='stata'>. list weight wtsq in 1/10
+
+     ┌───────────────────┐
+     │ weight       wtsq │
+     ├───────────────────┤
+  1. │  2,930    8584900 │
+  2. │  3,350   1.12e+07 │
+  3. │  2,640    6969600 │
+  4. │  3,250   1.06e+07 │
+  5. │  4,080   1.66e+07 │
+     ├───────────────────┤
+  6. │  3,670   1.35e+07 │
+  7. │  2,230    4972900 │
+  8. │  3,280   1.08e+07 │
+  9. │  3,880   1.51e+07 │
+ 10. │  3,400   1.16e+07 │
+     └───────────────────┘
+</pre>
+<pre class='stata'>. regress mpg weight wtsq foreign
+
+      Source │       SS           df       MS      Number of obs   =        74
+─────────────┼──────────────────────────────────   F(3, 70)        =     52.25
+       Model │  1689.15372         3   563.05124   Prob > F        =    0.0000
+    Residual │   754.30574        70  10.7757963   R-squared       =    0.6913
+─────────────┼──────────────────────────────────   Adj R-squared   =    0.6781
+       Total │  2443.45946        73  33.4720474   Root MSE        =    3.2827
+
+─────────────┬────────────────────────────────────────────────────────────────
+         mpg │ Coefficient  Std. err.      t    P>|t|     [95% conf. interval]
+─────────────┼────────────────────────────────────────────────────────────────
+      weight │  -.0165729   .0039692    -4.18   0.000    -.0244892   -.0086567
+        wtsq │   1.59e-06   6.25e-07     2.55   0.013     3.45e-07    2.84e-06
+     foreign │    -2.2035   1.059246    -2.08   0.041      -4.3161   -.0909002
+       _cons │   56.53884   6.197383     9.12   0.000     44.17855    68.89913
+─────────────┴────────────────────────────────────────────────────────────────
+</pre>
+<p>Stata has a whole host of commands associated with regressions,
+including the ##predict## command. If we want to plot the predicted
+values on top of the scatterplots for each of the origins of cars we can
+use code like this.</p>
+<pre class='stata'>. predict mpghat
+(option xb assumed; fitted values)
+</pre>
+<pre class='stata'>. twoway (scatter mpg weight) (line mpghat weight, sort), by(foreign)
+
+. graph export mpghat.png, width(500) replace
+file /Users/johnmcdonnell/Desktop/Stata fellow training/mpghat.png saved as PNG format
+</pre>
+<figure>
+<img src="mpghat.png" alt="MPG by weight^2, with predictions" />
+<figcaption aria-hidden="true">MPG by weight^2, with
+predictions</figcaption>
+</figure>
+<p>What if we want to look at gallons per 100 miles? We can make a new
+variable, graph it, and then see how it fits in a model.</p>
+<pre class='stata'>. generate gp100m = 100/mpg
+
+. label variable gp100m "Gallons per 100 miles"
+</pre>
+<pre class='stata'>. twoway (scatter gp100m weight), by(foreign, total)
+
+. graph export gp100m.png, width(500) replace
+file /Users/johnmcdonnell/Desktop/Stata fellow training/gp100m.png saved as PNG format
+</pre>
+<figure>
+<img src="gp100m.png" alt="Gallons per 100 miles" />
+<figcaption aria-hidden="true">Gallons per 100 miles</figcaption>
+</figure>
+<pre class='stata'>. regress gp100m weight foreign
+
+      Source │       SS           df       MS      Number of obs   =        74
+─────────────┼──────────────────────────────────   F(2, 71)        =    113.97
+       Model │  91.1761694         2  45.5880847   Prob > F        =    0.0000
+    Residual │  28.4000913        71  .400001287   R-squared       =    0.7625
+─────────────┼──────────────────────────────────   Adj R-squared   =    0.7558
+       Total │  119.576261        73  1.63803097   Root MSE        =    .63246
+
+─────────────┬────────────────────────────────────────────────────────────────
+      gp100m │ Coefficient  Std. err.      t    P>|t|     [95% conf. interval]
+─────────────┼────────────────────────────────────────────────────────────────
+      weight │   .0016254   .0001183    13.74   0.000     .0013896    .0018612
+     foreign │   .6220535   .1997381     3.11   0.003     .2237871     1.02032
+       _cons │  -.0734839   .4019932    -0.18   0.855    -.8750354    .7280677
+─────────────┴────────────────────────────────────────────────────────────────
+</pre>
+<p>Ok, we’ve looked enough at the auto.dta file. Let’s look at something
+that came from RedCap. These are made-up data, so no worries about
+patient privacy. This is much more like the kind of file you will be
+using in your research. The “,clear” at the end of the command is
+necessary because Stata wants to make sure I explicitly acknowledge that
+I haven’t saved the changes to the file we’ve been working on this whole
+time. <em>clear</em> indicates I am ok with this.</p>
+<pre class='stata'>. use SarahsSTATAtest, clear
+(SarahsSTATATest_DATA_NOHDRS_2023-07-11_1125.csv)
+</pre>
+<p>An overall description.</p>
+<pre class='stata'>. describe
+
+Contains data from SarahsSTATAtest.dta
+ Observations:           120                  SarahsSTATATest_DATA_NOHDRS_2023-07-11_1125.csv
+    Variables:            18                  12 Jul 2023 14:30
+──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+Variable      Storage   Display    Value
+    name         type    format    label      Variable label
+──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+record_id       int     %8.0g                 Record ID
+mrn             long    %12.0g                MRN
+gender          byte    %8.0g      gender_    Gender
+age_years       byte    %8.0g                 Age (years)
+overweight      byte    %8.0g      overweight_
+                                              Overweight
+age_gt_12       byte    %8.0g      age_gt_12_
+                                              Age > 12 years
+hemoglobin_a1c  float   %9.0g                 Hemoglobin A1c
+non_hdl_chole~l int     %8.0g                 Non HDL cholesterol
+bp_ord          byte    %20.0g     bp_ord_    Blood pressure levels
+ahtn_med        byte    %8.0g      ahtn_med_
+                                              Antihypertensive medication use
+med___1         byte    %9.0g      med___1_   Antihypertensive medication (choice=ACEi)
+med___2         byte    %9.0g      med___2_   Antihypertensive medication (choice=Angiotensin receptor blocker)
+med___3         byte    %9.0g      med___3_   Antihypertensive medication (choice=Calcium channel blocker)
+med___4         byte    %9.0g      med___4_   Antihypertensive medication (choice=Beta blocker)
+med___5         byte    %9.0g      med___5_   Antihypertensive medication (choice=Alpha blocker)
+med___9         byte    %9.0g      med___9_   Antihypertensive medication (choice=Others)
+htn_relative    byte    %58.0g     htn_relative_
+                                              Relatives with hypertension
+my_first_inst~e byte    %10.0g     my_first_instrument_complete_
+                                              Complete?
+──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+Sorted by: 
+</pre>
+<p>Here’s our command looking at variables. Notice how this only gives
+us meaningful output for continuous variables. ##summarize## doesn’t
+really know what to do for character variables.</p>
+<pre class='stata'>. summarize 
+
+    Variable │        Obs        Mean    Std. dev.       Min        Max
+─────────────┼─────────────────────────────────────────────────────────
+   record_id │        120        60.5    34.78505          1        120
+         mrn │        120       74657    42924.76       1234     148080
+      gender │        120        .475    .5014684          0          1
+   age_years │        120    11.03333    3.297397          6         17
+  overweight │        120    .1916667    .3952626          0          1
+─────────────┼─────────────────────────────────────────────────────────
+   age_gt_12 │        120        .375    .4861528          0          1
+hemoglobi~1c │        120    8.760833    2.096347        3.3       14.7
+non_hdl_ch~l │        120    99.36667    42.28215          6        215
+      bp_ord │        120        1.35    .7177228          1          4
+    ahtn_med │        120        .175    .3815603          0          1
+─────────────┼─────────────────────────────────────────────────────────
+     med___1 │        120         .05    .2188588          0          1
+     med___2 │        120    .0333333    .1802581          0          1
+     med___3 │        120    .1083333    .3121041          0          1
+     med___4 │        120    .0333333    .1802581          0          1
+     med___5 │        120    .0166667    .1285559          0          1
+─────────────┼─────────────────────────────────────────────────────────
+     med___9 │        120    .0083333    .0912871          0          1
+htn_relative │        120    4.116667    1.385297          1          5
+my_first_i~e │        120           0           0          0          0
+</pre>
+<p>To get a better sense of these variables, we may want to use
+##codebook## again.</p>
+<pre class='stata'>. codebook
+
+──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+record_id                                                                                                                Record ID
+──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+
+                  Type: Numeric (int)
+
+                 Range: [1,120]                       Units: 1
+         Unique values: 120                       Missing .: 0/120
+
+                  Mean:    60.5
+             Std. dev.: 34.7851
+
+           Percentiles:     10%       25%       50%       75%       90%
+                           12.5      30.5      60.5      90.5     108.5
+
+──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+mrn                                                                                                                            MRN
+──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+
+                  Type: Numeric (long)
+
+                 Range: [1234,148080]                 Units: 1
+         Unique values: 120                       Missing .: 0/120
+
+                  Mean:   74657
+             Std. dev.: 42924.8
+
+           Percentiles:     10%       25%       50%       75%       90%
+                          15425     37637     74657    111677    133889
+
+──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+gender                                                                                                                      Gender
+──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+
+                  Type: Numeric (byte)
+                 Label: gender_
+
+                 Range: [0,1]                         Units: 1
+         Unique values: 2                         Missing .: 0/120
+
+            Tabulation: Freq.   Numeric  Label
+                           63         0  Male
+                           57         1  Female
+
+──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+age_years                                                                                                              Age (years)
+──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+
+                  Type: Numeric (byte)
+
+                 Range: [6,17]                        Units: 1
+         Unique values: 12                        Missing .: 0/120
+
+                  Mean: 11.0333
+             Std. dev.:  3.2974
+
+           Percentiles:     10%       25%       50%       75%       90%
+                              6         8        11        14        16
+
+──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+overweight                                                                                                              Overweight
+──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+
+                  Type: Numeric (byte)
+                 Label: overweight_
+
+                 Range: [0,1]                         Units: 1
+         Unique values: 2                         Missing .: 0/120
+
+            Tabulation: Freq.   Numeric  Label
+                           97         0  No
+                           23         1  Yes
+
+──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+age_gt_12                                                                                                           Age > 12 years
+──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+
+                  Type: Numeric (byte)
+                 Label: age_gt_12_
+
+                 Range: [0,1]                         Units: 1
+         Unique values: 2                         Missing .: 0/120
+
+            Tabulation: Freq.   Numeric  Label
+                           75         0  No
+                           45         1  Yes
+
+──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+hemoglobin_a1c                                                                                                      Hemoglobin A1c
+──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+
+                  Type: Numeric (float)
+
+                 Range: [3.3,14.7]                    Units: .1
+         Unique values: 64                        Missing .: 0/120
+
+                  Mean: 8.76083
+             Std. dev.: 2.09635
+
+           Percentiles:     10%       25%       50%       75%       90%
+                            6.1       7.7       8.5       9.9      11.7
+
+──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+non_hdl_cholesterol                                                                                           Non HDL cholesterol 
+──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+
+                  Type: Numeric (int)
+
+                 Range: [6,215]                       Units: 1
+         Unique values: 82                        Missing .: 0/120
+
+                  Mean: 99.3667
+             Std. dev.: 42.2822
+
+           Percentiles:     10%       25%       50%       75%       90%
+                             41      70.5     105.5       131       149
+
+──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+bp_ord                                                                                                       Blood pressure levels
+──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+
+                  Type: Numeric (byte)
+                 Label: bp_ord_
+
+                 Range: [1,4]                         Units: 1
+         Unique values: 4                         Missing .: 0/120
+
+            Tabulation: Freq.   Numeric  Label
+                           94         1  Normal BP
+                           11         2  Elevated BP
+                           14         3  Stage 1 HTN
+                            1         4  Stage 2 HTN
+
+──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+ahtn_med                                                                                           Antihypertensive medication use
+──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+
+                  Type: Numeric (byte)
+                 Label: ahtn_med_
+
+                 Range: [0,1]                         Units: 1
+         Unique values: 2                         Missing .: 0/120
+
+            Tabulation: Freq.   Numeric  Label
+                           99         0  No
+                           21         1  Yes
+
+──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+med___1                                                                                  Antihypertensive medication (choice=ACEi)
+──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+
+                  Type: Numeric (byte)
+                 Label: med___1_
+
+                 Range: [0,1]                         Units: 1
+         Unique values: 2                         Missing .: 0/120
+
+            Tabulation: Freq.   Numeric  Label
+                          114         0  Unchecked
+                            6         1  Checked
+
+──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+med___2                                                          Antihypertensive medication (choice=Angiotensin receptor blocker)
+──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+
+                  Type: Numeric (byte)
+                 Label: med___2_
+
+                 Range: [0,1]                         Units: 1
+         Unique values: 2                         Missing .: 0/120
+
+            Tabulation: Freq.   Numeric  Label
+                          116         0  Unchecked
+                            4         1  Checked
+
+──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+med___3                                                               Antihypertensive medication (choice=Calcium channel blocker)
+──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+
+                  Type: Numeric (byte)
+                 Label: med___3_
+
+                 Range: [0,1]                         Units: 1
+         Unique values: 2                         Missing .: 0/120
+
+            Tabulation: Freq.   Numeric  Label
+                          107         0  Unchecked
+                           13         1  Checked
+
+──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+med___4                                                                          Antihypertensive medication (choice=Beta blocker)
+──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+
+                  Type: Numeric (byte)
+                 Label: med___4_
+
+                 Range: [0,1]                         Units: 1
+         Unique values: 2                         Missing .: 0/120
+
+            Tabulation: Freq.   Numeric  Label
+                          116         0  Unchecked
+                            4         1  Checked
+
+──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+med___5                                                                         Antihypertensive medication (choice=Alpha blocker)
+──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+
+                  Type: Numeric (byte)
+                 Label: med___5_
+
+                 Range: [0,1]                         Units: 1
+         Unique values: 2                         Missing .: 0/120
+
+            Tabulation: Freq.   Numeric  Label
+                          118         0  Unchecked
+                            2         1  Checked
+
+──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+med___9                                                                                Antihypertensive medication (choice=Others)
+──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+
+                  Type: Numeric (byte)
+                 Label: med___9_
+
+                 Range: [0,1]                         Units: 1
+         Unique values: 2                         Missing .: 0/120
+
+            Tabulation: Freq.   Numeric  Label
+                          119         0  Unchecked
+                            1         1  Checked
+
+──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+htn_relative                                                                                           Relatives with hypertension
+──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+
+                  Type: Numeric (byte)
+                 Label: htn_relative_
+
+                 Range: [1,5]                         Units: 1
+         Unique values: 4                         Missing .: 0/120
+
+            Tabulation: Freq.   Numeric  Label
+                           13         1  First degree relative (Brother,
+                                         Sister, Mother, or Father)
+                            2         2  Aunt or Uncle
+                           24         3  Grandparent
+                           81         5  Not applicable
+
+──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+my_first_instrument_complete                                                                                             Complete?
+──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+
+                  Type: Numeric (byte)
+                 Label: my_first_instrument_complete_
+
+                 Range: [0,0]                         Units: 1
+         Unique values: 1                         Missing .: 0/120
+
+            Tabulation: Freq.   Numeric  Label
+                          120         0  Incomplete
+</pre>
+<p>Having done this a while, I can see from the code output that there
+are some potential problems with how this is set up.</p>
+<ol type="1">
+<li>record_id is a numeric. It really shouldn’t be, since numeric
+variables are generally variables you want to do math on. Look at the
+output of this command, and recognize that Stata is smart but not smart
+enough to save us from ourselves. If we want to get percentiles and
+means and such from a meaningless variable like record_id, it will let
+us do so.</li>
+</ol>
+<pre class='stata'>. summarize record_id, detail 
+
+                          Record ID
+─────────────────────────────────────────────────────────────
+      Percentiles      Smallest
+ 1%            2              1
+ 5%          6.5              2
+10%         12.5              3       Obs                 120
+25%         30.5              4       Sum of wgt.         120
+
+50%         60.5                      Mean               60.5
+                        Largest       Std. dev.      34.78505
+75%         90.5            117
+90%        108.5            118       Variance           1210
+95%        114.5            119       Skewness              0
+99%          119            120       Kurtosis       1.799833
+</pre>
+<ol start="2" type="1">
+<li><p>mrn is a numeric. this is the same issue as record_id</p></li>
+<li><p>variables med_<strong>1 med</strong>_2 med_<strong>3
+med</strong>_4 med_<strong>5 med</strong>_9 - what is going on here?
+These variable names are super uninformative and hard to type.</p></li>
+</ol>
+<p>The good news is that ALL of these problems have fairly easy
+solutions that we will see later. To finish up with this section for
+now, lets just look into the data a bit more.</p>
+<pre class='stata'>. summarize age_years
+
+    Variable │        Obs        Mean    Std. dev.       Min        Max
+─────────────┼─────────────────────────────────────────────────────────
+   age_years │        120    11.03333    3.297397          6         17
+</pre>
+<p>If I want things like the median, notice I can add the ,#detail#
+option on the commands</p>
+<pre class='stata'>. summarize age_years, detail
+
+                         Age (years)
+─────────────────────────────────────────────────────────────
+      Percentiles      Smallest
+ 1%            6              6
+ 5%            6              6
+10%            6              6       Obs                 120
+25%            8              6       Sum of wgt.         120
+
+50%           11                      Mean           11.03333
+                        Largest       Std. dev.      3.297397
+75%           14             17
+90%           16             17       Variance       10.87283
+95%         16.5             17       Skewness       .0820531
+99%           17             17       Kurtosis       1.897739
+</pre>
+<p>Again, I can look at a continuous variable by a categorical.</p>
+<pre class='stata'>. by gender, sort: summarize age_years
+
+──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+-> gender = Male
+
+    Variable │        Obs        Mean    Std. dev.       Min        Max
+─────────────┼─────────────────────────────────────────────────────────
+   age_years │         63     10.5873    3.255937          6         17
+
+──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+-> gender = Female
+
+    Variable │        Obs        Mean    Std. dev.       Min        Max
+─────────────┼─────────────────────────────────────────────────────────
+   age_years │         57    11.52632    3.301002          6         17
+</pre>
+<p>Easy to make simple graphs. In case you are wondering, YOU don’t have
+to ##graph export## each time like I am. That’s only necessary if you
+are writing in this markstat format.</p>
+<pre class='stata'>. histogram age_years, by(gender)
+
+. graph export age.png, width(500) replace
+file /Users/johnmcdonnell/Desktop/Stata fellow training/age.png saved as PNG format
+</pre>
+<figure>
+<img src="age.png" alt="Age (in years)" />
+<figcaption aria-hidden="true">Age (in years)</figcaption>
+</figure>
+<p>Some simple tabulations of categorical variables.</p>
+<pre class='stata'>. tabulate overweight gender, col
+
+┌───────────────────┐
+│ Key               │
+├───────────────────┤
+│     frequency     │
+│ column percentage │
+└───────────────────┘
+
+           │        Gender
+Overweight │      Male     Female │     Total
+───────────┼──────────────────────┼──────────
+        No │        51         46 │        97 
+           │     80.95      80.70 │     80.83 
+───────────┼──────────────────────┼──────────
+       Yes │        12         11 │        23 
+           │     19.05      19.30 │     19.17 
+───────────┼──────────────────────┼──────────
+     Total │        63         57 │       120 
+           │    100.00     100.00 │    100.00 
+</pre>
+<p>That’s probably enough for now. Hopefully you didn’t hate your first
+foray into Stata.</p>
+</body>
+</html>
